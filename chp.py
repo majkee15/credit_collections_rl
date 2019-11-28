@@ -9,8 +9,8 @@ np.seterr(all='raise')
 
 class CHP(Base):
 
-    def __init__(self, starting_balance, starting_intensity, marginal_cost = 1.0, collection_horizon = None,
-                 lambda_infty=None, kappa=None, delta10=None, control_function=None, rho=0.05):
+    def __init__(self, starting_balance, starting_intensity, marginal_cost=1.0, collection_horizon=None,
+                 lambda_infty=None, kappa=None, delta10=None, delta11=None, control_function=None, rho=0.05):
         super().__init__(__class__.__name__)
         self.starting_intensity = starting_intensity
         self.starting_balance = starting_balance
@@ -19,6 +19,7 @@ class CHP(Base):
         self.lambda_infty = lambda_infty
         self.kappa = kappa
         self.delta10 = delta10
+        self.delta11 = delta11
         self.rho = rho
         self.flag_controlled = True
 
@@ -54,7 +55,6 @@ class CHP(Base):
             self.starting_jump = 0
             self.intensities_plus = np.array([self.starting_intensity])
 
-
     def drift(self, s, lambda_start):
         # deterministic draft
         return self.lambda_infty + (lambda_start - self.lambda_infty) * np.exp(-self.kappa * s)
@@ -77,7 +77,7 @@ class CHP(Base):
             elif denominator < 0:
                 return np.NaN
             else:
-                t = 1/self.kappa * \
+                t = 1 / self.kappa * \
                     np.log(numerator / denominator)
                 return t
         except:
@@ -109,7 +109,8 @@ class CHP(Base):
 
                 self.control_levels = np.append(self.control_levels, self.control_function(potential_balance))
                 self.intensities_minus = np.append(self.intensities_minus, intensity_at_jump)
-                self.intensities_plus = np.append(self.intensities_plus, intensity_at_jump + self.delta10)
+                self.intensities_plus = np.append(self.intensities_plus, intensity_at_jump + self.delta10 +
+                                                  self.delta11 * potential_repayment)
                 self.interarrivals = np.append(self.interarrivals, s)
                 self.repayments = np.append(self.repayments, potential_repayment)
                 self.balances = np.append(self.balances, potential_balance)
@@ -135,26 +136,34 @@ class CHP(Base):
         self.flag_simulated = True
         chp.calculate_costs()
 
-    def calculate_costs(self):
-        self.logger.info(f'Jumps: {self.starting_jump} \n Continuous effort durations: {self.continuous_effort_duration}'
-                         f'\n Continuous effort starts: {self.continuous_effort_start_sustain}')
+    def calculate_costs(self, verbose=False):
+        if verbose:
+            self.logger.info(
+                f'Jumps: {self.starting_jump} \n Continuous effort durations: {self.continuous_effort_duration}'
+                f'\n Continuous effort starts: {self.continuous_effort_start_sustain}')
         total_costs = self.starting_jump + np.sum(np.multiply(self.continuous_effort_duration,
                                                               self.continuous_effort_intensity))
         self.total_cost = total_costs * self.marginal_cost
         pass
 
-    def calculate_value_single(self, _=None):
+    def calculate_value_single(self, _=None, verbose=False):
         # discounted value of repayments
+        self.reset_state()
         self.simulate()
         revenue = np.sum(np.multiply(np.exp(- self.arrivals * self.rho),
                                      np.multiply(self.balances[:-1], self.repayments)))
-        self.logger.info(f'Revenues: {revenue} \n Costs: {self.total_cost}')
+        if verbose:
+            self.logger.info(f'Revenues: {revenue} \n Costs: {self.total_cost}')
         return revenue - self.total_cost
 
-    def calculate_value(self, mc_teration = 10):
-        um_cores = cpu_count()
-        with Pool(um_cores-1) as p:
-            p.map(self.calculate_value_single, range(mc_teration))
+    def calculate_value(self, mc_iteration=10):
+        running_sum = 0
+        for i in range(mc_iteration):
+            running_sum += self.calculate_value_single()
+        return running_sum / mc_iteration
+        # um_cores = cpu_count()
+        # with Pool(um_cores-1) as p:
+        #     p.map(self.calculate_value_single, range(mc_teration))
 
     # PLOT FUNCTIONS
 
@@ -164,7 +173,7 @@ class CHP(Base):
         prev_arrival = 0
         fig, ax = plt.subplots(1, 1)
         segment_time_points = np.append(self.arrivals, self.collection_horizon)
-        for i, arrival in enumerate(segment_time_points): #enumerate(self.intensities_plus):
+        for i, arrival in enumerate(segment_time_points):  # enumerate(self.intensities_plus):
             mask = [(tgrid >= prev_arrival) & (tgrid <= arrival)]
             ts = tgrid[tuple(mask)] - prev_arrival
             lambdas[tuple(mask)] = self.controlled_intensity(ts, i)
@@ -181,7 +190,7 @@ class CHP(Base):
         ax.plot(tgrid, lambdagrid)
         ax.set_xlabel('Time')
         ax.set_ylabel('Intensity')
-        ax.set_ylim([0, self.lambda_infty*4])
+        ax.set_ylim([0, self.lambda_infty * 4])
         ax.axhline(self.lambda_infty, linewidth=1.0, color='r', linestyle='--')
         fig.show()
         return fig
@@ -194,7 +203,7 @@ class CHP(Base):
             if self.control_function is not None:
                 if self.starting_jump > 0:
                     ax.plot([self.starting_balance, self.starting_balance],
-                            [self.starting_intensity, self.starting_intensity+ self.starting_jump],
+                            [self.starting_intensity, self.starting_intensity + self.starting_jump],
                             c=color, linewidth=1.5, marker='x', linestyle='--')
                 wgrid = np.arange(0, self.starting_balance, 1)
                 ax.plot(wgrid, self.control_function(wgrid), color='black', linewidth=0.5)
@@ -202,7 +211,7 @@ class CHP(Base):
                 # ax. plot(self.balances[:-1], self.intensities_minus, marker='x', color='b')
                 # y = np.array(list(chain.from_iterable(zip(self.intensities_plus, self.intensities_minus))))
                 # x = np.array(list(chain.from_iterable(zip(self.balances, self.balances[:-1]))))
-            starts = np.column_stack([self.balances,self.intensities_plus])
+            starts = np.column_stack([self.balances, self.intensities_plus])
             stops = np.column_stack([self.balances, self.intensities_minus])
             jump = None
             for start, stop in zip(starts, stops):
@@ -217,8 +226,8 @@ class CHP(Base):
 
     def plot_policy(self):
         if self.flag_controlled:
-            ylim = np.maximum(self.starting_jump, self.control_levels[0])* 1.5
-            xlim = self.collection_horizon + self.collection_horizon*0.01
+            ylim = np.maximum(self.starting_jump, self.control_levels[0]) * 1.5
+            xlim = self.collection_horizon + self.collection_horizon * 0.01
             fig, ax = plt.subplots()
             print(self.starting_jump)
             head_length = ylim * 0.05
@@ -230,7 +239,7 @@ class CHP(Base):
                 ax.plot([sustain, sustain + self.continuous_effort_duration[i]],
                         [self.continuous_effort_intensity[i], self.continuous_effort_intensity[i]], marker='x')
 
-            ax.set_xlim(-self.collection_horizon*0.01, self.collection_horizon)
+            ax.set_xlim(-self.collection_horizon * 0.01, self.collection_horizon)
             ax.set_ylim(0, ylim)
             ax.set_ylabel('Intensity')
             ax.set_xlabel('Time')
@@ -247,14 +256,12 @@ class CHP(Base):
             ax.set_xlim([0, self.starting_balance * 1.1])
             fig.show()
 
-
-
-# TESTS
+    # TESTS
 
     # TODO: test for lambda_i > self.control - otherwise jump would be necessary
     def test_increments(self):
         theoretical = chp.intensities_plus[1:] - chp.intensities_minus[:-1]
-        realized = self.repayments
+        realized = self.repayments * self.delta11 + self.delta10
         if np.array_equal(theoretical, realized):
             self.logger.info('Passed.')
         else:
@@ -272,16 +279,37 @@ if __name__ == '__main__':
         else:
             raise ValueError('Stupid error in w.')
 
-    chp = CHP(starting_balance=1000, starting_intensity=0.3, marginal_cost=1,
-              collection_horizon=10, lambda_infty=0.1, kappa=1,
-              delta10=0.05, control_function=None, rho=0.05)
+    #
+    # chp = CHP(starting_balance=1000, starting_intensity=0.3, marginal_cost=1,
+    #           collection_horizon=10, lambda_infty=0.1, kappa=1,
+    #           delta10=0.05, delta11=0.5, control_function=None, rho=0.05)
     # print(chp.calculate_value_single())
     # chp.plot_statespace()
     # chp.plot_intensity()
-    # chp.test_increments()
     # chp.plot_policy()
     # chp.plot_balance()
-    chp.calculate_value(10)
+    # chp.test_increments()
+    # print(chp.calculate_value(10000))
+    # w_grid = np.arange(0, 100, 10)
+    # v = np.zeros_like(w_grid)
+    # for i, w in enumerate(w_grid):
+    #     chp = CHP(starting_balance=w, starting_intensity=1, marginal_cost=1,
+    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7,
+    #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
+    #     v[i] = chp.calculate_value(mc_terations=1000)
+    #
+    # plt.plot(w_grid, -v, marker='o')
+    # plt.xlim([0,max(w_grid)])
+    # plt.show()
 
-
-
+    lamdba_grid = np.arange(0.1, 5, 1)
+    v = np.zeros_like(lamdba_grid)
+    for i, lam in enumerate(lamdba_grid):
+        chp = CHP(starting_balance=75, starting_intensity=lam, marginal_cost=1,
+                  collection_horizon=100, lambda_infty=0.1, kappa=0.7,
+                  delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
+        v[i] = chp.calculate_value(mc_iteration=10000)
+    print(v)
+    plt.plot(lamdba_grid, -v, marker='o')
+    plt.xlim([0, max(lamdba_grid)])
+    plt.show()
