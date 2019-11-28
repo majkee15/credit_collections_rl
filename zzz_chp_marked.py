@@ -27,7 +27,7 @@ class CHPMarked:
         s = 0
         n = 0
         is_collected = False
-
+        last_intensity = self.mu
         while (s < horizon) & (is_collected == False):
             lstar = 100 #self.getlambda(s, arrivals) # maximum value of lambda
             w = -np.log(np.random.rand())/lstar
@@ -35,7 +35,7 @@ class CHPMarked:
             d = np.random.rand()
             potential_repayment = self.repayment_draw()
             potential_balance = balances[-1] * (1 - potential_repayment)
-            if d*lstar <= self.getlambda(s, arrivals, potential_balance):
+            if d*lstar <= self.getlambda(s, arrivals, potential_balance, last_intensity=last_intensity):
                 n += 1
                 arrivals = np.append(arrivals, s)
                 repayments = np.append(repayments, potential_repayment)
@@ -54,18 +54,18 @@ class CHPMarked:
             self.flag_simulated = True
         return arrivals, balances
 
-    def getlambda(self, s, arrivals, potential_balance):
+    def getlambda(self, s, arrivals, potential_balance, last_intensity=0):
         # Returns lambdas(either vector or a scalar) based on a realized process history arrivals
         # arrivals[arrivals <= s] cannot have a strict inequality because of the thinning algo
         # for straight inequalities the next candidate lstar is smaller than the actual intensity at the point!
         # calculate intensity
         #
         if self.control_function is not None:
-            controlled_intensity = self.control_function(potential_balance)
             if np.isscalar(s):
+                controlled_intensity = self.control_function(potential_balance)
                 lamb = self.mu + sum(self.kernel(s - arrivals[arrivals <= s]))
                 if lamb < controlled_intensity:
-                    lambd = controlled_intensity
+                    lamb = controlled_intensity
                 return lamb
             else:
                 controlled_intensities = self.control_function(potential_balance)
@@ -73,8 +73,8 @@ class CHPMarked:
                 lambdas = np.zeros(n)
                 for i in range(0, n):
                     lambdas[i] = self.mu + sum(self.kernel(s[i] - arrivals[arrivals <= s[i]]))
-                    if lambdas[i]< controlled_intensity[i]:
-                        lambdas[i] = controlled_intensity[i]
+                    if lambdas[i]< controlled_intensities[i]:
+                        lambdas[i] = controlled_intensities[i]
                 return lambdas
         else:
             if np.isscalar(s):
