@@ -2,9 +2,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from base import Base
-from multiprocessing import Pool, cpu_count
-
-np.seterr(all='raise')
 
 
 class CHP(Base):
@@ -134,7 +131,7 @@ class CHP(Base):
             self.balances = self.balances[:-1]
             self.control_levels = self.control_levels[:-1]
         self.flag_simulated = True
-        chp.calculate_costs()
+        self.calculate_costs()
 
     def calculate_costs(self, verbose=False):
         if verbose:
@@ -156,14 +153,11 @@ class CHP(Base):
             self.logger.info(f'Revenues: {revenue} \n Costs: {self.total_cost}')
         return revenue - self.total_cost
 
-    def calculate_value(self, mc_iteration=10):
+    def calculate_value(self, mc_iteration=10000):
         running_sum = 0
         for i in range(mc_iteration):
             running_sum += self.calculate_value_single()
         return running_sum / mc_iteration
-        # um_cores = cpu_count()
-        # with Pool(um_cores-1) as p:
-        #     p.map(self.calculate_value_single, range(mc_teration))
 
     # PLOT FUNCTIONS
 
@@ -260,8 +254,8 @@ class CHP(Base):
 
     # TODO: test for lambda_i > self.control - otherwise jump would be necessary
     def test_increments(self):
-        theoretical = chp.intensities_plus[1:] - chp.intensities_minus[:-1]
-        realized = self.repayments * self.delta11 + self.delta10
+        theoretical = np.round(chp.intensities_plus[1:] - chp.intensities_minus[:-1], 6)
+        realized = np.round(self.repayments * self.delta11 + self.delta10, 6)
         if np.array_equal(theoretical, realized):
             self.logger.info('Passed.')
         else:
@@ -271,7 +265,7 @@ class CHP(Base):
 if __name__ == '__main__':
 
     def control(w):
-        shift = 500
+        shift = 50
         if isinstance(w, np.ndarray):
             return (0.001 * (w - shift)).clip(min=0)
         elif np.isscalar(w):
@@ -280,15 +274,16 @@ if __name__ == '__main__':
             raise ValueError('Stupid error in w.')
 
     #
-    # chp = CHP(starting_balance=1000, starting_intensity=0.3, marginal_cost=1,
-    #           collection_horizon=10, lambda_infty=0.1, kappa=1,
-    #           delta10=0.05, delta11=0.5, control_function=None, rho=0.05)
-    # print(chp.calculate_value_single())
-    # chp.plot_statespace()
-    # chp.plot_intensity()
-    # chp.plot_policy()
-    # chp.plot_balance()
-    # chp.test_increments()
+    chp = CHP(starting_balance=1000, starting_intensity=0.3, marginal_cost=10,
+              collection_horizon=10, lambda_infty=0.1, kappa=1,
+              delta10=0.05, delta11=0.5, control_function=control, rho=0.05)
+    print(chp.calculate_value_single())
+    chp.plot_statespace()
+    chp.plot_intensity()
+    chp.plot_policy()
+    chp.plot_balance()
+    chp.test_increments()
+    #
     # print(chp.calculate_value(10000))
     # w_grid = np.arange(0, 100, 10)
     # v = np.zeros_like(w_grid)
@@ -296,20 +291,24 @@ if __name__ == '__main__':
     #     chp = CHP(starting_balance=w, starting_intensity=1, marginal_cost=1,
     #               collection_horizon=100, lambda_infty=0.1, kappa=0.7,
     #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
-    #     v[i] = chp.calculate_value(mc_terations=1000)
+    #     v[i] = chp.calculate_value(mc_iteration=1000)
     #
     # plt.plot(w_grid, -v, marker='o')
     # plt.xlim([0,max(w_grid)])
+    # plt.xlabel('w')
+    # plt.ylabel('v')
     # plt.show()
-
-    lamdba_grid = np.arange(0.1, 5, 1)
-    v = np.zeros_like(lamdba_grid)
-    for i, lam in enumerate(lamdba_grid):
-        chp = CHP(starting_balance=75, starting_intensity=lam, marginal_cost=1,
-                  collection_horizon=100, lambda_infty=0.1, kappa=0.7,
-                  delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
-        v[i] = chp.calculate_value(mc_iteration=10000)
-    print(v)
-    plt.plot(lamdba_grid, -v, marker='o')
-    plt.xlim([0, max(lamdba_grid)])
-    plt.show()
+    #
+    # lamdba_grid = np.arange(0.1, 5, 1)
+    # v = np.zeros_like(lamdba_grid)
+    # for i, lam in enumerate(lamdba_grid):
+    #     chp = CHP(starting_balance=75, starting_intensity=lam, marginal_cost=1,
+    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7,
+    #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
+    #     v[i] = chp.calculate_value(mc_iteration=10000)
+    # print(v)
+    # plt.plot(lamdba_grid, -v, marker='o')
+    # plt.xlim([0, max(lamdba_grid)])
+    # plt.xlabel('lambda')
+    # plt.ylabel('v')
+    # plt.show()

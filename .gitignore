@@ -124,3 +124,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+/requirements.in
+/search_comp_results/
