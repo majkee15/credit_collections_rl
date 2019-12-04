@@ -7,7 +7,8 @@ from base import Base
 class CHP(Base):
 
     def __init__(self, starting_balance, starting_intensity, marginal_cost=1.0, collection_horizon=None,
-                 lambda_infty=None, kappa=None, delta10=None, delta11=None, control_function=None, rho=0.05):
+                 lambda_infty=None, kappa=None, delta10=None, delta11=None, control_function=None,
+                 value_precision_thershold=0.001, rho=0.05):
         super().__init__(__class__.__name__)
         self.starting_intensity = starting_intensity
         self.starting_balance = starting_balance
@@ -18,6 +19,7 @@ class CHP(Base):
         self.delta10 = delta10
         self.delta11 = delta11
         self.rho = rho
+        self.value_precision_threshold = value_precision_thershold
         self.flag_controlled = True
 
         if control_function is None:
@@ -36,7 +38,7 @@ class CHP(Base):
         self.flag_simulated = False
         self.arrivals = np.array([])  # history of the process (tau_i, r_i)
         self.interarrivals = np.array([])
-        self.repayments = np.array([])
+        self.relativerepayments = np.array([])
         self.balances = np.array([self.starting_balance])
         self.control_levels = np.array([self.control_function(self.starting_balance)])
         self.continuous_effort_duration = np.array([])
@@ -109,7 +111,7 @@ class CHP(Base):
                 self.intensities_plus = np.append(self.intensities_plus, intensity_at_jump + self.delta10 +
                                                   self.delta11 * potential_repayment)
                 self.interarrivals = np.append(self.interarrivals, s)
-                self.repayments = np.append(self.repayments, potential_repayment)
+                self.relativerepayments = np.append(self.relativerepayments, potential_repayment)
                 self.balances = np.append(self.balances, potential_balance)
                 flag_finished = True
         # if n == 0 and self.starting_jump>0:
@@ -119,17 +121,23 @@ class CHP(Base):
 
     def simulate(self):
         self.next_arrival()
-        while np.sum(self.interarrivals) <= self.collection_horizon:
+        # check if last arrival is not greater than a collection horizon
+        # and the discounted value of the account is still important
+        repayment_value_condition = True
+        collection_horizon_condition = True
+        while collection_horizon_condition & repayment_value_condition:
             self.next_arrival()
+            dv_last_repayment = np.abs(np.diff(self.balances)[-1] * np.exp(-np.sum(self.interarrivals) * self.rho))
+            repayment_value_condition = dv_last_repayment > self.value_precision_threshold
+            collection_horizon_condition = np.sum(self.interarrivals) <= self.collection_horizon
+        # self.logger.info(dv_last_repayment)
         self.arrivals = np.cumsum(self.interarrivals)
-        # remove arrivals out of collection horizon
-        if self.arrivals[-1] > self.collection_horizon:
-            self.arrivals = self.arrivals[:-1]
-            self.interarrivals = self.interarrivals[:-1]
-            self.repayments = self.repayments[:-1]
-            self.intensities_plus = self.intensities_plus[:-1]
-            self.balances = self.balances[:-1]
-            self.control_levels = self.control_levels[:-1]
+        self.arrivals = self.arrivals[:-1]
+        self.interarrivals = self.interarrivals[:-1]
+        self.relativerepayments = self.relativerepayments[:-1]
+        self.intensities_plus = self.intensities_plus[:-1]
+        self.balances = self.balances[:-1]
+        self.control_levels = self.control_levels[:-1]
         self.flag_simulated = True
         self.calculate_costs()
 
@@ -147,11 +155,10 @@ class CHP(Base):
         # discounted value of repayments
         self.reset_state()
         self.simulate()
-        revenue = np.sum(np.multiply(np.exp(- self.arrivals * self.rho),
-                                     np.multiply(self.balances[:-1], self.repayments)))
+        dc_revenue = np.sum(np.multiply(np.exp(- self.arrivals * self.rho), -np.diff(self.balances)))
         if verbose:
-            self.logger.info(f'Revenues: {revenue} \n Costs: {self.total_cost}')
-        return revenue - self.total_cost
+            self.logger.info(f'Revenues: {dc_revenue} \n Costs: {self.total_cost}')
+        return dc_revenue + self.total_cost
 
     def calculate_value(self, mc_iteration=10000):
         running_sum = 0
@@ -217,6 +224,8 @@ class CHP(Base):
                 jump = stop
             plt.show()
             return fig
+        else:
+            self.logger.info('Process not simulated.')
 
     def plot_policy(self):
         if self.flag_controlled:
@@ -237,6 +246,7 @@ class CHP(Base):
             ax.set_ylim(0, ylim)
             ax.set_ylabel('Intensity')
             ax.set_xlabel('Time')
+            ax.set_title('Derivative Policy')
             fig.show()
             return fig
 
@@ -255,7 +265,7 @@ class CHP(Base):
     # TODO: test for lambda_i > self.control - otherwise jump would be necessary
     def test_increments(self):
         theoretical = np.round(chp.intensities_plus[1:] - chp.intensities_minus[:-1], 6)
-        realized = np.round(self.repayments * self.delta11 + self.delta10, 6)
+        realized = np.round(self.relativerepayments * self.delta11 + self.delta10, 6)
         if np.array_equal(theoretical, realized):
             self.logger.info('Passed.')
         else:
@@ -275,21 +285,21 @@ if __name__ == '__main__':
 
     #
     chp = CHP(starting_balance=1000, starting_intensity=0.3, marginal_cost=10,
-              collection_horizon=10, lambda_infty=0.1, kappa=1,
+              collection_horizon=100, lambda_infty=0.1, kappa=1, value_precision_thershold=0.0,
               delta10=0.05, delta11=0.5, control_function=control, rho=0.05)
-    print(chp.calculate_value_single())
+    chp.calculate_value_single()
     chp.plot_statespace()
     chp.plot_intensity()
     chp.plot_policy()
     chp.plot_balance()
     chp.test_increments()
-    #
+
     # print(chp.calculate_value(10000))
     # w_grid = np.arange(0, 100, 10)
     # v = np.zeros_like(w_grid)
     # for i, w in enumerate(w_grid):
     #     chp = CHP(starting_balance=w, starting_intensity=1, marginal_cost=1,
-    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7,
+    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
     #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
     #     v[i] = chp.calculate_value(mc_iteration=1000)
     #
@@ -303,7 +313,7 @@ if __name__ == '__main__':
     # v = np.zeros_like(lamdba_grid)
     # for i, lam in enumerate(lamdba_grid):
     #     chp = CHP(starting_balance=75, starting_intensity=lam, marginal_cost=1,
-    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7,
+    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
     #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
     #     v[i] = chp.calculate_value(mc_iteration=10000)
     # print(v)
