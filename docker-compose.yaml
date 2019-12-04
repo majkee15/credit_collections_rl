@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  # take this as template and create own compose file as docker-compose.yml and run as usual - especially to change path to XBTUSD
+  # useful comamnds docker-compose up --build (if code changes)
+  #                 docker-compose up --force-recreate (if volumes etc changes)
+  #                 docker-compose down (to stop the show)
+  honiklady_holky_rady_monte_carla:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /Users/mmark/Documents/credit_collections_rl:/credit_collections_rl #set your own path
