@@ -10,7 +10,7 @@ class BruteForce(Base):
     # conduts a brute force search for optimal control policy of a form
     # f(w) = max(0, m(w-b)
     # m,b \in \mathbb{R}
-    def __init__(self, chp, data_dir, delta, wmax=10, bmax=1, mc_iterations=10000):
+    def __init__(self, chp, data_dir, delta, bmax=10, mmax=1, mc_iterations=10000):
         super().__init__(__class__.__name__)
         self.data_dir = data_dir
         self.path = os.getcwd()
@@ -20,8 +20,8 @@ class BruteForce(Base):
         self.mc_iterations = mc_iterations
         self.delta_w = delta[0]
         self.delta_m = delta[1]
-        self.b = np.arange(0, wmax, self.delta_w)
-        self.m = np.arange(0, bmax, self.delta_m)
+        self.b = np.arange(0, bmax, self.delta_w)
+        self.m = np.arange(0, mmax, self.delta_m)
         self.xx, self.yy = np.meshgrid(self.b, self.m)
         self.z = np.zeros_like(self.xx, dtype=np.float64)
         self.logger.info(f'Instantiated Brute Force Search Process @ {self.__class__.__name__}')
@@ -48,7 +48,6 @@ class BruteForce(Base):
                 self.logger.info(f'evaluating the policy b={xval}, m={yval}')
                 self.z[j,i] = self.get_policy_value(xval, yval)
                 np.save(z_path, self.z)
-        self.logger.info(f'Z type: {type(self.z)}')
         return self.z
 
     def prep_linear_control(self, b, m, w):
@@ -95,10 +94,10 @@ class BruteForce(Base):
 
 if __name__ == '__main__':
 
-    chp = CHP(starting_balance=100, starting_intensity=1, marginal_cost=0.5,
-              collection_horizon=100, lambda_infty=0.1, kappa=0.7,
-              delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
-    bf = BruteForce(chp, delta=[50, 0.5], data_dir='search_comp_results', wmax=100, bmax=1, mc_iterations=1000)
+    chp = CHP(starting_balance=75, starting_intensity=1, marginal_cost=6,
+              collection_horizon=10000, lambda_infty=0.1, kappa=0.7,
+              delta10=0.02, delta11=0.5, control_function=None, rho=0.06, value_precision_thershold=0.01)
+    bf = BruteForce(chp, delta=[1, 0.005], data_dir='search_comp_results', bmax=75, mmax=3, mc_iterations=1000)
     print(bf.run_brute_force_search())
 
 

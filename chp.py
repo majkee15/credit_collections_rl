@@ -155,7 +155,7 @@ class CHP(Base):
         # discounted value of repayments
         self.reset_state()
         self.simulate()
-        dc_revenue = np.sum(np.multiply(np.exp(- self.arrivals * self.rho), -np.diff(self.balances)))
+        dc_revenue = np.sum(np.multiply(np.exp(- self.arrivals * self.rho), np.diff(self.balances)))
         if verbose:
             self.logger.info(f'Revenues: {dc_revenue} \n Costs: {self.total_cost}')
         return dc_revenue + self.total_cost
@@ -232,7 +232,6 @@ class CHP(Base):
             ylim = np.maximum(self.starting_jump, self.control_levels[0]) * 1.5
             xlim = self.collection_horizon + self.collection_horizon * 0.01
             fig, ax = plt.subplots()
-            print(self.starting_jump)
             head_length = ylim * 0.05
             head_width = xlim * 0.01
             ax.arrow(0, 0, 0, self.starting_jump - head_length,
@@ -284,41 +283,41 @@ if __name__ == '__main__':
             raise ValueError('Stupid error in w.')
 
     #
-    chp = CHP(starting_balance=1000, starting_intensity=0.3, marginal_cost=10,
+    chp = CHP(starting_balance=1000, starting_intensity=0.3, marginal_cost=1,
               collection_horizon=100, lambda_infty=0.1, kappa=1, value_precision_thershold=0.0,
               delta10=0.05, delta11=0.5, control_function=control, rho=0.05)
-    chp.calculate_value_single()
+    print(chp.calculate_value_single())
     chp.plot_statespace()
     chp.plot_intensity()
     chp.plot_policy()
     chp.plot_balance()
     chp.test_increments()
 
-    # print(chp.calculate_value(10000))
-    # w_grid = np.arange(0, 100, 10)
-    # v = np.zeros_like(w_grid)
-    # for i, w in enumerate(w_grid):
-    #     chp = CHP(starting_balance=w, starting_intensity=1, marginal_cost=1,
-    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
-    #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
-    #     v[i] = chp.calculate_value(mc_iteration=1000)
-    #
-    # plt.plot(w_grid, -v, marker='o')
-    # plt.xlim([0,max(w_grid)])
-    # plt.xlabel('w')
-    # plt.ylabel('v')
-    # plt.show()
-    #
-    # lamdba_grid = np.arange(0.1, 5, 1)
-    # v = np.zeros_like(lamdba_grid)
-    # for i, lam in enumerate(lamdba_grid):
-    #     chp = CHP(starting_balance=75, starting_intensity=lam, marginal_cost=1,
-    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
-    #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
-    #     v[i] = chp.calculate_value(mc_iteration=10000)
-    # print(v)
-    # plt.plot(lamdba_grid, -v, marker='o')
-    # plt.xlim([0, max(lamdba_grid)])
-    # plt.xlabel('lambda')
-    # plt.ylabel('v')
-    # plt.show()
+    print(chp.calculate_value(10000))
+    w_grid = np.arange(0, 100, 10)
+    v = np.zeros_like(w_grid)
+    for i, w in enumerate(w_grid):
+        chp = CHP(starting_balance=w, starting_intensity=1, marginal_cost=1,
+                  collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
+                  delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
+        v[i] = chp.calculate_value(mc_iteration=1000)
+
+    plt.plot(w_grid, v, marker='o')
+    plt.xlim([0,max(w_grid)])
+    plt.xlabel('w')
+    plt.ylabel('v')
+    plt.show()
+
+    lamdba_grid = np.arange(0.1, 5, 1)
+    v = np.zeros_like(lamdba_grid)
+    for i, lam in enumerate(lamdba_grid):
+        chp = CHP(starting_balance=75, starting_intensity=lam, marginal_cost=1,
+                  collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
+                  delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
+        v[i] = chp.calculate_value(mc_iteration=10000)
+    print(v)
+    plt.plot(lamdba_grid, v, marker='o')
+    plt.xlim([0, max(lamdba_grid)])
+    plt.xlabel('lambda')
+    plt.ylabel('v')
+    plt.show()
