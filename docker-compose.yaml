@@ -5,7 +5,7 @@ services:
   # useful comamnds docker-compose up --build (if code changes)
   #                 docker-compose up --force-recreate (if volumes etc changes)
   #                 docker-compose down (to stop the show)
-  honiklady_holky_rady_monte_carla:
+  brute_force_search:
     build:
       context: .
       dockerfile: Dockerfile

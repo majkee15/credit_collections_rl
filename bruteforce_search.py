@@ -97,7 +97,7 @@ if __name__ == '__main__':
     chp = CHP(starting_balance=75, starting_intensity=1, marginal_cost=6,
               collection_horizon=10000, lambda_infty=0.1, kappa=0.7,
               delta10=0.02, delta11=0.5, control_function=None, rho=0.06, value_precision_thershold=0.01)
-    bf = BruteForce(chp, delta=[1, 0.005], data_dir='search_comp_results', bmax=75, mmax=3, mc_iterations=1000)
+    bf = BruteForce(chp, delta=[1, 0.001], data_dir='search_comp_results', bmax=75, mmax=1, mc_iterations=10000)
     print(bf.run_brute_force_search())
 
 
