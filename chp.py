@@ -294,30 +294,30 @@ if __name__ == '__main__':
     chp.test_increments()
 
     print(chp.calculate_value(10000))
-    w_grid = np.arange(0, 100, 10)
-    v = np.zeros_like(w_grid)
-    for i, w in enumerate(w_grid):
-        chp = CHP(starting_balance=w, starting_intensity=1, marginal_cost=1,
-                  collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
-                  delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
-        v[i] = chp.calculate_value(mc_iteration=1000)
-
-    plt.plot(w_grid, v, marker='o')
-    plt.xlim([0,max(w_grid)])
-    plt.xlabel('w')
-    plt.ylabel('v')
-    plt.show()
-
-    lamdba_grid = np.arange(0.1, 5, 1)
-    v = np.zeros_like(lamdba_grid)
-    for i, lam in enumerate(lamdba_grid):
-        chp = CHP(starting_balance=75, starting_intensity=lam, marginal_cost=1,
-                  collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
-                  delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
-        v[i] = chp.calculate_value(mc_iteration=10000)
-    print(v)
-    plt.plot(lamdba_grid, v, marker='o')
-    plt.xlim([0, max(lamdba_grid)])
-    plt.xlabel('lambda')
-    plt.ylabel('v')
-    plt.show()
+    # w_grid = np.arange(0, 100, 10)
+    # v = np.zeros_like(w_grid)
+    # for i, w in enumerate(w_grid):
+    #     chp = CHP(starting_balance=w, starting_intensity=1, marginal_cost=1,
+    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
+    #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
+    #     v[i] = chp.calculate_value(mc_iteration=1000)
+    #
+    # plt.plot(w_grid, v, marker='o')
+    # plt.xlim([0,max(w_grid)])
+    # plt.xlabel('w')
+    # plt.ylabel('v')
+    # plt.show()
+    #
+    # lamdba_grid = np.arange(0.1, 5, 1)
+    # v = np.zeros_like(lamdba_grid)
+    # for i, lam in enumerate(lamdba_grid):
+    #     chp = CHP(starting_balance=75, starting_intensity=lam, marginal_cost=1,
+    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
+    #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
+    #     v[i] = chp.calculate_value(mc_iteration=10000)
+    # print(v)
+    # plt.plot(lamdba_grid, v, marker='o')
+    # plt.xlim([0, max(lamdba_grid)])
+    # plt.xlabel('lambda')
+    # plt.ylabel('v')
+    # plt.show()
