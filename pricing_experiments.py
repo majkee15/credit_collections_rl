@@ -5,6 +5,8 @@ import timeit
 import numpy as np
 import copy
 
+# This investigates ideal design for multiprocess pricing of an account
+
 def no_control(w):
     return np.zeros_like(w)
 

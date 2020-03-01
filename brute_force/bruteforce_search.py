@@ -1,13 +1,16 @@
-import numpy as np
-from base import Base
-from chp import CHP
-from functools import partial
-import os
 import copy
+import os
+from functools import partial
 from multiprocessing import cpu_count, Pool
 
+import numpy as np
+
+from base import Base
+from chp import CHP
+
+
 class BruteForce(Base):
-    # conduts a brute force search for optimal control policy of a form
+    # conducts a brute force search for optimal control policy of a form
     # f(w) = max(0, m(w-b)
     # m,b \in \mathbb{R}
     def __init__(self, chp, data_dir, delta, bmax=10, mmax=1, mc_iterations=10000):
@@ -97,7 +100,7 @@ if __name__ == '__main__':
     chp = CHP(starting_balance=75, starting_intensity=1, marginal_cost=6,
               collection_horizon=10000, lambda_infty=0.1, kappa=0.7,
               delta10=0.02, delta11=0.5, control_function=None, rho=0.06, value_precision_thershold=0.01)
-    bf = BruteForce(chp, delta=[1, 0.001], data_dir='search_comp_results', bmax=75, mmax=1, mc_iterations=10000)
+    bf = BruteForce(chp, delta=[1, 0.001], data_dir='../results/search_comp_results', bmax=75, mmax=1, mc_iterations=10000)
     print(bf.run_brute_force_search())
 
 

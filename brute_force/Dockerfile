@@ -12,7 +12,7 @@ COPY . /credit_collections_rl/
 
 # CMD cd credit_collections_rl
 
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONPATH="$PYTHONPATH:/credit_collections_rl"
+# ENV PYTHONUNBUFFERED=1
 
-ENTRYPOINT ["python", "brute_force/bruteforce_search.py"]
+# ENTRYPOINT ["python"]
+# ,"brute_force/bruteforce_search.py"]

@@ -1,7 +1,9 @@
 import time
-import numpy as np
-from itertools import product
 from functools import partial
+from itertools import product
+
+import numpy as np
+
 from chp import CHP
 
 

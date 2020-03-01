@@ -9,6 +9,7 @@ logging.basicConfig(
         logging.StreamHandler(stream=sys.stdout)
     ])
 
+
 class Base:
     """
     Implements predominantly logging for all classes in finder matcher

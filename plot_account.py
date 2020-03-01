@@ -78,7 +78,7 @@ if __name__ == "__main__":
     np.random.seed(1)
     T = 2000
     proc1 = ExpCHP(T, mu, alpha, beta)
-    arrivals = proc1.getpath()
+    arrivals = proc1.getpath(T)
     print(len(arrivals))
 
     # proc2 = MHP([alpha], [mu], [beta])
