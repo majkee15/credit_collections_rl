@@ -20,5 +20,5 @@ extensions = [
 setup(
     name='sustained_ihp_c',
     ext_modules=cythonize(extensions),
-    script_args = ["build_ext", "--inplace"]
+    script_args=["build_ext", "--inplace"]
 )

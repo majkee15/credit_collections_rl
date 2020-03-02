@@ -88,8 +88,10 @@ class AAV(Base):
         return u_vals
 
 
-
 class Parameters:
+    '''
+    Defines the parameters of the sustained HP.
+    '''
     def __init__(self):
         self.lamdbda0 = 0.11
         self.lambdainf = 0.1
@@ -117,4 +119,3 @@ if __name__ == '__main__':
     w_array = np.arange(0, 100 ,10)
     print(w_array)
     aavcl.plot_aav(1, w_array, True)
-

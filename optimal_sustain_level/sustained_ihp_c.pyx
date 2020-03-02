@@ -1,12 +1,15 @@
+# cython: profile=True
 cimport numpy as cnp
 import  numpy as np
 from libc.math cimport isnan, NAN, log, fmax, exp
 from libc.stdlib cimport rand, RAND_MAX
 from cython cimport cdivision, boundscheck, wraparound, nonecheck
 
+cdef double[::1] single_result = np.empty(4)
+
 ## Random Generators
 @cdivision(True)
-cdef double r2():
+cdef inline double r2():
     '''
     C-wrapped r.v. generator U[0,1]
     :return: 
@@ -16,7 +19,7 @@ cdef double r2():
     return result
 
 @cdivision(True)
-cdef double potential_repayment(double lower, double upper):
+cdef inline double potential_repayment(double lower, double upper):
     cdef double result
     result = r2() * (upper - lower) + lower
     return result
@@ -33,7 +36,7 @@ cdef double drift(double s, double lambda_start, double[::1] params):
 @cdivision(True)
 @wraparound(False)
 @boundscheck(False)
-cdef double[::1] next_arrival(double lstart, double lhat, double balance, double[::1] params):
+cdef inline double[::1] next_arrival(double lstart, double lhat, double balance, double[::1] params):
     '''
     Generates the next arrival of a sustained IHP.
     :param lstart: starting intensity
@@ -45,7 +48,7 @@ cdef double[::1] next_arrival(double lstart, double lhat, double balance, double
         double t_to_sustain = 0.0
         double w, lstar, intensity_at_jump, collected, sust_cost, jump_cost
         bint condition = True
-        double[::1] result
+        #double[::1] single_result = np.empty(4)
     t_to_sustain = theta_cdef(lstart, lhat, params)
     jump_size = fmax(0, lhat - lstart)
     while condition:
@@ -56,8 +59,8 @@ cdef double[::1] next_arrival(double lstart, double lhat, double balance, double
         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)
         if d * lstar <= intensity_at_jump_minus:
             sustain_drift_time = 0.0
-            relative_repayment = potential_repayment(0.01, 1)
-            collected = balance * relative_repayment * exp(-params[2] * s)
+            relative_repayment = potential_repayment(0.1, 1)
+            collected = balance * relative_repayment * exp(-params[6] * s)
             if jump_size > 0.0:
                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
                         (1 - exp(-params[6] * s))/params[6])
@@ -67,9 +70,13 @@ cdef double[::1] next_arrival(double lstart, double lhat, double balance, double
             else:
                 sust_cost = 0.0
             jump_cost = jump_size * params[7]
-            result = np.array([s, collected, sust_cost, jump_cost])
+            # single_result = np.array([s, collected, sust_cost, jump_cost])
+            single_result[0] = s
+            single_result[1] = collected
+            single_result[2] = sust_cost
+            single_result[3] = jump_cost
             condition = False
-    return result
+    return single_result
 
 @cdivision(True)
 @wraparound(False)
@@ -88,7 +95,7 @@ cpdef double[:,::1] calculate_value_mc(double sustain_level, int niter, double b
 @cdivision(True)
 @boundscheck(False)
 @wraparound(False)
-cdef double theta_cdef(double l, double lhat, double[::1] params):
+cdef inline double theta_cdef(double l, double lhat, double[::1] params):
     '''
     :param l: lambda start
     :param lhat: lambda sustain level
@@ -112,3 +119,17 @@ cdef double theta_cdef(double l, double lhat, double[::1] params):
         t = -1/params[2] * log(numerator / denominator)
 
     return t
+
+# if __name__ == '__main__':
+#     import pyximport; pyximport.install()
+#     l0=1
+#     linf = 0.1
+#     kappa = 0.7
+#     delta10 = 0.02
+#     delta11 = 0.5
+#     delta2 = 1
+#     rho = 0.05
+#     c = 1
+#     params = np.array([l0, linf, kappa, delta10, delta11, delta2, rho, c], dtype=np.float)
+#     niter = 1000000
+#     res = np.asarray(calculate_value_mc(0.4, niter, 75., params))
