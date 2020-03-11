@@ -1,4 +1,5 @@
 from scipy import integrate
+from scipy.optimize import fsolve
 import numpy as np
 from base import Base
 import matplotlib.pyplot as plt
@@ -16,6 +17,7 @@ class AAV(Base):
         self.beta = None
         self.t = None
         self.w_ = None
+        self.w0star = None
         self.av = None
         self.logger.info(f'Instantiated @ {self.__class__.__name__}')
 
@@ -24,6 +26,7 @@ class AAV(Base):
         self.beta = None
         self.t = None
         self.w_ = None
+        self.w0star = None
         self.u = None
         self.logger.info(f'@ {self.__class__.__name__}, state reset')
 
@@ -52,7 +55,7 @@ class AAV(Base):
         :param w: starting balannce
         :return: autonomous account value
         """
-        t = np.linspace(0, 60, 101)
+        t = np.linspace(0, 100, 201)
         self.t = t
         y0 = [0, 0]
         y = np.array(integrate.odeint(self.aav_ODE, y0, t))
@@ -60,15 +63,30 @@ class AAV(Base):
         self.beta = y[:, 1]
         I = np.exp(-self.parameters.rho * t - l * y[:, 0] - self.parameters.kappa * y[:, 1])
         q = integrate.trapz(I, t)
-        w_ = self.compute_w0()
+        w_ = self.compute_w_()
         self.w_ = w_
+        self.w0star = self.compute_w0star()
         self.av = -(1 - self.parameters.rho * q) * w
         return self.av
 
-    def compute_w0(self):
-        I = self.alpha * np.exp(-self.parameters.rho * t - self.parameters.kappa * self.beta)
-        w = (1 / integrate.trapz(I, t)) * (self.parameters.c/self.parameters.delta2)* (1/self.parameters.rho)
+    def compute_w_(self):
+        I = self.alpha * np.exp(-self.parameters.rho * self.t - self.parameters.kappa * self.beta)
+        w = (1 / integrate.trapz(I, self.t)) * (self.parameters.c/self.parameters.delta2)* (1/self.parameters.rho)
         return w
+
+    # def eqlam(self, w):
+    #     lambda0star = np.zeros_like(w)
+    #     def eqlam(l): return -integrate.trapz(self.parameters.t,np.exp(-self.parameters.rho * self.parameters.t - l *
+    #                                                                    self.alpha - self.parameters.kappa *
+    #                                                                    self.beta) * (self.alpha) * w(i) * p.rho + p.c
+
+    def compute_w0star(self):
+        I = self.alpha * np.exp(-self.parameters.rho * self.t - self.parameters.lambdainf * self.alpha -
+                                self.parameters.kappa * self.beta)
+        def w0stareq(w0star): return -integrate.trapz(I, self.t) * w0star * self.parameters.rho + \
+                                     self.parameters.c/self.parameters.delta2
+        return fsolve(w0stareq, np.array([50]))[0]
+
 
     def plot_aav(self, l, w_array, plot_flag = False):
         '''
@@ -102,6 +120,7 @@ class Parameters:
         self.rho = 0.06
         self.c = 6
         self.r_ = 0.1
+        self.chat = self.c / self.delta2
 
     def rdist(self, r):
         return 1 / (1-self.r_)
@@ -110,12 +129,13 @@ class Parameters:
 if __name__ == '__main__':
     y0 = [0, 0]
     balance = 75
-    t = np.linspace(0, 60, 101)
+    # t = np.linspace(0, 60, 101)
     params = Parameters()
     aavcl = AAV(params)
     aavcl.u(1, balance)
     print(aavcl.av)
     print(aavcl.w_)
+    print(aavcl.compute_w0star())
     w_array = np.arange(0, 100 ,10)
     print(w_array)
     aavcl.plot_aav(1, w_array, True)

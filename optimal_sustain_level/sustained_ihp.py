@@ -22,9 +22,10 @@ class SustainedIHP(Base):
                                 parameters.rho, parameters.c], dtype=np.float)
         self.w0 = w0
         rmin = 0.1
-        ws_points = 20
-        self.ws = np.insert(np.cumprod(np.ones(ws_points) * (1 - rmin)) * self.w0, 0, self.w0)
-        self.ws = np.insert(self.ws, ws_points + 1, 0)
+        ws_points = 25
+        # self.ws = np.insert(np.cumprod(np.ones(ws_points) * (1 - rmin)) * self.w0, 0, self.w0)
+        # self.ws = np.insert(self.ws, ws_points + 1, 0)
+        self.ws = np.linspace(0, w0, 10)
         self.logger.info(f'Instantiated sustain process @ {__class__.__name__}')
 
     # def create_wgrid(self, style, **kwargs):
@@ -60,10 +61,10 @@ class SustainedIHP(Base):
         m, s = divmod(execution_time, 60)
         self.logger.info(f'{self.calculate_lhat_profile.__name__} finished for balance ${balance:.2f}. '
                          f'Execution time: {m:.2f} min and {s:.2f} seconds.')
-        return lhatstar, accvalsmc[lhatstar_index]
+        return lambda_hats, accvalsmc, accvalsmc_std
 
     def calc_profile_parallel(self, w0):
-        niter = 100000
+        niter = 2000000
         lmax = 10
         npoints = 50
         n_cpu = mp.cpu_count() - 1
@@ -75,15 +76,25 @@ class SustainedIHP(Base):
 
     def calculate_frontier(self):
         # ws = np.flip(np.linspace(0, w0, 30))
-        lhatstars = np.zeros_like(self.ws)
-        accvalsmc = np.zeros_like(self.ws)
+        # lhatstars = np.zeros_like(self.ws)
+        # accvalsmc = np.zeros_like(self.ws)
+        accvalues = []
+        accvalues_std = []
+        lhatstars = []
+        accvals_star = []
+
         lmax = 1
-        npoints = 15
-        niter = 100000
+        npoints = 20
+        niter = 5000000
         for i, w in enumerate(self.ws):
-            lhatstars[i], accvalsmc[i] = self.calculate_lhat_profile(w, lmax, npoints, niter)
-            lmax = lhatstars[i] + lhatstars[i] * 0.01
-        print(accvalsmc)
+            lambda_hats, accvalsmc, accvalsmc_std = self.calculate_lhat_profile(w, lmax, npoints, niter)
+            lhatstar_index = np.nanargmin(accvalsmc)
+            lhatstars.append(lambda_hats[lhatstar_index])
+            accvalues.append(accvalsmc)
+            accvalues_std.append(accvalsmc_std)
+            accvals_star.append(accvalsmc[lhatstar_index])
+            #lmax = lhatstars[i] + lhatstars[i] * 0.01
+            # self.plot_value(lambda_hats, accvalsmc, balance=w, std=accvalsmc_std)
         print(self.ws)
         plt.figure()
         plt.plot(self.ws, lhatstars, marker='x')
@@ -93,22 +104,23 @@ class SustainedIHP(Base):
         plt.show()
         plt.figure()
 
-        plt.plot(self.ws, accvalsmc, marker='x')
+        plt.plot(self.ws, accvals_star, marker='x')
         plt.xlabel('w')
         plt.ylabel('v')
         plt.show()
 
-    def plot_value(self, lambda_hats, accvalsmc, collectedmc, balance=0, std=None):
+    def plot_value(self, lambda_hats, accvalsmc, collectedmc=None, balance=0, std=None):
         lhatstar_index = np.nanargmin(accvalsmc)
         lhatstar = lambda_hats[lhatstar_index]
         fig, ax = plt.subplots()
         ax.plot(lambda_hats, accvalsmc, marker='x')
-        ax.plot(lambda_hats, collectedmc, marker='x')
+        if collectedmc is not None:
+            ax.plot(lambda_hats, collectedmc, marker='x')
         ax.axvline(x=lhatstar, color='r')
         ax.set_xlabel('\hat{\lambda}')
         ax.set_ylabel('v')
         ax.legend(['Account value', 'Amount collected'])
-        ax.set_title(f'Balance {balance}.')
+        ax.set_title(f'Balance {balance:.2f}.')
         if std is not None:
             ax.fill_between(lambda_hats, accvalsmc, accvalsmc + std, color='salmon', alpha=0.5)
             ax.fill_between(lambda_hats, accvalsmc, accvalsmc - std, color='salmon', alpha=0.5)
