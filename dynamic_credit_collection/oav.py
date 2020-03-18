@@ -11,18 +11,26 @@ import matplotlib.pyplot as plt
 
 class OAV(Base):
     '''
-    Instance of the controlled colelction process as per Chehrazi 2017
+    Instance of the controlled Collection process as per Chehrazi, Weber & Glyn 2019
+    “Dynamic Credit-Collections Optimization”.
+    The value function is constructed in an itterative manner using bivariate interpolation.
     '''
 
-    def __init__(self, p, balance, lstart):
+    def __init__(self, p, balance, lstart, nx=100, ny=20, lmax=2):
         """
-        Initialize class of optimally cotrolled account.
-        :param p: Parameters class
-        :type p: obj
-        :param balance: starting balance
-        :type balance: double
-        :param l: doble, starting intensity
-        :type l: double
+        Standard Class initialization.
+        Args:
+            p: class Parameters
+            balance: double
+                starting balance
+            lstart: double
+                starting intensity
+            nx: int
+                number of grid discretizations in balance space
+            ny: int
+                number of grid discretizations in lamdba space
+            lmax: double
+                upper bound of the lambda for discretization.
         """
         super().__init__(__class__.__name__)
         self.lstart = lstart
@@ -34,15 +42,19 @@ class OAV(Base):
         self.w0star = self.aavc.w0star
         self.iw = self.comp_iw()
         self.wistar = self.comp_wistar()
-        self.lambdastars = []
-        self.wlambdastars = []
 
         # Grid specifications
-        self.nx, self.ny = (200, 40)
-        self.lambdas_vector = np.linspace(0, 2, self.ny)
+        # The value function is computed in an iterative manner on a given discretized grid:
+        self.nx = nx
+        self.ny = ny
+        self.lambdas_vector = np.linspace(0, lmax, self.ny)
         self.w_vector = np.linspace(0, balance, self.nx)
         self.xx, self.yy = np.meshgrid(self.w_vector, self.lambdas_vector)
         self.zz = np.zeros_like(self.xx)
+        self.lambdastars = np.zeros_like(self.w_vector)
+
+        # r integration grid for v bar
+        self._r_grid = np.linspace(self.p.r_, 1 - 10e-16, 40)
 
     def comp_wistar(self):
         # TODO: When instance is reinitialized with new balance this should be auto recomputed.
@@ -53,10 +65,19 @@ class OAV(Base):
 
     def comp_iw(self):
         # TODO: When instance is reinitialized with new balance this should be auto recomputed.
-        iwret = np.ceil(np.log(self.aavc.w0star / self.balance) / np.log(1 - p.r_)).astype(int)
+        iwret = np.ceil(np.log(self.aavc.w0star / self.balance) / np.log(1 - self.p.r_)).astype(int)
         return iwret
 
     def lambda0star(self, warr):
+        """
+        Computes lambda stars, i.e., optimal intervention intensity for terminal value accounts for a given
+        grid of balances.
+        Args:
+            warr: np.ndarray(dim=1)
+
+        Returns: np.ndarray(dim=1)
+
+        """
         if isinstance(warr, float):
             warr = np.array([warr])
         res = np.zeros_like(warr)
@@ -72,11 +93,19 @@ class OAV(Base):
     def v0star(self, l, w, lstar=None):
         """
         Computes the v0star. For balances smaller than minimal actionable balance this coincides with u(l, w).
-        :param l:
-        :param w:
-        :param lstar:
-        :return:
+        Args:
+            l: double
+                intensity to be evaluated at
+            w: double
+                balance to be evaluated at
+            lstar: double (optional)
+                optimal sustain level given by lambdastar0 equation, if not provided function computes it
+                on its own.
+
+        Returns: double
+            terminal value of a given account
         """
+
         if w < self.w_:
             v = self.aavc.u(l, w)
         else:
@@ -90,6 +119,15 @@ class OAV(Base):
         return v
 
     def q(self, l, lhat):
+        """
+        Q function from the text.
+        Args:
+            l: double
+            lhat: double
+
+        Returns: double
+            q-value
+        """
         with np.errstate(all='raise'):
             try:
                 base = np.divide(lhat - self.p.lambdainf, l - self.p.lambdainf)
@@ -108,10 +146,15 @@ class OAV(Base):
 
     def evaluate_v(self, vstar, wi):
         """
-        Evaluates the value function up to known wistar on a prespecified grid
-        :param wi: order of wistar
-        :return: returns grid with value functions
+        Evaluates the value function up to known wistar on a prespecified grid.
+        Args:
+            vstar: value funnction to be evaluated
+            wi: order of wistar
+
+        Returns: np.ndarray(dim=2)
+            Value function evaluated on the grid specified in __init__.
         """
+
         for j, x in enumerate(self.w_vector):
             if self.wistar[wi - 1] < x <= self.wistar[wi]:
                 lambdastar = 0.0
@@ -120,8 +163,7 @@ class OAV(Base):
                 if wi == 1:
                     if x > self.w_:
                         lambdastar = self.lambda0star(x)[0]
-                self.lambdastars.append(lambdastar)
-                self.wlambdastars.append(x)
+                self.lambdastars[j] = lambdastar
                 for i, y in enumerate(self.lambdas_vector):
                     if wi > 1:
                         self.zz[i, j] = self.sustain_operator(vstar, y, x, lambdastar)
@@ -132,7 +174,6 @@ class OAV(Base):
         return self.zz
 
     def interpolate_known_v(self):
-        # TODO: it is not necessary to interpolate across the whole grid, instead use only till w_i where known.
         # alid_interp_w_index = len(self.w_vector<self.wistar[wi])
         # interpolator = RectBivariateSpline(self.lambdas_vector,
         #                                   self.w_vector[:valid_interp_w_index], self.zz[:,:valid_interp_w_index])
@@ -166,13 +207,14 @@ class OAV(Base):
 
     def fi(self, v, w):
         """
-        Eq. 30 from Chehrazi and weber
-        :param v: last known value function
-        :param lambdabar:
-        :param w:
-        :return: lambdastar(w)
-        """
+         Eq. 30 from Chehrazi and Weber
+        Args:
+            v: last known value function
+            w: balance
 
+        Returns: double
+            Lambdastar - optimal intensity sustain level for a given value function and balance.
+        """
         def eqfi(lambdabar):
             h = 0.001
             central_diff = (self.vbar(v, lambdabar + h, w) - self.vbar(v, lambdabar - h, w)) / (2 * h)
@@ -200,12 +242,6 @@ class OAV(Base):
             raise err
         return lambdastar
 
-    def extended_value_function(self, l, w, v):
-        lambdastar = self.fi(v, w)
-        # self.lambdastars.append([w, lambdastar])
-        # self.logger.info(f'Appending w={w}, lstar={lambdastar}')
-        return self.sustain_operator(v, l, w, lambdastar)
-
     def solve_v(self):
         """
         Iteratively solves the value function.
@@ -218,28 +254,22 @@ class OAV(Base):
             self.evaluate_v(v_current, wi)
             self.plot_vf().show()
             v_current = self.interpolate_known_v()
-            self.plot_interpolator()
-            if wi > 1:
-                w_test = np.linspace(wval, self.balance, 20)
-                vals = np.zeros_like(w_test)
-                for i ,singlew in enumerate(w_test):
-                    vals[i] = self.fi(v_current, singlew)
-                plt.plot(w_test, vals, marker = 'x')
-                plt.show()
+            # self.plot_interpolator()
+            # if wi > 1:
+            #     w_test = np.linspace(wval, self.balance, 20)
+            #     vals = np.zeros_like(w_test)
+            #     for i ,singlew in enumerate(w_test):
+            #         vals[i] = self.fi(v_current, singlew)
+            #     plt.plot(w_test, vals, marker = 'x')
+            #     plt.show()
             # v_current = lambda l, w: self.extended_value_function(l, w, interpolated)
         pass
 
     def vbar(self, v, l, w):
-        rgrid = np.linspace(self.p.r_, 1 - 10e-16, 40)
-        valgrid = np.zeros_like(rgrid)
-
         def I(r): return self.p.rdist(r) * (v(l + self.p.delta10 + self.p.delta11 * r, (1 - r) * w) - r * w)
 
-        for i, r in enumerate(rgrid):
-            valgrid[i] = I(r)
-        # plt.plot(rgrid, valgrid)
-        # plt.show()
-        res = integrate.trapz(valgrid, rgrid)
+        valgrid = np.array([I(r) for r in self._r_grid]).flatten()
+        res = integrate.trapz(valgrid, self._r_grid)
         return res
 
     def plot_statespace(self, warr=None):
@@ -280,22 +310,36 @@ class OAV(Base):
         return fig
 
 
+def main():
+    w_start = 100
+    lstart = 1
+    p = aav.Parameters()
+    oav = OAV(p, w_start, lstart)
+    oav.solve_v()
+    plt.plot(oav.w_vector, oav.lambdastars, marker='x')
+    plt.show()
+
 
 if __name__ == '__main__':
     w_start = 100
     lstart = 1
     p = aav.Parameters()
     oav = OAV(p, w_start, lstart)
-    # oav.evaluate_v(oav.v0star, 1)
-    oav.plot_statespace().show()
-    # oav.plot_interpolator()
-    print(oav.wistar)
-    print(oav.vbar(oav.interpolate_known_v(), 1, 20))
-    # print(oav.sustain_operator(oav.interpolate_known_v(), 1, 20, 1.1))
-    oav.solve_v()
-    print(oav.lambdastars)
-    oav.plot_vf().show()
-    plt.plot(oav.wlambdastars, oav.lambdastars, marker='x')
-    plt.ylim([0,2])
-    plt.show()
+    # # oav.evaluate_v(oav.v0star, 1)
+    # oav.plot_statespace().show()
+    # # oav.plot_interpolator()
     # print(oav.wistar)
+    # print(oav.vbar(oav.interpolate_known_v(), 1, 20))
+    # # print(oav.sustain_operator(oav.interpolate_known_v(), 1, 20, 1.1))
+    # oav.solve_v()
+    # print(oav.lambdastars)
+    # oav.plot_vf().show()
+    # plt.plot(oav.wlambdastars, oav.lambdastars, marker='x')
+    # plt.ylim([0,2])
+    # plt.show()
+    # # print(oav.wistar)
+
+    # import cProfile
+    # cProfile.run('main()')
+
+    print(oav.__doc__)

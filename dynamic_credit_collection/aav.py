@@ -4,13 +4,20 @@ import numpy as np
 from base import Base
 import matplotlib.pyplot as plt
 
-
 # integrand = @(r) (1-(1-r).*exp(-(p.delta10+p.delta11.*r).*y(1))).*p.rdist(r);
 # integrate.quad(lambda x: special.jv(2.5,x), 0, 4.5)
 
-class AAV(Base):
 
+class AAV(Base):
+    """
+    Instance of the autonomous (i.e., not controleld) collection process as per Chehrazi, Weber & Glyn 2019
+    “Dynamic Credit-Collections Optimization”.
+    """
     def __init__(self, parameters):
+        """
+        Args:
+            parameters: class Parameters
+        """
         super().__init__(__class__.__name__)
         self.parameters = parameters
         self.alpha = None
@@ -20,6 +27,9 @@ class AAV(Base):
         self.w0star = None
         self.av = None
         self.logger.info(f'Instantiated @ {self.__class__.__name__}')
+        # Since the AAV is dependent on the solution of ODE1 that is independent of the balance
+        # it is feasible to precompute it here
+        
 
     def reset_state(self):
         self.alpha = None
@@ -30,15 +40,7 @@ class AAV(Base):
         self.u = None
         self.logger.info(f'@ {self.__class__.__name__}, state reset')
 
-    def aav_ODE(self, y, t):
-        """
-        Defines the ODE from Chehrazi&Weber 2015 for autonomous
-        account value.
-        :param y:
-        :param t: time
-        :return: dy/dt
-        """
-
+    def aav_ode(self, y, t):
         def integrand(r): return (1 - (1 - r) * np.exp(-(self.parameters.delta10 + self.parameters.delta11 * r) * y[0])
                                   ) * self.parameters.rdist(r)
 
@@ -51,14 +53,18 @@ class AAV(Base):
     def u(self, l, w):
         """
         Calculates the autonomous account value of the account.
-        :param l: lambda_0 starting intensity
-        :param w: starting balannce
-        :return: autonomous account value
+        Args:
+            l: double
+                intensity
+            w: double
+                balance
+        Returns: double
+            autonomous acc value
         """
         t = np.linspace(0, 100, 201)
         self.t = t
         y0 = [0, 0]
-        y = np.array(integrate.odeint(self.aav_ODE, y0, t))
+        y = np.array(integrate.odeint(self.aav_ode, y0, t))
         self.alpha = y[:, 0]
         self.beta = y[:, 1]
         I = np.exp(-self.parameters.rho * t - l * y[:, 0] - self.parameters.kappa * y[:, 1])
@@ -70,32 +76,39 @@ class AAV(Base):
         return self.av
 
     def compute_w_(self):
+        """
+        Calculares minimum actionable balance for a given acc.
+        Returns: double
+            Minimum actionable balance \underscore{w}
+        """
         I = self.alpha * np.exp(-self.parameters.rho * self.t - self.parameters.kappa * self.beta)
         w = (1 / integrate.trapz(I, self.t)) * (self.parameters.c/self.parameters.delta2)* (1/self.parameters.rho)
         return w
 
-    # def eqlam(self, w):
-    #     lambda0star = np.zeros_like(w)
-    #     def eqlam(l): return -integrate.trapz(self.parameters.t,np.exp(-self.parameters.rho * self.parameters.t - l *
-    #                                                                    self.alpha - self.parameters.kappa *
-    #                                                                    self.beta) * (self.alpha) * w(i) * p.rho + p.c
-
     def compute_w0star(self):
+        """
+        Calculates w0 star, i.e., balance for the intersection of \lambda_\infty and w0star.
+        Calculaates
+        Returns: double
+            w0star
+        """
         I = self.alpha * np.exp(-self.parameters.rho * self.t - self.parameters.lambdainf * self.alpha -
                                 self.parameters.kappa * self.beta)
         def w0stareq(w0star): return -integrate.trapz(I, self.t) * w0star * self.parameters.rho + \
                                      self.parameters.c/self.parameters.delta2
         return fsolve(w0stareq, np.array([50]))[0]
 
-
     def plot_aav(self, l, w_array, plot_flag = False):
-        '''
-        Creates the aav plot w.r.t. different w values
-        :param w_array: np.arange(low_balance, high_balance, step)
-        :param l: startign intensity
-        :param plot_flag: bool to display the plot
-        :return: autonoumous account values in w_array
-        '''
+        """
+        Creates the aav plot w.r.t. different balance values
+        Args:
+            l:
+            w_array:
+            plot_flag:
+
+        Returns:
+
+        """
         u_vals = np.zeros_like(w_array)
         for i, w in enumerate(w_array):
             u_vals[i] = self.u(l, w)
@@ -107,9 +120,9 @@ class AAV(Base):
 
 
 class Parameters:
-    '''
-    Defines the parameters of the sustained HP.
-    '''
+    """
+    Defines parameters for the controlled Hawkes process.
+    """
     def __init__(self):
         self.lamdbda0 = 0.11
         self.lambdainf = 0.1
@@ -123,6 +136,12 @@ class Parameters:
         self.chat = self.c / self.delta2
 
     def rdist(self, r):
+        """
+        PDF of the relative distribution
+        Args:
+            r: double
+        Returns: double
+        """
         return 1 / (1-self.r_)
 
 
