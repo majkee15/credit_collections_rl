@@ -129,6 +129,7 @@ class OAV(Base):
             q-value
         """
         with np.errstate(all='raise'):
+            # there was a problem with numpy exp that does not handle well negative base with real exponents
             try:
                 base = np.divide(lhat - self.p.lambdainf, l - self.p.lambdainf)
                 exponent = (self.p.rho + self.p.lambdainf) / self.p.kappa
@@ -173,10 +174,8 @@ class OAV(Base):
                         raise IndexError('Something wrong with the iteration')
         return self.zz
 
+
     def interpolate_known_v(self):
-        # alid_interp_w_index = len(self.w_vector<self.wistar[wi])
-        # interpolator = RectBivariateSpline(self.lambdas_vector,
-        #                                   self.w_vector[:valid_interp_w_index], self.zz[:,:valid_interp_w_index])
         interpolator = RectBivariateSpline(self.lambdas_vector, self.w_vector, self.zz)
         return interpolator
 
@@ -242,17 +241,24 @@ class OAV(Base):
             raise err
         return lambdastar
 
-    def solve_v(self):
+    def solve_v(self, plot_progression_flag: bool=False):
         """
         Iteratively solves the value function.
-        :return:
+        Args:
+            plot_progression_flag: bool
+                plots the iterative progregression of the v.f. approximation
+
+        Returns: None
+
         """
         self.logger.info('Launching the value function procedure.')
         v_current = self.v0star
         for wi, wval in enumerate(self.wistar[1:], 1):
             self.logger.info(f'Computing the value function on ({self.wistar[wi - 1]:.2f}, {self.wistar[wi]:.2f}].')
             self.evaluate_v(v_current, wi)
-            self.plot_vf().show()
+            # for plotting the iterative progress of the value function uncomment the following line
+            if plot_progression_flag:
+                self.plot_vf().show()
             v_current = self.interpolate_known_v()
             # self.plot_interpolator()
             # if wi > 1:
@@ -272,7 +278,15 @@ class OAV(Base):
         res = integrate.trapz(valgrid, self._r_grid)
         return res
 
-    def plot_statespace(self, warr=None):
+    def plot_statespace(self):
+        '''
+        Plots the statespace together with the optimal frontier
+        Args:
+            warr:
+
+        Returns:
+
+        '''
         fig, ax = plt.subplots()
         ax.axhline(y=self.p.lambdainf, linestyle='-.', color='red')
         ax.axvline(x=self.w_, linestyle='--', color='yellow')
@@ -280,51 +294,60 @@ class OAV(Base):
         for wstar in self.wistar:
             ax.axvline(x=wstar, linestyle='--', color='black')
 
-        if warr is not None:
-            ax.plot(warr, self.lambda0star(warr))
-        # else:
-        #     ax.plot(self.w_vector, self.lambda0star(self.w_vector))
+        ax.plot(self.w_vector, self.lambdastars)
         ax.set_ylim(bottom=0)
         return fig
 
-    def plot_vf(self):
-        # nx, ny = (20, 20)
-        # lambdas = np.linspace(0, 3, ny)
-        # ws = np.linspace(0, w, nx)
-        # xv, yv = np.meshgrid(ws, lambdas)
-        # z = np.zeros_like(xv)
-        # z1 = np.zeros_like(xv)
-        # for i, y in enumerate(lambdas):
-        #     for j, x in enumerate(ws):
-        #         z[i, j] = self.aavc.u(y, x)
-        #         z1[i, j] = self.v0star(y, x)
+    def plot_vf(self, plot_aav_flag=False):
+        """
+        Contour plot of the value function for the grid setup in __init__
+        Args:
+            plot_aav_flag: pot also the autonomous account value
 
-        # self.evaluate_v(self.v0star, 1)
-        # fig, ax = plt.subplots()
-        # print(self.zz)
-        # ax.contour(self.xx, self.yy, self.zz)
+        Returns: figure handle
+            fig
+        """
         fig, ax = plt.subplots()
-        cs = ax.contour(self.xx, self.yy, self.zz)
-        ax.clabel(cs, inline=1, fontsize=10)
+        cntr1 = ax.contour(self.xx, self.yy, self.zz, colors='C0')
+        ax.clabel(cntr1, inline=1, fontsize=10)
+        if plot_aav_flag:
+            xx_dump, yy_dump, zz_aav = self.aavc.evaluate_aav(self.lambdas_vector, self.w_vector)
+            cntr2 = ax.contour(self.xx, self.yy, zz_aav, colors='C1')
+            ax.clabel(cntr2, inline=1, fontsize=10)
+            h1, _ = cntr1.legend_elements()
+            h2, _ = cntr2.legend_elements()
+            ax.legend([h1[0], h2[0]], ['Optimal account value', 'Autonomous account value'])
+        else:
+            h1, _ = cntr1.legend_elements()
+            ax.legend([h1[0]], ['Optimal account value'])
         ax.set_title('Value Function Evaluated on a grid.')
+        ax.set_ylabel('Intensity')
+        ax.set_xlabel('Balance')
         return fig
 
 
-def main():
+def _main():
+    """
+    Dedicated for performance profiling
+    Returns: None
+    """
     w_start = 100
     lstart = 1
     p = aav.Parameters()
     oav = OAV(p, w_start, lstart)
     oav.solve_v()
-    plt.plot(oav.w_vector, oav.lambdastars, marker='x')
-    plt.show()
 
 
 if __name__ == '__main__':
     w_start = 100
     lstart = 1
     p = aav.Parameters()
-    oav = OAV(p, w_start, lstart)
+    oav = OAV(p, w_start, lstart, nx=200, ny=20)
+    oav.solve_v()
+    oav.plot_vf(plot_aav_flag=True)
+    oav.plot_statespace()
+    plt.show()
+
     # # oav.evaluate_v(oav.v0star, 1)
     # oav.plot_statespace().show()
     # # oav.plot_interpolator()
@@ -339,7 +362,8 @@ if __name__ == '__main__':
     # plt.show()
     # # print(oav.wistar)
 
+    # Performance profiling
     # import cProfile
-    # cProfile.run('main()')
+    # cProfile.run('_main()')
 
     print(oav.__doc__)
