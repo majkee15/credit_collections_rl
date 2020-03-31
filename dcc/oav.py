@@ -1,20 +1,19 @@
-import dynamic_credit_collection.aav as aav
-from base import Base
+from dcc.aav import AAV, Parameters
+from dcc.base import Base
 import numpy as np
-import itertools
-from functools import partial
 from scipy.optimize import fsolve, brentq
 from scipy import integrate
 from scipy.interpolate import RectBivariateSpline
 import matplotlib.pyplot as plt
+import pickle
 
 
 class OAV(Base):
-    '''
+    """
     Instance of the controlled Collection process as per Chehrazi, Weber & Glyn 2019
     “Dynamic Credit-Collections Optimization”.
     The value function is constructed in an itterative manner using bivariate interpolation.
-    '''
+    """
 
     def __init__(self, p, balance, lstart, nx=100, ny=20, lmax=2):
         """
@@ -25,9 +24,9 @@ class OAV(Base):
                 starting balance
             lstart: double
                 starting intensity
-            nx: int
+            nx: int or np.ndarray(dim=1)
                 number of grid discretizations in balance space
-            ny: int
+            ny: int or np.ndarray(dim=1)
                 number of grid discretizations in lamdba space
             lmax: double
                 upper bound of the lambda for discretization.
@@ -36,7 +35,7 @@ class OAV(Base):
         self.lstart = lstart
         self.p = p
         self.balance = balance
-        self.aavc = aav.AAV(p)
+        self.aavc = AAV(p)
         self.autonomous_value = self.aavc.u(self.lstart, self.balance)
         self.w_ = self.aavc.w_
         self.w0star = self.aavc.w0star
@@ -47,8 +46,12 @@ class OAV(Base):
         # The value function is computed in an iterative manner on a given discretized grid:
         self.nx = nx
         self.ny = ny
-        self.lambdas_vector = np.linspace(0, lmax, self.ny)
-        self.w_vector = np.linspace(0, balance, self.nx)
+        if isinstance(nx, int) and isinstance(ny, int):
+            self.lambdas_vector = np.linspace(0, lmax, self.ny)
+            self.w_vector = np.linspace(0, balance, self.nx)
+        elif isinstance(nx, np.ndarray) and isinstance(ny, np.ndarray):
+            self.w_vector = nx
+            self.lambdas_vector = ny
         self.xx, self.yy = np.meshgrid(self.w_vector, self.lambdas_vector)
         self.zz = np.zeros_like(self.xx)
         self.lambdastars = np.zeros_like(self.w_vector)
@@ -60,6 +63,7 @@ class OAV(Base):
         # TODO: When instance is reinitialized with new balance this should be auto recomputed.
         wiarray = np.cumsum(np.ones(self.iw))
         wiarray = self.w0star * np.power(1 - self.p.r_, -wiarray)
+        wiarray = np.insert(wiarray, 0, self.w0star)
         wiarray = np.insert(wiarray, 0, 0)
         return wiarray
 
@@ -157,18 +161,18 @@ class OAV(Base):
         """
 
         for j, x in enumerate(self.w_vector):
-            if self.wistar[wi - 1] < x <= self.wistar[wi]:
+            if self.wistar[wi] < x <= self.wistar[wi+1]:
                 lambdastar = 0.0
-                if wi > 1:
+                if wi >= 1:
                     lambdastar = self.fi(vstar, x)
-                if wi == 1:
+                if wi == 0:
                     if x > self.w_:
                         lambdastar = self.lambda0star(x)[0]
                 self.lambdastars[j] = lambdastar
                 for i, y in enumerate(self.lambdas_vector):
-                    if wi > 1:
+                    if wi >= 1:
                         self.zz[i, j] = self.sustain_operator(vstar, y, x, lambdastar)
-                    elif wi == 1:
+                    elif wi == 0:
                         self.zz[i, j] = self.v0star(y, x, lambdastar)
                     else:
                         raise IndexError('Something wrong with the iteration')
@@ -253,8 +257,8 @@ class OAV(Base):
         """
         self.logger.info('Launching the value function procedure.')
         v_current = self.v0star
-        for wi, wval in enumerate(self.wistar[1:], 1):
-            self.logger.info(f'Computing the value function on ({self.wistar[wi - 1]:.2f}, {self.wistar[wi]:.2f}].')
+        for wi, wval in enumerate(self.wistar[:-1]):
+            self.logger.info(f'Computing the value function on ({self.wistar[wi]:.2f}, {self.wistar[wi+1]:.2f}].')
             self.evaluate_v(v_current, wi)
             # for plotting the iterative progress of the value function uncomment the following line
             if plot_progression_flag:
@@ -291,11 +295,14 @@ class OAV(Base):
         ax.axhline(y=self.p.lambdainf, linestyle='-.', color='red')
         ax.axvline(x=self.w_, linestyle='--', color='yellow')
         ax.axvline(x=self.w0star, linestyle='--', color='green')
-        for wstar in self.wistar:
+        for wstar in self.wistar[2:]:
             ax.axvline(x=wstar, linestyle='--', color='black')
 
-        ax.plot(self.w_vector, self.lambdastars)
+        h1 = ax.plot(self.w_vector, self.lambdastars)
         ax.set_ylim(bottom=0)
+        ax.set_xlabel('Balance')
+        ax.set_ylabel('Intensity')
+        ax.legend([h1[0]], ['Holding region'])
         return fig
 
     def plot_vf(self, plot_aav_flag=False):
@@ -325,6 +332,16 @@ class OAV(Base):
         ax.set_xlabel('Balance')
         return fig
 
+    def save(self, filename):
+        f_name = filename + '.pickle'
+        with open(f_name, "wb") as file_:
+            pickle.dump(self, file_, -1)
+
+    @classmethod
+    def load(cls, f):
+        with open(f + '.pickle', 'rb') as pickle_file:
+            return pickle.load(pickle_file)
+
 
 def _main():
     """
@@ -333,34 +350,35 @@ def _main():
     """
     w_start = 100
     lstart = 1
-    p = aav.Parameters()
+    p = Parameters()
     oav = OAV(p, w_start, lstart)
     oav.solve_v()
 
 
 if __name__ == '__main__':
-    w_start = 100
-    lstart = 1
-    p = aav.Parameters()
-    oav = OAV(p, w_start, lstart, nx=200, ny=20)
-    oav.solve_v()
-    oav.plot_vf(plot_aav_flag=True)
+    # REFERENCE PARAMETERS THAT ARE PICKLED!
+    #
+    # w_start = 100
+    # lstart = 1
+    # p = Parameters()
+    # w_array = np.linspace(0, 100, 40)
+    # l_array = np.linspace(0, 2, 10)
+    # oav = OAV(p, w_start, lstart, nx=200, ny=20)
+    # oav.solve_v()
+    # oav.plot_vf(plot_aav_flag=True)
+    # oav.plot_statespace()
+    # plt.show()
+    # oav.save('ref_parameters')
+
+    # Load pickled file here
+
+    filename = 'ref_parameters'
+    oav = OAV.load(filename)
     oav.plot_statespace()
+    oav.plot_vf(plot_aav_flag=True)
     plt.show()
 
-    # # oav.evaluate_v(oav.v0star, 1)
-    # oav.plot_statespace().show()
-    # # oav.plot_interpolator()
-    # print(oav.wistar)
-    # print(oav.vbar(oav.interpolate_known_v(), 1, 20))
-    # # print(oav.sustain_operator(oav.interpolate_known_v(), 1, 20, 1.1))
-    # oav.solve_v()
-    # print(oav.lambdastars)
-    # oav.plot_vf().show()
-    # plt.plot(oav.wlambdastars, oav.lambdastars, marker='x')
-    # plt.ylim([0,2])
-    # plt.show()
-    # # print(oav.wistar)
+
 
     # Performance profiling
     # import cProfile

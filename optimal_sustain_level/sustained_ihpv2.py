@@ -109,7 +109,11 @@ class SustainedIHP(Base):
                 return s, collected, sust_costs, jump_cost
 
     def calculate_value_single(self):
+        """
 
+        Returns:
+
+        """
         s, collected, sust_costs, jump_cost = self.next_arrival(self.starting_intensity, self.sustain_level)
         revenue = -collected + sust_costs + jump_cost
         return revenue

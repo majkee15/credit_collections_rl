@@ -11,28 +11,56 @@ class SustainedIHP(Base):
     '''
     Wrapper for the cython code to calculate optimal policies based on Weber 2015
     '''
-    def __init__(self, w0, parameters, *args, **kwargs):
-        '''
-        :param parameters: np.ndarray[dim=1]: Class defining the parameteres of the sustained ihp
-        '''
+    def __init__(self, w0, parameters, spacing='linear', *args, **kwargs):
+        """
+
+        Args:
+            w0: double
+                starting balance
+            parameters: object
+                class defining parameters of the CHP
+            spacing: str
+                spacing used for policy construction
+            *args:
+            **kwargs:
+        """
         super().__init__(__class__.__name__)
         self.parameters = parameters
         self.params = np.array([parameters.lamdbda0, parameters.lambdainf, parameters.kappa,
                                 parameters.delta10, parameters.delta11, parameters.delta2,
                                 parameters.rho, parameters.c], dtype=np.float)
         self.w0 = w0
-        rmin = 0.1
-        ws_points = 25
-        # self.ws = np.insert(np.cumprod(np.ones(ws_points) * (1 - rmin)) * self.w0, 0, self.w0)
-        # self.ws = np.insert(self.ws, ws_points + 1, 0)
-        self.ws = np.linspace(0, w0, 10)
+        # Various setup specs here:
+        self.ws_points = 30
+        self.n_iter_profile = 2e6
+        self.lmax_profile = 1.5
+        self.npoints_profile = 30
+        # smart grid differentiation
+        if spacing == 'linear':
+            self.ws = np.linspace(0, w0, self.ws_points)
+        elif spacing == 'log':
+            rmin = self.parameters.r_
+            self.ws = np.insert(np.cumprod(np.ones(self.ws_points) * (1 - rmin)) * self.w0, 0, self.w0)
+            self.ws = np.insert(self.ws, self.ws_points + 1, 0)
+        else:
+            raise ValueError('Spacing is supported only for linear and log specifications.')
         self.logger.info(f'Instantiated sustain process @ {__class__.__name__}')
 
-    # def create_wgrid(self, style, **kwargs):
-    #     if style == 'linear':
-    #         np.arange
-
     def calculate_lhat_profile(self, balance, lhatmax, npoints, niter):
+        # TODO: this is not ideal, slow, a lot of variation in consecutive lambda hats
+        """
+        Calculates the full cost/collection profile for a single balance (plot lambda hat / collected)
+        Args:
+            balance: double
+            lhatmax: double
+                upper bound on the search space
+            npoints: int
+                number of grid points
+            niter: int
+                number of iterations to use for a mc account evaluation
+        Returns:
+
+        """
         start_time = time.time()
         lhatmin = self.params[1] + self.params[1] * 0.1
         lambda_hats = np.linspace(lhatmin, lhatmax, npoints)
@@ -56,17 +84,20 @@ class SustainedIHP(Base):
             collectedmc[i] = np.mean(-collected)
             arrivalsmc[i] = np.mean(ar)
         lhatstar_index = np.nanargmin(accvalsmc)
-        lhatstar = lambda_hats[lhatstar_index]
+        # lhatstar = lambda_hats[lhatstar_index]
         execution_time = time.time() - start_time
         m, s = divmod(execution_time, 60)
         self.logger.info(f'{self.calculate_lhat_profile.__name__} finished for balance ${balance:.2f}. '
                          f'Execution time: {m:.2f} min and {s:.2f} seconds.')
         return lambda_hats, accvalsmc, accvalsmc_std
 
+    def objective_function(self):
+        pass
+
     def calc_profile_parallel(self, w0):
         niter = 2000000
-        lmax = 10
-        npoints = 50
+        lmax = 2
+        npoints = 20
         n_cpu = mp.cpu_count() - 1
         ws = np.flip(np.linspace(1, w0, 2))
         worker = functools.partial(self.calculate_lhat_profile, lmax, npoints, niter)
@@ -74,7 +105,7 @@ class SustainedIHP(Base):
             res = pool.map(worker, ws)
             return ws, res
 
-    def calculate_frontier(self):
+    def calculate_frontier(self,plot_flag=False):
         # ws = np.flip(np.linspace(0, w0, 30))
         # lhatstars = np.zeros_like(self.ws)
         # accvalsmc = np.zeros_like(self.ws)
@@ -82,32 +113,29 @@ class SustainedIHP(Base):
         accvalues_std = []
         lhatstars = []
         accvals_star = []
-
-        lmax = 1
-        npoints = 20
-        niter = 5000000
         for i, w in enumerate(self.ws):
-            lambda_hats, accvalsmc, accvalsmc_std = self.calculate_lhat_profile(w, lmax, npoints, niter)
+            lambda_hats, accvalsmc, accvalsmc_std = self.calculate_lhat_profile(w, self.lmax_profile,
+                                                                                self.npoints_profile,
+                                                                                self.n_iter_profile)
             lhatstar_index = np.nanargmin(accvalsmc)
             lhatstars.append(lambda_hats[lhatstar_index])
             accvalues.append(accvalsmc)
             accvalues_std.append(accvalsmc_std)
             accvals_star.append(accvalsmc[lhatstar_index])
-            #lmax = lhatstars[i] + lhatstars[i] * 0.01
-            # self.plot_value(lambda_hats, accvalsmc, balance=w, std=accvalsmc_std)
-        print(self.ws)
-        plt.figure()
-        plt.plot(self.ws, lhatstars, marker='x')
-        plt.xlabel('w')
-        plt.ylabel('lhatstar')
-        plt.ylim([0.0, 2.0])
-        plt.show()
-        plt.figure()
 
-        plt.plot(self.ws, accvals_star, marker='x')
-        plt.xlabel('w')
-        plt.ylabel('v')
-        plt.show()
+        if plot_flag:
+            plt.figure()
+            plt.plot(self.ws, lhatstars, marker='x')
+            plt.xlabel('w')
+            plt.ylabel('lhatstar')
+            plt.ylim([0.0, self.lmax_profilelmax])
+            plt.show()
+            plt.figure()
+
+            plt.plot(self.ws, accvals_star, marker='x')
+            plt.xlabel('w')
+            plt.ylabel('v')
+        return lhatstars
 
     def plot_value(self, lambda_hats, accvalsmc, collectedmc=None, balance=0, std=None):
         lhatstar_index = np.nanargmin(accvalsmc)
@@ -126,6 +154,7 @@ class SustainedIHP(Base):
             ax.fill_between(lambda_hats, accvalsmc, accvalsmc - std, color='salmon', alpha=0.5)
         return fig
 
+
     def plot_costs(self, lambda_hats, sust_costsmc, jump_costsmc):
         fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
         ax[0].plot(lambda_hats, sust_costsmc, marker='x')
@@ -139,6 +168,7 @@ class SustainedIHP(Base):
         ax[1].set_xlabel('\hat{\lambda}')
         ax[1].set_ylabel('Sustain Costs')
         return fig
+
 
 class Parameters:
     '''
@@ -156,10 +186,21 @@ class Parameters:
         self.r_ = 0.1
 
 
-
 if __name__ == '__main__':
+    from dcc import OAV
+    PATH_TO_PICKLE = '/Users/mmark/Documents/credit_collections/credit_collections_rl/dcc/ref_parameters'
+    oc = OAV.load(PATH_TO_PICKLE)
+    oc.plot_statespace()
+
     lambda_hat = 0.11
     starting_balance = 100
     params = Parameters()
     sihp = SustainedIHP(starting_balance, params)
-    sihp.calculate_frontier()
+    approx_lstars = sihp.calculate_frontier()
+
+    fig, ax = plt.subplots()
+    ax.plot(sihp.ws, approx_lstars, 'x')
+    ax.plot(oc.w_vector, oc.lambdastars, 'x')
+    fig.show()
+
+    #

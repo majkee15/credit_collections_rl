@@ -17,6 +17,8 @@ def find_pyx(path='.'):
 extensions = [
     Extension("sustained_ihp_c", ["sustained_ihp_c.pyx"], include_dirs=[numpy.get_include()])
 ]
+os.environ["CC"] = "g++-9"
+os.environ["CXX"] = "g++-9"
 setup(
     name='sustained_ihp_c',
     ext_modules=cythonize(extensions),

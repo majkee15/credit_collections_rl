@@ -1,25 +1,32 @@
-# cython: profile=True
+# distutils: extra_compile_args = -fopenmp
+# distutils: extra_link_args = -fopenmp
+
 cimport numpy as cnp
 import  numpy as np
-from libc.math cimport isnan, NAN, log, fmax, exp
+from libc.math cimport log, fmax, exp
 from libc.stdlib cimport rand, RAND_MAX
 from cython cimport cdivision, boundscheck, wraparound, nonecheck
+from cython.parallel cimport prange, parallel
 
 cdef double[::1] single_result = np.empty(4)
 
 ## Random Generators
 @cdivision(True)
-cdef inline double r2():
-    '''
+@wraparound(False)
+@boundscheck(False)
+cdef inline double r2() nogil:
+    """
     C-wrapped r.v. generator U[0,1]
     :return: 
-    '''
+    """
     cdef double result
     result = <double>rand() / <double>RAND_MAX
     return result
 
 @cdivision(True)
-cdef inline double potential_repayment(double lower, double upper):
+@wraparound(False)
+@boundscheck(False)
+cdef inline double potential_repayment(double lower, double upper) nogil:
     cdef double result
     result = r2() * (upper - lower) + lower
     return result
@@ -28,7 +35,8 @@ cdef inline double potential_repayment(double lower, double upper):
 
 @boundscheck(False)
 @wraparound(False)
-cdef double drift(double s, double lambda_start, double[::1] params):
+@cdivision(True)
+cdef double drift(double s, double lambda_start, double[::1] params) nogil:
     cdef:
         double result
     return params[1] + (lambda_start - params[1]) * exp(-params[2] * s)
@@ -36,13 +44,21 @@ cdef double drift(double s, double lambda_start, double[::1] params):
 @cdivision(True)
 @wraparound(False)
 @boundscheck(False)
-cdef inline double[::1] next_arrival(double lstart, double lhat, double balance, double[::1] params):
-    '''
+cdef inline double[::1] next_arrival(double lstart, double lhat, double balance, double[::1] params) nogil:
+    """
     Generates the next arrival of a sustained IHP.
-    :param lstart: starting intensity
-    :param lhat: sustain level of the intensity
-    :return: 
-    '''
+    Args:
+        lstart: double
+            starting intensity
+        lhat: double
+            sustain intensity level
+        balance: double
+            current balance
+        params: object
+            class defining CHP parameters
+    Returns:
+
+    """
     cdef:
         double s = 0.0
         double t_to_sustain = 0.0
@@ -82,6 +98,18 @@ cdef inline double[::1] next_arrival(double lstart, double lhat, double balance,
 @wraparound(False)
 @boundscheck(False)
 cpdef double[:,::1] calculate_value_mc(double sustain_level, int niter, double balance, double[::1] params):
+    """
+    Monte Carlo calculation of a repayment under sustain intensity at lhat
+    Args:
+        sustain_level: double
+        niter: int
+        balance: double
+        params: object
+
+    Returns: np.ndarray(dim=2)
+        rows - iterations
+        columns - arrival time, collected, sustain_cost, jump_cost
+    """
     cdef:
         int i, j, data_dim
         double running_sust_costs, running_jump_costs, running_collected, running_s
@@ -93,16 +121,42 @@ cpdef double[:,::1] calculate_value_mc(double sustain_level, int niter, double b
 
 
 @cdivision(True)
+@wraparound(False)
+@boundscheck(False)
+cpdef double[:,::1] calculate_value_mc_nogil(double sustain_level, int niter, double balance, double[::1] params):
+    """
+    Multi-threading version of calculate_value_mc
+    Monte Carlo calculation of a repayment under sustain intensity at lhat
+    Args:
+        sustain_level: double
+        niter: int
+        balance: double
+        params: object
+
+    Returns: np.ndarray(dim=2)
+        rows - iterations
+        columns - arrival time, collected, sustain_cost, jump_cost
+    """
+    cdef:
+        int i, j, data_dim
+        double running_sust_costs, running_jump_costs, running_collected, running_s
+        double[::1] single_arrival_data# , value_data
+        double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
+    for i in prange(niter, nogil=True, schedule='static'):
+        value_data[i,:] = next_arrival(params[0], sustain_level, balance, params)
+    return value_data
+
+@cdivision(True)
 @boundscheck(False)
 @wraparound(False)
-cdef inline double theta_cdef(double l, double lhat, double[::1] params):
-    '''
+cdef inline double theta_cdef(double l, double lhat, double[::1] params) nogil:
+    """
     :param l: lambda start
     :param lhat: lambda sustain level
     :param params: vector of parameters
     [l0, linf, kappa, delta10, delta11, delta2, rho, c]
     :return: drift time to sustain level
-    '''
+    """
     cdef:
         double numerator
         double denominator
