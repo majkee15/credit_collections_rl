@@ -2,48 +2,48 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from base import Base
+from dcc import Parameters
 
 
 class CHP(Base):
-
-    def __init__(self, starting_balance, starting_intensity, marginal_cost=1.0, collection_horizon=None,
-                 lambda_infty=None, kappa=None, delta10=None, delta11=None, control_function=None,
-                 value_precision_thershold=0.001, rho=0.05):
+    """
+    Simulates an exponential marked controlled Hawkes Process with control policy prescribed by f(w) = lambda
+    """
+    def __init__(self, starting_balance, starting_intensity, params, collection_horizon=1000, control_function=None,
+                 value_precision_thershold=1e-3):
         super().__init__(__class__.__name__)
         self.starting_intensity = starting_intensity
         self.starting_balance = starting_balance
-        self.marginal_cost = marginal_cost
-        self.collection_horizon = collection_horizon
-        self.lambda_infty = lambda_infty
-        self.kappa = kappa
-        self.delta10 = delta10
-        self.delta11 = delta11
-        self.rho = rho
+        self.params = params
         self.value_precision_threshold = value_precision_thershold
-        self.flag_controlled = True
+        self.collection_horizon = collection_horizon
 
         if control_function is None:
             self.flag_controlled = False
 
             def control_function(w):
                 return np.zeros_like(w)
+        else:
+            self.flag_controlled = True
 
         self.control_function = control_function
-        #self.repayment_draw = np.random.rand
         self.logger.info(f'Instantiated Controlled Hawkes Process @ ')
         self.reset_state()
 
     def reset_state(self):
         # reset simulation state
         self.flag_simulated = False
-        self.arrivals = np.array([])  # history of the process (tau_i, r_i)
+        # history of the process \tau_i
+        self.arrivals = np.array([])
         self.interarrivals = np.array([])
+        # history of the process \r_i
         self.relativerepayments = np.array([])
         self.balances = np.array([self.starting_balance])
         self.control_levels = np.array([self.control_function(self.starting_balance)])
         self.continuous_effort_duration = np.array([])
         self.continuous_effort_intensity = np.array([])
         self.continuous_effort_start_sustain = np.array([])
+        # intensities at \tau_i- (i.e., right before a jump)
         self.intensities_minus = np.array([])
         self.total_cost = 0
         if self.starting_intensity < self.control_levels[-1]:
@@ -56,7 +56,7 @@ class CHP(Base):
 
     def drift(self, s, lambda_start):
         # deterministic draft
-        return self.lambda_infty + (lambda_start - self.lambda_infty) * np.exp(-self.kappa * s)
+        return self.params.lambdainf + (lambda_start - self.params.lambdainf) * np.exp(-self.params.kappa * s)
 
     def controlled_intensity(self, s, n):
         # intensity of the ihp generating n+1 th arrival
@@ -68,21 +68,21 @@ class CHP(Base):
     def t_equation(self, lambda_start, w_start):
         # equation for duration to reach a holding region
         try:
-            numerator = (lambda_start - self.lambda_infty)
-            denominator = (self.control_function(w_start)) - self.lambda_infty
+            numerator = (lambda_start - self.params.lambdainf)
+            denominator = (self.control_function(w_start)) - self.params.lambdainf
 
             if lambda_start < self.control_function(w_start):
                 return 0
             elif denominator < 0:
                 return np.NaN
             else:
-                t = 1 / self.kappa * \
+                t = 1 / self.params.kappa * \
                     np.log(numerator / denominator)
                 return t
         except:
             print('warning')
-            print(f'Numerator {(lambda_start - self.lambda_infty)}')
-            print(f'Denominator {(self.control_function(w_start)) - self.lambda_infty}')
+            print(f'Numerator {(lambda_start - self.params.lambdainf)}')
+            print(f'Denominator {(self.control_function(w_start)) - self.params.lambdainf}')
 
     def next_arrival(self):
         # generates interarrival times
@@ -95,7 +95,7 @@ class CHP(Base):
             w = -np.log(np.random.rand()) / lstar
             s = s + w
             d = np.random.rand()
-            potential_repayment = np.random.uniform(0.1, 1)
+            potential_repayment = self.params.sample_repayment()
             potential_balance = self.balances[-1] * (1 - potential_repayment)
             intensity_at_jump = self.controlled_intensity(s, n)
             if d * lstar <= intensity_at_jump:
@@ -108,26 +108,27 @@ class CHP(Base):
 
                 self.control_levels = np.append(self.control_levels, self.control_function(potential_balance))
                 self.intensities_minus = np.append(self.intensities_minus, intensity_at_jump)
-                self.intensities_plus = np.append(self.intensities_plus, intensity_at_jump + self.delta10 +
-                                                  self.delta11 * potential_repayment)
+                self.intensities_plus = np.append(self.intensities_plus, intensity_at_jump + self.params.delta10 +
+                                                  self.params.delta11 * potential_repayment)
                 self.interarrivals = np.append(self.interarrivals, s)
                 self.relativerepayments = np.append(self.relativerepayments, potential_repayment)
                 self.balances = np.append(self.balances, potential_balance)
                 flag_finished = True
+                return
         # if n == 0 and self.starting_jump>0:
         #     t_to_sustain = 0
         #     sustain_drift_time = s
         # else:
 
     def simulate(self):
-        self.next_arrival()
+        # self.next_arrival()
         # check if last arrival is not greater than a collection horizon
         # and the discounted value of the account is still important
         repayment_value_condition = True
         collection_horizon_condition = True
         while collection_horizon_condition & repayment_value_condition:
             self.next_arrival()
-            dv_last_repayment = np.abs(np.diff(self.balances)[-1] * np.exp(-np.sum(self.interarrivals) * self.rho))
+            dv_last_repayment = np.abs(np.diff(self.balances)[-1] * np.exp(-np.sum(self.interarrivals) * self.params.rho))
             repayment_value_condition = dv_last_repayment > self.value_precision_threshold
             collection_horizon_condition = np.sum(self.interarrivals) <= self.collection_horizon
         # self.logger.info(dv_last_repayment)
@@ -148,14 +149,14 @@ class CHP(Base):
                 f'\n Continuous effort starts: {self.continuous_effort_start_sustain}')
         total_costs = self.starting_jump + np.sum(np.multiply(self.continuous_effort_duration,
                                                               self.continuous_effort_intensity))
-        self.total_cost = total_costs * self.marginal_cost
+        self.total_cost = total_costs * self.params.chat
         pass
 
     def calculate_value_single(self, _=None, verbose=False):
         # discounted value of repayments
         self.reset_state()
         self.simulate()
-        dc_revenue = np.sum(np.multiply(np.exp(- self.arrivals * self.rho), np.diff(self.balances)))
+        dc_revenue = np.sum(np.multiply(np.exp(- self.arrivals * self.params.rho), np.diff(self.balances)))
         if verbose:
             self.logger.info(f'Revenues: {dc_revenue} \n Costs: {self.total_cost}')
         return dc_revenue + self.total_cost
@@ -181,7 +182,7 @@ class CHP(Base):
             prev_arrival = segment_time_points[i]
             # ax.plot(tgrid, self.controlled_intensity(tgrid, i), linestyle='--', color='black', linewidth=0.7)
         ax.plot(tgrid, lambdas)
-        ax.axhline(self.lambda_infty, color='red', linestyle='--')
+        ax.axhline(self.params.lambdainf, color='red', linestyle='--')
         fig.show()
 
     def plot_drift(self, lambdastart, dt=0.05, tmax=20):
@@ -191,8 +192,8 @@ class CHP(Base):
         ax.plot(tgrid, lambdagrid)
         ax.set_xlabel('Time')
         ax.set_ylabel('Intensity')
-        ax.set_ylim([0, self.lambda_infty * 4])
-        ax.axhline(self.lambda_infty, linewidth=1.0, color='r', linestyle='--')
+        ax.set_ylim([0, self.params.lambdainf * 4])
+        ax.axhline(self.params.lambdainf, linewidth=1.0, color='r', linestyle='--')
         fig.show()
         return fig
 
@@ -200,7 +201,7 @@ class CHP(Base):
         color = 'C0'
         if self.flag_simulated:
             fig, ax = plt.subplots(1, 1)
-            ax.axhline(self.lambda_infty, linewidth=1.0, color='r', linestyle='--')
+            ax.axhline(self.params.lambdainf, linewidth=1.0, color='r', linestyle='--')
             if self.control_function is not None:
                 if self.starting_jump > 0:
                     ax.plot([self.starting_balance, self.starting_balance],
@@ -264,7 +265,7 @@ class CHP(Base):
     # TODO: test for lambda_i > self.control - otherwise jump would be necessary
     def test_increments(self):
         theoretical = np.round(chp.intensities_plus[1:] - chp.intensities_minus[:-1], 6)
-        realized = np.round(self.relativerepayments * self.delta11 + self.delta10, 6)
+        realized = np.round(self.relativerepayments * self.params.delta11 + self.params.delta10, 6)
         if np.array_equal(theoretical, realized):
             self.logger.info('Passed.')
         else:
@@ -283,9 +284,9 @@ if __name__ == '__main__':
             raise ValueError('Stupid error in w.')
 
     #
-    chp = CHP(starting_balance=1000, starting_intensity=0.3, marginal_cost=1,
-              collection_horizon=100, lambda_infty=0.1, kappa=1, value_precision_thershold=0.0,
-              delta10=0.05, delta11=0.5, control_function=control, rho=0.05)
+    params = Parameters()
+    chp = CHP(starting_balance=75, starting_intensity=1, params=params,
+              collection_horizon=100, value_precision_thershold=1e-3, control_function=None)
     print(chp.calculate_value_single())
     chp.plot_statespace()
     chp.plot_intensity()
@@ -293,7 +294,7 @@ if __name__ == '__main__':
     chp.plot_balance()
     chp.test_increments()
 
-    print(chp.calculate_value(10000))
+    print(chp.calculate_value(100000))
     # w_grid = np.arange(0, 100, 10)
     # v = np.zeros_like(w_grid)
     # for i, w in enumerate(w_grid):
@@ -321,3 +322,35 @@ if __name__ == '__main__':
     # plt.xlabel('lambda')
     # plt.ylabel('v')
     # plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

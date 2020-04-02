@@ -32,6 +32,7 @@ class OAV(Base):
                 upper bound of the lambda for discretization.
         """
         super().__init__(__class__.__name__)
+        self.v = None
         self.lstart = lstart
         self.p = p
         self.balance = balance
@@ -178,7 +179,6 @@ class OAV(Base):
                         raise IndexError('Something wrong with the iteration')
         return self.zz
 
-
     def interpolate_known_v(self):
         interpolator = RectBivariateSpline(self.lambdas_vector, self.w_vector, self.zz)
         return interpolator
@@ -273,6 +273,7 @@ class OAV(Base):
             #     plt.plot(w_test, vals, marker = 'x')
             #     plt.show()
             # v_current = lambda l, w: self.extended_value_function(l, w, interpolated)
+        self.v = v_current
         pass
 
     def vbar(self, v, l, w):
@@ -356,26 +357,29 @@ def _main():
 
 
 if __name__ == '__main__':
+    #filename = 'ref_parameters'
+    filename = 'precomputed_w500'
     # REFERENCE PARAMETERS THAT ARE PICKLED!
     #
-    # w_start = 100
+    # w_start = 500
     # lstart = 1
     # p = Parameters()
-    # w_array = np.linspace(0, 100, 40)
-    # l_array = np.linspace(0, 2, 10)
-    # oav = OAV(p, w_start, lstart, nx=200, ny=20)
+    # w_array = np.linspace(0, w_start, 100)
+    # l_array = np.linspace(0, 15, 40)
+    # oav = OAV(p, w_start, lstart, nx=200, ny=20, lmax = 15)
     # oav.solve_v()
     # oav.plot_vf(plot_aav_flag=True)
     # oav.plot_statespace()
     # plt.show()
-    # oav.save('ref_parameters')
+    # oav.save(filename)
 
     # Load pickled file here
 
-    filename = 'ref_parameters'
+
     oav = OAV.load(filename)
     oav.plot_statespace()
     oav.plot_vf(plot_aav_flag=True)
+    print(oav.v(0.8, 40))
     plt.show()
 
 

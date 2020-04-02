@@ -175,9 +175,12 @@ class Parameters:
         """
         return 1 / (1 - self.r_)
 
+    def sample_repayment(self, n=1):
+        return np.random.uniform(self.r_, 1, n)
+
 
 if __name__ == '__main__':
-    balance = 75
+    balance = 500
     params = Parameters()
     aavcl = AAV(params)
     print(aavcl.compute_w0star())
@@ -186,3 +189,4 @@ if __name__ == '__main__':
     aavcl.evaluate_aav(1, w_array, True)
     aavcl.evaluate_aav(l_array, w_array, True)
     aavcl.evaluate_aav(l_array, balance, True)
+    print(aavcl.u(1, balance))

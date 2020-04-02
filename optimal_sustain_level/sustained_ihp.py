@@ -11,7 +11,7 @@ class SustainedIHP(Base):
     '''
     Wrapper for the cython code to calculate optimal policies based on Weber 2015
     '''
-    def __init__(self, w0, parameters, spacing='linear', *args, **kwargs):
+    def __init__(self, w0, parameters, spacing='linear', ws_points=30, lmax_profile=1.5, niter=1e6,  *args, **kwargs):
         """
 
         Args:
@@ -31,9 +31,9 @@ class SustainedIHP(Base):
                                 parameters.rho, parameters.c], dtype=np.float)
         self.w0 = w0
         # Various setup specs here:
-        self.ws_points = 30
-        self.n_iter_profile = 2e6
-        self.lmax_profile = 1.5
+        self.ws_points = ws_points
+        self.n_iter_profile = niter
+        self.lmax_profile = lmax_profile
         self.npoints_profile = 30
         # smart grid differentiation
         if spacing == 'linear':
@@ -95,12 +95,10 @@ class SustainedIHP(Base):
         pass
 
     def calc_profile_parallel(self, w0):
-        niter = 2000000
-        lmax = 2
-        npoints = 20
         n_cpu = mp.cpu_count() - 1
         ws = np.flip(np.linspace(1, w0, 2))
-        worker = functools.partial(self.calculate_lhat_profile, lmax, npoints, niter)
+        worker = functools.partial(self.calculate_lhat_profile,
+                                   self.lmax_profile, self.npoints_profile, self.n_iter_profile)
         with mp.Pool(n_cpu) as pool:
             res = pool.map(worker, ws)
             return ws, res
@@ -128,7 +126,7 @@ class SustainedIHP(Base):
             plt.plot(self.ws, lhatstars, marker='x')
             plt.xlabel('w')
             plt.ylabel('lhatstar')
-            plt.ylim([0.0, self.lmax_profilelmax])
+            plt.ylim([0.0, self.lmax_profile])
             plt.show()
             plt.figure()
 
@@ -193,10 +191,12 @@ if __name__ == '__main__':
     oc.plot_statespace()
 
     lambda_hat = 0.11
-    starting_balance = 100
+    starting_balance = 200
+    niter = 500000
     params = Parameters()
-    sihp = SustainedIHP(starting_balance, params)
-    approx_lstars = sihp.calculate_frontier()
+    sihp = SustainedIHP(starting_balance, params, lmax_profile=3, ws_points=20, niter=niter)
+    approx_lstars = sihp.calculate_frontier(plot_flag=True)
+    print(approx_lstars)
 
     fig, ax = plt.subplots()
     ax.plot(sihp.ws, approx_lstars, 'x')

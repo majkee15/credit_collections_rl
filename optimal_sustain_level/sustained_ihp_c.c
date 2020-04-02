@@ -624,6 +624,8 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "numpy/ufuncobject.h"
 #include <math.h>
 #include <stdlib.h>
+#include <stddef.h>
+#include <time.h>
 #include "pythread.h"
 #include "pystate.h"
 #ifdef _OPENMP
@@ -2134,6 +2136,10 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, cha
 
 /* Module declarations from 'libc.stdlib' */
 
+/* Module declarations from 'libc.stddef' */
+
+/* Module declarations from 'libc.time' */
+
 /* Module declarations from 'sustained_ihp_c' */
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
@@ -2149,11 +2155,15 @@ static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
 static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_r2(void); /*proto*/
 static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_potential_repayment(double, double); /*proto*/
+static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_potential_repayment_generalized(double, double, double); /*proto*/
 static double __pyx_f_15sustained_ihp_c_drift(double, double, __Pyx_memviewslice); /*proto*/
 static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(double, double, double, __Pyx_memviewslice); /*proto*/
 static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc(double, int, double, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
 static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc_nogil(double, int, double, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
 static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double, double, __Pyx_memviewslice); /*proto*/
+static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival_generalized(double, double, double, __Pyx_memviewslice, double, double, double); /*proto*/
+static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc_gen(double, int, double, __Pyx_memviewslice, double, double, double, int __pyx_skip_dispatch); /*proto*/
+static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc_gen_nogil(double, int, double, __Pyx_memviewslice, double, double, double, int __pyx_skip_dispatch); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -2207,6 +2217,7 @@ static const char __pyx_k_O[] = "O";
 static const char __pyx_k_c[] = "c";
 static const char __pyx_k_id[] = "id";
 static const char __pyx_k_np[] = "np";
+static const char __pyx_k_pi[] = "pi";
 static const char __pyx_k_new[] = "__new__";
 static const char __pyx_k_obj[] = "obj";
 static const char __pyx_k_base[] = "base";
@@ -2227,11 +2238,13 @@ static const char __pyx_k_empty[] = "empty";
 static const char __pyx_k_error[] = "error";
 static const char __pyx_k_flags[] = "flags";
 static const char __pyx_k_float[] = "float_";
+static const char __pyx_k_lower[] = "lower";
 static const char __pyx_k_niter[] = "niter";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_shape[] = "shape";
 static const char __pyx_k_start[] = "start";
+static const char __pyx_k_upper[] = "upper";
 static const char __pyx_k_zeros[] = "zeros";
 static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_format[] = "format";
@@ -2362,6 +2375,7 @@ static PyObject *__pyx_n_s_id;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_itemsize;
 static PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
+static PyObject *__pyx_n_s_lower;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_memview;
 static PyObject *__pyx_n_s_mode;
@@ -2380,6 +2394,7 @@ static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_obj;
 static PyObject *__pyx_n_s_pack;
 static PyObject *__pyx_n_s_params;
+static PyObject *__pyx_n_s_pi;
 static PyObject *__pyx_n_s_pickle;
 static PyObject *__pyx_n_s_pyx_PickleError;
 static PyObject *__pyx_n_s_pyx_checksum;
@@ -2412,9 +2427,12 @@ static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
+static PyObject *__pyx_n_s_upper;
 static PyObject *__pyx_n_s_zeros;
 static PyObject *__pyx_pf_15sustained_ihp_c_calculate_value_mc(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_sustain_level, int __pyx_v_niter, double __pyx_v_balance, __Pyx_memviewslice __pyx_v_params); /* proto */
 static PyObject *__pyx_pf_15sustained_ihp_c_2calculate_value_mc_nogil(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_sustain_level, int __pyx_v_niter, double __pyx_v_balance, __Pyx_memviewslice __pyx_v_params); /* proto */
+static PyObject *__pyx_pf_15sustained_ihp_c_4calculate_value_mc_gen(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_sustain_level, int __pyx_v_niter, double __pyx_v_balance, __Pyx_memviewslice __pyx_v_params, double __pyx_v_lower, double __pyx_v_upper, double __pyx_v_pi); /* proto */
+static PyObject *__pyx_pf_15sustained_ihp_c_6calculate_value_mc_gen_nogil(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_sustain_level, int __pyx_v_niter, double __pyx_v_balance, __Pyx_memviewslice __pyx_v_params, double __pyx_v_lower, double __pyx_v_upper, double __pyx_v_pi); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
@@ -2503,7 +2521,7 @@ static PyObject *__pyx_tuple__32;
 static PyObject *__pyx_codeobj__33;
 /* Late includes */
 
-/* "sustained_ihp_c.pyx":17
+/* "sustained_ihp_c.pyx":19
  * @wraparound(False)
  * @boundscheck(False)
  * cdef inline double r2() nogil:             # <<<<<<<<<<<<<<
@@ -2515,7 +2533,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_r2(void) {
   double __pyx_v_result;
   double __pyx_r;
 
-  /* "sustained_ihp_c.pyx":23
+  /* "sustained_ihp_c.pyx":25
  *     """
  *     cdef double result
  *     result = <double>rand() / <double>RAND_MAX             # <<<<<<<<<<<<<<
@@ -2524,7 +2542,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_r2(void) {
  */
   __pyx_v_result = (((double)rand()) / ((double)RAND_MAX));
 
-  /* "sustained_ihp_c.pyx":24
+  /* "sustained_ihp_c.pyx":26
  *     cdef double result
  *     result = <double>rand() / <double>RAND_MAX
  *     return result             # <<<<<<<<<<<<<<
@@ -2534,7 +2552,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_r2(void) {
   __pyx_r = __pyx_v_result;
   goto __pyx_L0;
 
-  /* "sustained_ihp_c.pyx":17
+  /* "sustained_ihp_c.pyx":19
  * @wraparound(False)
  * @boundscheck(False)
  * cdef inline double r2() nogil:             # <<<<<<<<<<<<<<
@@ -2547,7 +2565,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_r2(void) {
   return __pyx_r;
 }
 
-/* "sustained_ihp_c.pyx":29
+/* "sustained_ihp_c.pyx":31
  * @wraparound(False)
  * @boundscheck(False)
  * cdef inline double potential_repayment(double lower, double upper) nogil:             # <<<<<<<<<<<<<<
@@ -2559,7 +2577,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_potential_repayment(double
   double __pyx_v_result;
   double __pyx_r;
 
-  /* "sustained_ihp_c.pyx":31
+  /* "sustained_ihp_c.pyx":33
  * cdef inline double potential_repayment(double lower, double upper) nogil:
  *     cdef double result
  *     result = r2() * (upper - lower) + lower             # <<<<<<<<<<<<<<
@@ -2568,17 +2586,17 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_potential_repayment(double
  */
   __pyx_v_result = ((__pyx_f_15sustained_ihp_c_r2() * (__pyx_v_upper - __pyx_v_lower)) + __pyx_v_lower);
 
-  /* "sustained_ihp_c.pyx":32
+  /* "sustained_ihp_c.pyx":34
  *     cdef double result
  *     result = r2() * (upper - lower) + lower
  *     return result             # <<<<<<<<<<<<<<
  * 
- * ## Sustained IHP functions
+ * @cdivision(True)
  */
   __pyx_r = __pyx_v_result;
   goto __pyx_L0;
 
-  /* "sustained_ihp_c.pyx":29
+  /* "sustained_ihp_c.pyx":31
  * @wraparound(False)
  * @boundscheck(False)
  * cdef inline double potential_repayment(double lower, double upper) nogil:             # <<<<<<<<<<<<<<
@@ -2593,6 +2611,93 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_potential_repayment(double
 
 /* "sustained_ihp_c.pyx":39
  * @wraparound(False)
+ * @boundscheck(False)
+ * cdef inline double potential_repayment_generalized(double lower, double upper, double pi) nogil:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         double result
+ */
+
+static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_potential_repayment_generalized(double __pyx_v_lower, double __pyx_v_upper, double __pyx_v_pi) {
+  double __pyx_v_result;
+  double __pyx_v_draw;
+  double __pyx_r;
+  int __pyx_t_1;
+
+  /* "sustained_ihp_c.pyx":44
+ *         double draw
+ * 
+ *     draw = r2()             # <<<<<<<<<<<<<<
+ *     if draw < pi:
+ *         result = lower
+ */
+  __pyx_v_draw = __pyx_f_15sustained_ihp_c_r2();
+
+  /* "sustained_ihp_c.pyx":45
+ * 
+ *     draw = r2()
+ *     if draw < pi:             # <<<<<<<<<<<<<<
+ *         result = lower
+ *     else:
+ */
+  __pyx_t_1 = ((__pyx_v_draw < __pyx_v_pi) != 0);
+  if (__pyx_t_1) {
+
+    /* "sustained_ihp_c.pyx":46
+ *     draw = r2()
+ *     if draw < pi:
+ *         result = lower             # <<<<<<<<<<<<<<
+ *     else:
+ *         result = upper
+ */
+    __pyx_v_result = __pyx_v_lower;
+
+    /* "sustained_ihp_c.pyx":45
+ * 
+ *     draw = r2()
+ *     if draw < pi:             # <<<<<<<<<<<<<<
+ *         result = lower
+ *     else:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "sustained_ihp_c.pyx":48
+ *         result = lower
+ *     else:
+ *         result = upper             # <<<<<<<<<<<<<<
+ * 
+ *     return result
+ */
+  /*else*/ {
+    __pyx_v_result = __pyx_v_upper;
+  }
+  __pyx_L3:;
+
+  /* "sustained_ihp_c.pyx":50
+ *         result = upper
+ * 
+ *     return result             # <<<<<<<<<<<<<<
+ * 
+ * ## Sustained IHP functions
+ */
+  __pyx_r = __pyx_v_result;
+  goto __pyx_L0;
+
+  /* "sustained_ihp_c.pyx":39
+ * @wraparound(False)
+ * @boundscheck(False)
+ * cdef inline double potential_repayment_generalized(double lower, double upper, double pi) nogil:             # <<<<<<<<<<<<<<
+ *     cdef:
+ *         double result
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "sustained_ihp_c.pyx":57
+ * @wraparound(False)
  * @cdivision(True)
  * cdef double drift(double s, double lambda_start, double[::1] params) nogil:             # <<<<<<<<<<<<<<
  *     cdef:
@@ -2605,7 +2710,7 @@ static double __pyx_f_15sustained_ihp_c_drift(double __pyx_v_s, double __pyx_v_l
   Py_ssize_t __pyx_t_2;
   Py_ssize_t __pyx_t_3;
 
-  /* "sustained_ihp_c.pyx":42
+  /* "sustained_ihp_c.pyx":60
  *     cdef:
  *         double result
  *     return params[1] + (lambda_start - params[1]) * exp(-params[2] * s)             # <<<<<<<<<<<<<<
@@ -2618,7 +2723,7 @@ static double __pyx_f_15sustained_ihp_c_drift(double __pyx_v_s, double __pyx_v_l
   __pyx_r = ((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_1)) ))) + ((__pyx_v_lambda_start - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_2)) )))) * exp(((-(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_3)) )))) * __pyx_v_s))));
   goto __pyx_L0;
 
-  /* "sustained_ihp_c.pyx":39
+  /* "sustained_ihp_c.pyx":57
  * @wraparound(False)
  * @cdivision(True)
  * cdef double drift(double s, double lambda_start, double[::1] params) nogil:             # <<<<<<<<<<<<<<
@@ -2631,7 +2736,7 @@ static double __pyx_f_15sustained_ihp_c_drift(double __pyx_v_s, double __pyx_v_l
   return __pyx_r;
 }
 
-/* "sustained_ihp_c.pyx":47
+/* "sustained_ihp_c.pyx":65
  * @wraparound(False)
  * @boundscheck(False)
  * cdef inline double[::1] next_arrival(double lstart, double lhat, double balance, double[::1] params) nogil:             # <<<<<<<<<<<<<<
@@ -2673,7 +2778,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
   Py_ssize_t __pyx_t_17;
   Py_ssize_t __pyx_t_18;
 
-  /* "sustained_ihp_c.pyx":63
+  /* "sustained_ihp_c.pyx":81
  *     """
  *     cdef:
  *         double s = 0.0             # <<<<<<<<<<<<<<
@@ -2682,7 +2787,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
   __pyx_v_s = 0.0;
 
-  /* "sustained_ihp_c.pyx":64
+  /* "sustained_ihp_c.pyx":82
  *     cdef:
  *         double s = 0.0
  *         double t_to_sustain = 0.0             # <<<<<<<<<<<<<<
@@ -2691,7 +2796,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
   __pyx_v_t_to_sustain = 0.0;
 
-  /* "sustained_ihp_c.pyx":66
+  /* "sustained_ihp_c.pyx":84
  *         double t_to_sustain = 0.0
  *         double w, lstar, intensity_at_jump, collected, sust_cost, jump_cost
  *         bint condition = True             # <<<<<<<<<<<<<<
@@ -2700,7 +2805,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
   __pyx_v_condition = 1;
 
-  /* "sustained_ihp_c.pyx":68
+  /* "sustained_ihp_c.pyx":86
  *         bint condition = True
  *         #double[::1] single_result = np.empty(4)
  *     t_to_sustain = theta_cdef(lstart, lhat, params)             # <<<<<<<<<<<<<<
@@ -2709,7 +2814,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
   __pyx_v_t_to_sustain = __pyx_f_15sustained_ihp_c_theta_cdef(__pyx_v_lstart, __pyx_v_lhat, __pyx_v_params);
 
-  /* "sustained_ihp_c.pyx":69
+  /* "sustained_ihp_c.pyx":87
  *         #double[::1] single_result = np.empty(4)
  *     t_to_sustain = theta_cdef(lstart, lhat, params)
  *     jump_size = fmax(0, lhat - lstart)             # <<<<<<<<<<<<<<
@@ -2718,7 +2823,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
   __pyx_v_jump_size = fmax(0.0, (__pyx_v_lhat - __pyx_v_lstart));
 
-  /* "sustained_ihp_c.pyx":70
+  /* "sustained_ihp_c.pyx":88
  *     t_to_sustain = theta_cdef(lstart, lhat, params)
  *     jump_size = fmax(0, lhat - lstart)
  *     while condition:             # <<<<<<<<<<<<<<
@@ -2729,7 +2834,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
     __pyx_t_1 = (__pyx_v_condition != 0);
     if (!__pyx_t_1) break;
 
-    /* "sustained_ihp_c.pyx":71
+    /* "sustained_ihp_c.pyx":89
  *     jump_size = fmax(0, lhat - lstart)
  *     while condition:
  *         lstar = fmax(lhat, lstart)             # <<<<<<<<<<<<<<
@@ -2738,7 +2843,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
     __pyx_v_lstar = fmax(__pyx_v_lhat, __pyx_v_lstart);
 
-    /* "sustained_ihp_c.pyx":72
+    /* "sustained_ihp_c.pyx":90
  *     while condition:
  *         lstar = fmax(lhat, lstart)
  *         w = -log(r2()) / lstar             # <<<<<<<<<<<<<<
@@ -2747,7 +2852,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
     __pyx_v_w = ((-log(__pyx_f_15sustained_ihp_c_r2())) / __pyx_v_lstar);
 
-    /* "sustained_ihp_c.pyx":73
+    /* "sustained_ihp_c.pyx":91
  *         lstar = fmax(lhat, lstart)
  *         w = -log(r2()) / lstar
  *         s = s + w             # <<<<<<<<<<<<<<
@@ -2756,7 +2861,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
     __pyx_v_s = (__pyx_v_s + __pyx_v_w);
 
-    /* "sustained_ihp_c.pyx":74
+    /* "sustained_ihp_c.pyx":92
  *         w = -log(r2()) / lstar
  *         s = s + w
  *         d = r2()             # <<<<<<<<<<<<<<
@@ -2765,7 +2870,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
     __pyx_v_d = __pyx_f_15sustained_ihp_c_r2();
 
-    /* "sustained_ihp_c.pyx":75
+    /* "sustained_ihp_c.pyx":93
  *         s = s + w
  *         d = r2()
  *         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)             # <<<<<<<<<<<<<<
@@ -2774,7 +2879,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
     __pyx_v_intensity_at_jump_minus = fmax(__pyx_f_15sustained_ihp_c_drift(__pyx_v_s, __pyx_v_lstart, __pyx_v_params), __pyx_v_lhat);
 
-    /* "sustained_ihp_c.pyx":76
+    /* "sustained_ihp_c.pyx":94
  *         d = r2()
  *         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)
  *         if d * lstar <= intensity_at_jump_minus:             # <<<<<<<<<<<<<<
@@ -2784,7 +2889,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
     __pyx_t_1 = (((__pyx_v_d * __pyx_v_lstar) <= __pyx_v_intensity_at_jump_minus) != 0);
     if (__pyx_t_1) {
 
-      /* "sustained_ihp_c.pyx":77
+      /* "sustained_ihp_c.pyx":95
  *         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)
  *         if d * lstar <= intensity_at_jump_minus:
  *             sustain_drift_time = 0.0             # <<<<<<<<<<<<<<
@@ -2793,7 +2898,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
       __pyx_v_sustain_drift_time = 0.0;
 
-      /* "sustained_ihp_c.pyx":78
+      /* "sustained_ihp_c.pyx":96
  *         if d * lstar <= intensity_at_jump_minus:
  *             sustain_drift_time = 0.0
  *             relative_repayment = potential_repayment(0.1, 1)             # <<<<<<<<<<<<<<
@@ -2802,7 +2907,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
       __pyx_v_relative_repayment = __pyx_f_15sustained_ihp_c_potential_repayment(0.1, 1.0);
 
-      /* "sustained_ihp_c.pyx":79
+      /* "sustained_ihp_c.pyx":97
  *             sustain_drift_time = 0.0
  *             relative_repayment = potential_repayment(0.1, 1)
  *             collected = balance * relative_repayment * exp(-params[6] * s)             # <<<<<<<<<<<<<<
@@ -2812,7 +2917,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
       __pyx_t_2 = 6;
       __pyx_v_collected = ((__pyx_v_balance * __pyx_v_relative_repayment) * exp(((-(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_2)) )))) * __pyx_v_s)));
 
-      /* "sustained_ihp_c.pyx":80
+      /* "sustained_ihp_c.pyx":98
  *             relative_repayment = potential_repayment(0.1, 1)
  *             collected = balance * relative_repayment * exp(-params[6] * s)
  *             if jump_size > 0.0:             # <<<<<<<<<<<<<<
@@ -2822,7 +2927,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
       __pyx_t_1 = ((__pyx_v_jump_size > 0.0) != 0);
       if (__pyx_t_1) {
 
-        /* "sustained_ihp_c.pyx":81
+        /* "sustained_ihp_c.pyx":99
  *             collected = balance * relative_repayment * exp(-params[6] * s)
  *             if jump_size > 0.0:
  *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *             # <<<<<<<<<<<<<<
@@ -2833,7 +2938,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
         __pyx_t_4 = 2;
         __pyx_t_5 = 1;
 
-        /* "sustained_ihp_c.pyx":82
+        /* "sustained_ihp_c.pyx":100
  *             if jump_size > 0.0:
  *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
  *                         (1 - exp(-params[6] * s))/params[6])             # <<<<<<<<<<<<<<
@@ -2842,7 +2947,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
         __pyx_t_6 = 6;
 
-        /* "sustained_ihp_c.pyx":81
+        /* "sustained_ihp_c.pyx":99
  *             collected = balance * relative_repayment * exp(-params[6] * s)
  *             if jump_size > 0.0:
  *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *             # <<<<<<<<<<<<<<
@@ -2851,7 +2956,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
         __pyx_t_7 = 6;
 
-        /* "sustained_ihp_c.pyx":82
+        /* "sustained_ihp_c.pyx":100
  *             if jump_size > 0.0:
  *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
  *                         (1 - exp(-params[6] * s))/params[6])             # <<<<<<<<<<<<<<
@@ -2860,7 +2965,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
         __pyx_v_sust_cost = ((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_3)) ))) * ((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_4)) ))) * (__pyx_v_lhat - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_5)) ))))) * (1.0 - exp(((-(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_6)) )))) * __pyx_v_s)))) / (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_7)) )))));
 
-        /* "sustained_ihp_c.pyx":80
+        /* "sustained_ihp_c.pyx":98
  *             relative_repayment = potential_repayment(0.1, 1)
  *             collected = balance * relative_repayment * exp(-params[6] * s)
  *             if jump_size > 0.0:             # <<<<<<<<<<<<<<
@@ -2870,7 +2975,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
         goto __pyx_L6;
       }
 
-      /* "sustained_ihp_c.pyx":83
+      /* "sustained_ihp_c.pyx":101
  *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
  *                         (1 - exp(-params[6] * s))/params[6])
  *             elif t_to_sustain < s:             # <<<<<<<<<<<<<<
@@ -2880,7 +2985,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
       __pyx_t_1 = ((__pyx_v_t_to_sustain < __pyx_v_s) != 0);
       if (__pyx_t_1) {
 
-        /* "sustained_ihp_c.pyx":84
+        /* "sustained_ihp_c.pyx":102
  *                         (1 - exp(-params[6] * s))/params[6])
  *             elif t_to_sustain < s:
  *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *             # <<<<<<<<<<<<<<
@@ -2891,7 +2996,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
         __pyx_t_9 = 2;
         __pyx_t_10 = 1;
 
-        /* "sustained_ihp_c.pyx":85
+        /* "sustained_ihp_c.pyx":103
  *             elif t_to_sustain < s:
  *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
  *                         (exp(-params[6] * t_to_sustain) - exp(-params[6] * s))/params[6])             # <<<<<<<<<<<<<<
@@ -2901,7 +3006,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
         __pyx_t_11 = 6;
         __pyx_t_12 = 6;
 
-        /* "sustained_ihp_c.pyx":84
+        /* "sustained_ihp_c.pyx":102
  *                         (1 - exp(-params[6] * s))/params[6])
  *             elif t_to_sustain < s:
  *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *             # <<<<<<<<<<<<<<
@@ -2910,7 +3015,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
         __pyx_t_13 = 6;
 
-        /* "sustained_ihp_c.pyx":85
+        /* "sustained_ihp_c.pyx":103
  *             elif t_to_sustain < s:
  *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
  *                         (exp(-params[6] * t_to_sustain) - exp(-params[6] * s))/params[6])             # <<<<<<<<<<<<<<
@@ -2919,7 +3024,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
         __pyx_v_sust_cost = ((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_8)) ))) * ((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_9)) ))) * (__pyx_v_lhat - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_10)) ))))) * (exp(((-(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_11)) )))) * __pyx_v_t_to_sustain)) - exp(((-(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_12)) )))) * __pyx_v_s)))) / (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_13)) )))));
 
-        /* "sustained_ihp_c.pyx":83
+        /* "sustained_ihp_c.pyx":101
  *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
  *                         (1 - exp(-params[6] * s))/params[6])
  *             elif t_to_sustain < s:             # <<<<<<<<<<<<<<
@@ -2929,7 +3034,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
         goto __pyx_L6;
       }
 
-      /* "sustained_ihp_c.pyx":87
+      /* "sustained_ihp_c.pyx":105
  *                         (exp(-params[6] * t_to_sustain) - exp(-params[6] * s))/params[6])
  *             else:
  *                 sust_cost = 0.0             # <<<<<<<<<<<<<<
@@ -2941,7 +3046,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
       }
       __pyx_L6:;
 
-      /* "sustained_ihp_c.pyx":88
+      /* "sustained_ihp_c.pyx":106
  *             else:
  *                 sust_cost = 0.0
  *             jump_cost = jump_size * params[7]             # <<<<<<<<<<<<<<
@@ -2951,51 +3056,51 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
       __pyx_t_14 = 7;
       __pyx_v_jump_cost = (__pyx_v_jump_size * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_14)) ))));
 
-      /* "sustained_ihp_c.pyx":90
+      /* "sustained_ihp_c.pyx":108
  *             jump_cost = jump_size * params[7]
  *             # single_result = np.array([s, collected, sust_cost, jump_cost])
  *             single_result[0] = s             # <<<<<<<<<<<<<<
  *             single_result[1] = collected
  *             single_result[2] = sust_cost
  */
-      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 90, __pyx_L1_error) }
+      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 108, __pyx_L1_error) }
       __pyx_t_15 = 0;
       *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_15sustained_ihp_c_single_result.data) + __pyx_t_15)) )) = __pyx_v_s;
 
-      /* "sustained_ihp_c.pyx":91
+      /* "sustained_ihp_c.pyx":109
  *             # single_result = np.array([s, collected, sust_cost, jump_cost])
  *             single_result[0] = s
  *             single_result[1] = collected             # <<<<<<<<<<<<<<
  *             single_result[2] = sust_cost
  *             single_result[3] = jump_cost
  */
-      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 91, __pyx_L1_error) }
+      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 109, __pyx_L1_error) }
       __pyx_t_16 = 1;
       *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_15sustained_ihp_c_single_result.data) + __pyx_t_16)) )) = __pyx_v_collected;
 
-      /* "sustained_ihp_c.pyx":92
+      /* "sustained_ihp_c.pyx":110
  *             single_result[0] = s
  *             single_result[1] = collected
  *             single_result[2] = sust_cost             # <<<<<<<<<<<<<<
  *             single_result[3] = jump_cost
  *             condition = False
  */
-      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 92, __pyx_L1_error) }
+      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 110, __pyx_L1_error) }
       __pyx_t_17 = 2;
       *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_15sustained_ihp_c_single_result.data) + __pyx_t_17)) )) = __pyx_v_sust_cost;
 
-      /* "sustained_ihp_c.pyx":93
+      /* "sustained_ihp_c.pyx":111
  *             single_result[1] = collected
  *             single_result[2] = sust_cost
  *             single_result[3] = jump_cost             # <<<<<<<<<<<<<<
  *             condition = False
  *     return single_result
  */
-      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 93, __pyx_L1_error) }
+      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 111, __pyx_L1_error) }
       __pyx_t_18 = 3;
       *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_15sustained_ihp_c_single_result.data) + __pyx_t_18)) )) = __pyx_v_jump_cost;
 
-      /* "sustained_ihp_c.pyx":94
+      /* "sustained_ihp_c.pyx":112
  *             single_result[2] = sust_cost
  *             single_result[3] = jump_cost
  *             condition = False             # <<<<<<<<<<<<<<
@@ -3004,7 +3109,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
  */
       __pyx_v_condition = 0;
 
-      /* "sustained_ihp_c.pyx":76
+      /* "sustained_ihp_c.pyx":94
  *         d = r2()
  *         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)
  *         if d * lstar <= intensity_at_jump_minus:             # <<<<<<<<<<<<<<
@@ -3014,19 +3119,19 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
     }
   }
 
-  /* "sustained_ihp_c.pyx":95
+  /* "sustained_ihp_c.pyx":113
  *             single_result[3] = jump_cost
  *             condition = False
  *     return single_result             # <<<<<<<<<<<<<<
  * 
  * @cdivision(True)
  */
-  if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 95, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 113, __pyx_L1_error) }
   __PYX_INC_MEMVIEW(&__pyx_v_15sustained_ihp_c_single_result, 1);
   __pyx_r = __pyx_v_15sustained_ihp_c_single_result;
   goto __pyx_L0;
 
-  /* "sustained_ihp_c.pyx":47
+  /* "sustained_ihp_c.pyx":65
  * @wraparound(False)
  * @boundscheck(False)
  * cdef inline double[::1] next_arrival(double lstart, double lhat, double balance, double[::1] params) nogil:             # <<<<<<<<<<<<<<
@@ -3056,7 +3161,7 @@ static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival(d
   return __pyx_r;
 }
 
-/* "sustained_ihp_c.pyx":100
+/* "sustained_ihp_c.pyx":118
  * @wraparound(False)
  * @boundscheck(False)
  * cpdef double[:,::1] calculate_value_mc(double sustain_level, int niter, double balance, double[::1] params):             # <<<<<<<<<<<<<<
@@ -3084,21 +3189,21 @@ static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc(double __
   __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_RefNannySetupContext("calculate_value_mc", 0);
 
-  /* "sustained_ihp_c.pyx":117
+  /* "sustained_ihp_c.pyx":135
  *         double running_sust_costs, running_jump_costs, running_collected, running_s
  *         double[::1] single_arrival_data# , value_data
  *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)             # <<<<<<<<<<<<<<
  *     for i in range(niter):
  *         value_data[i,:] = next_arrival(params[0], sustain_level, balance, params)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_niter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_niter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
@@ -3106,32 +3211,32 @@ static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc(double __
   __Pyx_GIVEREF(__pyx_int_4);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_int_4);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_value_data = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "sustained_ihp_c.pyx":118
+  /* "sustained_ihp_c.pyx":136
  *         double[::1] single_arrival_data# , value_data
  *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
  *     for i in range(niter):             # <<<<<<<<<<<<<<
@@ -3143,7 +3248,7 @@ static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc(double __
   for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
     __pyx_v_i = __pyx_t_9;
 
-    /* "sustained_ihp_c.pyx":119
+    /* "sustained_ihp_c.pyx":137
  *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
  *     for i in range(niter):
  *         value_data[i,:] = next_arrival(params[0], sustain_level, balance, params)             # <<<<<<<<<<<<<<
@@ -3151,14 +3256,14 @@ static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc(double __
  * 
  */
     __pyx_t_10 = 0;
-    __pyx_t_11 = __pyx_f_15sustained_ihp_c_next_arrival((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_10)) ))), __pyx_v_sustain_level, __pyx_v_balance, __pyx_v_params); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_11 = __pyx_f_15sustained_ihp_c_next_arrival((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_10)) ))), __pyx_v_sustain_level, __pyx_v_balance, __pyx_v_params); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 137, __pyx_L1_error)
     __pyx_t_12.data = __pyx_v_value_data.data;
     __pyx_t_12.memview = __pyx_v_value_data.memview;
     __PYX_INC_MEMVIEW(&__pyx_t_12, 0);
     {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_i;
     Py_ssize_t __pyx_tmp_stride = __pyx_v_value_data.strides[0];
-        if ((0)) __PYX_ERR(0, 119, __pyx_L1_error)
+        if ((0)) __PYX_ERR(0, 137, __pyx_L1_error)
         __pyx_t_12.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
@@ -3166,7 +3271,7 @@ __pyx_t_12.shape[0] = __pyx_v_value_data.shape[1];
 __pyx_t_12.strides[0] = __pyx_v_value_data.strides[1];
     __pyx_t_12.suboffsets[0] = -1;
 
-if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0)) __PYX_ERR(0, 119, __pyx_L1_error)
+if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0)) __PYX_ERR(0, 137, __pyx_L1_error)
     __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
     __pyx_t_12.memview = NULL;
     __pyx_t_12.data = NULL;
@@ -3175,7 +3280,7 @@ if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0
     __pyx_t_11.data = NULL;
   }
 
-  /* "sustained_ihp_c.pyx":120
+  /* "sustained_ihp_c.pyx":138
  *     for i in range(niter):
  *         value_data[i,:] = next_arrival(params[0], sustain_level, balance, params)
  *     return value_data             # <<<<<<<<<<<<<<
@@ -3186,7 +3291,7 @@ if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0
   __pyx_r = __pyx_v_value_data;
   goto __pyx_L0;
 
-  /* "sustained_ihp_c.pyx":100
+  /* "sustained_ihp_c.pyx":118
  * @wraparound(False)
  * @boundscheck(False)
  * cpdef double[:,::1] calculate_value_mc(double sustain_level, int niter, double balance, double[::1] params):             # <<<<<<<<<<<<<<
@@ -3256,23 +3361,23 @@ static PyObject *__pyx_pw_15sustained_ihp_c_1calculate_value_mc(PyObject *__pyx_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_niter)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("calculate_value_mc", 1, 4, 4, 1); __PYX_ERR(0, 100, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc", 1, 4, 4, 1); __PYX_ERR(0, 118, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_balance)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("calculate_value_mc", 1, 4, 4, 2); __PYX_ERR(0, 100, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc", 1, 4, 4, 2); __PYX_ERR(0, 118, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_params)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("calculate_value_mc", 1, 4, 4, 3); __PYX_ERR(0, 100, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc", 1, 4, 4, 3); __PYX_ERR(0, 118, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "calculate_value_mc") < 0)) __PYX_ERR(0, 100, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "calculate_value_mc") < 0)) __PYX_ERR(0, 118, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -3282,14 +3387,14 @@ static PyObject *__pyx_pw_15sustained_ihp_c_1calculate_value_mc(PyObject *__pyx_
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
-    __pyx_v_sustain_level = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_sustain_level == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L3_error)
-    __pyx_v_niter = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_niter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L3_error)
-    __pyx_v_balance = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_balance == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L3_error)
-    __pyx_v_params = __Pyx_PyObject_to_MemoryviewSlice_dc_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_params.memview)) __PYX_ERR(0, 100, __pyx_L3_error)
+    __pyx_v_sustain_level = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_sustain_level == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 118, __pyx_L3_error)
+    __pyx_v_niter = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_niter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 118, __pyx_L3_error)
+    __pyx_v_balance = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_balance == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 118, __pyx_L3_error)
+    __pyx_v_params = __Pyx_PyObject_to_MemoryviewSlice_dc_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_params.memview)) __PYX_ERR(0, 118, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("calculate_value_mc", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 100, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("calculate_value_mc", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 118, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sustained_ihp_c.calculate_value_mc", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3309,9 +3414,9 @@ static PyObject *__pyx_pf_15sustained_ihp_c_calculate_value_mc(CYTHON_UNUSED PyO
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("calculate_value_mc", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_params.memview)) { __Pyx_RaiseUnboundLocalError("params"); __PYX_ERR(0, 100, __pyx_L1_error) }
-  __pyx_t_1 = __pyx_f_15sustained_ihp_c_calculate_value_mc(__pyx_v_sustain_level, __pyx_v_niter, __pyx_v_balance, __pyx_v_params, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 100, __pyx_L1_error)
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 100, __pyx_L1_error)
+  if (unlikely(!__pyx_v_params.memview)) { __Pyx_RaiseUnboundLocalError("params"); __PYX_ERR(0, 118, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_f_15sustained_ihp_c_calculate_value_mc(__pyx_v_sustain_level, __pyx_v_niter, __pyx_v_balance, __pyx_v_params, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
   __pyx_t_1.memview = NULL;
@@ -3333,7 +3438,7 @@ static PyObject *__pyx_pf_15sustained_ihp_c_calculate_value_mc(CYTHON_UNUSED PyO
   return __pyx_r;
 }
 
-/* "sustained_ihp_c.pyx":126
+/* "sustained_ihp_c.pyx":144
  * @wraparound(False)
  * @boundscheck(False)
  * cpdef double[:,::1] calculate_value_mc_nogil(double sustain_level, int niter, double balance, double[::1] params):             # <<<<<<<<<<<<<<
@@ -3361,21 +3466,21 @@ static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc_nogil(dou
   __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_RefNannySetupContext("calculate_value_mc_nogil", 0);
 
-  /* "sustained_ihp_c.pyx":144
+  /* "sustained_ihp_c.pyx":162
  *         double running_sust_costs, running_jump_costs, running_collected, running_s
  *         double[::1] single_arrival_data# , value_data
  *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)             # <<<<<<<<<<<<<<
  *     for i in prange(niter, nogil=True, schedule='static'):
  *         value_data[i,:] = next_arrival(params[0], sustain_level, balance, params)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_niter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_niter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
@@ -3383,32 +3488,32 @@ static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc_nogil(dou
   __Pyx_GIVEREF(__pyx_int_4);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_int_4);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 144, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 162, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_value_data = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "sustained_ihp_c.pyx":145
+  /* "sustained_ihp_c.pyx":163
  *         double[::1] single_arrival_data# , value_data
  *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
  *     for i in prange(niter, nogil=True, schedule='static'):             # <<<<<<<<<<<<<<
@@ -3457,7 +3562,7 @@ static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc_nogil(dou
                         {
                             __pyx_v_i = (int)(0 + 1 * __pyx_t_8);
 
-                            /* "sustained_ihp_c.pyx":146
+                            /* "sustained_ihp_c.pyx":164
  *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
  *     for i in prange(niter, nogil=True, schedule='static'):
  *         value_data[i,:] = next_arrival(params[0], sustain_level, balance, params)             # <<<<<<<<<<<<<<
@@ -3465,14 +3570,14 @@ static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc_nogil(dou
  * 
  */
                             __pyx_t_10 = 0;
-                            __pyx_t_11 = __pyx_f_15sustained_ihp_c_next_arrival((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_10)) ))), __pyx_v_sustain_level, __pyx_v_balance, __pyx_v_params); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 146, __pyx_L8_error)
+                            __pyx_t_11 = __pyx_f_15sustained_ihp_c_next_arrival((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_10)) ))), __pyx_v_sustain_level, __pyx_v_balance, __pyx_v_params); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 164, __pyx_L8_error)
                             __pyx_t_12.data = __pyx_v_value_data.data;
                             __pyx_t_12.memview = __pyx_v_value_data.memview;
                             __PYX_INC_MEMVIEW(&__pyx_t_12, 0);
                             {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_i;
     Py_ssize_t __pyx_tmp_stride = __pyx_v_value_data.strides[0];
-        if ((0)) __PYX_ERR(0, 146, __pyx_L8_error)
+        if ((0)) __PYX_ERR(0, 164, __pyx_L8_error)
         __pyx_t_12.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
@@ -3480,7 +3585,7 @@ __pyx_t_12.shape[0] = __pyx_v_value_data.shape[1];
 __pyx_t_12.strides[0] = __pyx_v_value_data.strides[1];
     __pyx_t_12.suboffsets[0] = -1;
 
-if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0)) __PYX_ERR(0, 146, __pyx_L8_error)
+if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0)) __PYX_ERR(0, 164, __pyx_L8_error)
                             __PYX_XDEC_MEMVIEW(&__pyx_t_12, 0);
                             __pyx_t_12.memview = NULL;
                             __pyx_t_12.data = NULL;
@@ -3570,7 +3675,7 @@ if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0
         #endif
       }
 
-      /* "sustained_ihp_c.pyx":145
+      /* "sustained_ihp_c.pyx":163
  *         double[::1] single_arrival_data# , value_data
  *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
  *     for i in prange(niter, nogil=True, schedule='static'):             # <<<<<<<<<<<<<<
@@ -3596,7 +3701,7 @@ if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0
       }
   }
 
-  /* "sustained_ihp_c.pyx":147
+  /* "sustained_ihp_c.pyx":165
  *     for i in prange(niter, nogil=True, schedule='static'):
  *         value_data[i,:] = next_arrival(params[0], sustain_level, balance, params)
  *     return value_data             # <<<<<<<<<<<<<<
@@ -3607,7 +3712,7 @@ if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0
   __pyx_r = __pyx_v_value_data;
   goto __pyx_L0;
 
-  /* "sustained_ihp_c.pyx":126
+  /* "sustained_ihp_c.pyx":144
  * @wraparound(False)
  * @boundscheck(False)
  * cpdef double[:,::1] calculate_value_mc_nogil(double sustain_level, int niter, double balance, double[::1] params):             # <<<<<<<<<<<<<<
@@ -3677,23 +3782,23 @@ static PyObject *__pyx_pw_15sustained_ihp_c_3calculate_value_mc_nogil(PyObject *
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_niter)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_nogil", 1, 4, 4, 1); __PYX_ERR(0, 126, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_nogil", 1, 4, 4, 1); __PYX_ERR(0, 144, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_balance)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_nogil", 1, 4, 4, 2); __PYX_ERR(0, 126, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_nogil", 1, 4, 4, 2); __PYX_ERR(0, 144, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_params)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_nogil", 1, 4, 4, 3); __PYX_ERR(0, 126, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_nogil", 1, 4, 4, 3); __PYX_ERR(0, 144, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "calculate_value_mc_nogil") < 0)) __PYX_ERR(0, 126, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "calculate_value_mc_nogil") < 0)) __PYX_ERR(0, 144, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -3703,14 +3808,14 @@ static PyObject *__pyx_pw_15sustained_ihp_c_3calculate_value_mc_nogil(PyObject *
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
-    __pyx_v_sustain_level = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_sustain_level == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L3_error)
-    __pyx_v_niter = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_niter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L3_error)
-    __pyx_v_balance = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_balance == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L3_error)
-    __pyx_v_params = __Pyx_PyObject_to_MemoryviewSlice_dc_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_params.memview)) __PYX_ERR(0, 126, __pyx_L3_error)
+    __pyx_v_sustain_level = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_sustain_level == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L3_error)
+    __pyx_v_niter = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_niter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L3_error)
+    __pyx_v_balance = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_balance == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L3_error)
+    __pyx_v_params = __Pyx_PyObject_to_MemoryviewSlice_dc_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_params.memview)) __PYX_ERR(0, 144, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("calculate_value_mc_nogil", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 126, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("calculate_value_mc_nogil", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 144, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sustained_ihp_c.calculate_value_mc_nogil", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3730,9 +3835,9 @@ static PyObject *__pyx_pf_15sustained_ihp_c_2calculate_value_mc_nogil(CYTHON_UNU
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("calculate_value_mc_nogil", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_params.memview)) { __Pyx_RaiseUnboundLocalError("params"); __PYX_ERR(0, 126, __pyx_L1_error) }
-  __pyx_t_1 = __pyx_f_15sustained_ihp_c_calculate_value_mc_nogil(__pyx_v_sustain_level, __pyx_v_niter, __pyx_v_balance, __pyx_v_params, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 126, __pyx_L1_error)
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
+  if (unlikely(!__pyx_v_params.memview)) { __Pyx_RaiseUnboundLocalError("params"); __PYX_ERR(0, 144, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_f_15sustained_ihp_c_calculate_value_mc_nogil(__pyx_v_sustain_level, __pyx_v_niter, __pyx_v_balance, __pyx_v_params, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
   __pyx_t_1.memview = NULL;
@@ -3754,7 +3859,7 @@ static PyObject *__pyx_pf_15sustained_ihp_c_2calculate_value_mc_nogil(CYTHON_UNU
   return __pyx_r;
 }
 
-/* "sustained_ihp_c.pyx":152
+/* "sustained_ihp_c.pyx":170
  * @boundscheck(False)
  * @wraparound(False)
  * cdef inline double theta_cdef(double l, double lhat, double[::1] params) nogil:             # <<<<<<<<<<<<<<
@@ -3773,7 +3878,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
   Py_ssize_t __pyx_t_4;
   Py_ssize_t __pyx_t_5;
 
-  /* "sustained_ihp_c.pyx":164
+  /* "sustained_ihp_c.pyx":182
  *         double denominator
  *         double t
  *     numerator = lhat - params[1]             # <<<<<<<<<<<<<<
@@ -3783,7 +3888,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
   __pyx_t_1 = 1;
   __pyx_v_numerator = (__pyx_v_lhat - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_1)) ))));
 
-  /* "sustained_ihp_c.pyx":165
+  /* "sustained_ihp_c.pyx":183
  *         double t
  *     numerator = lhat - params[1]
  *     denominator = l - params[1]             # <<<<<<<<<<<<<<
@@ -3793,7 +3898,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
   __pyx_t_2 = 1;
   __pyx_v_denominator = (__pyx_v_l - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_2)) ))));
 
-  /* "sustained_ihp_c.pyx":166
+  /* "sustained_ihp_c.pyx":184
  *     numerator = lhat - params[1]
  *     denominator = l - params[1]
  *     if l < lhat:             # <<<<<<<<<<<<<<
@@ -3803,7 +3908,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
   __pyx_t_3 = ((__pyx_v_l < __pyx_v_lhat) != 0);
   if (__pyx_t_3) {
 
-    /* "sustained_ihp_c.pyx":168
+    /* "sustained_ihp_c.pyx":186
  *     if l < lhat:
  *         # indicates jump happens immediately
  *         t = 0.0             # <<<<<<<<<<<<<<
@@ -3812,7 +3917,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
  */
     __pyx_v_t = 0.0;
 
-    /* "sustained_ihp_c.pyx":166
+    /* "sustained_ihp_c.pyx":184
  *     numerator = lhat - params[1]
  *     denominator = l - params[1]
  *     if l < lhat:             # <<<<<<<<<<<<<<
@@ -3822,7 +3927,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
     goto __pyx_L3;
   }
 
-  /* "sustained_ihp_c.pyx":169
+  /* "sustained_ihp_c.pyx":187
  *         # indicates jump happens immediately
  *         t = 0.0
  *     elif l - params[1] < 0:             # <<<<<<<<<<<<<<
@@ -3833,7 +3938,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
   __pyx_t_3 = (((__pyx_v_l - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_4)) )))) < 0.0) != 0);
   if (__pyx_t_3) {
 
-    /* "sustained_ihp_c.pyx":171
+    /* "sustained_ihp_c.pyx":189
  *     elif l - params[1] < 0:
  *         #starting intensity cannot be bellow lambdainf
  *         t = -1.0             # <<<<<<<<<<<<<<
@@ -3842,7 +3947,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
  */
     __pyx_v_t = -1.0;
 
-    /* "sustained_ihp_c.pyx":169
+    /* "sustained_ihp_c.pyx":187
  *         # indicates jump happens immediately
  *         t = 0.0
  *     elif l - params[1] < 0:             # <<<<<<<<<<<<<<
@@ -3852,7 +3957,7 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
     goto __pyx_L3;
   }
 
-  /* "sustained_ihp_c.pyx":173
+  /* "sustained_ihp_c.pyx":191
  *         t = -1.0
  *     else:
  *         t = -1/params[2] * log(numerator / denominator)             # <<<<<<<<<<<<<<
@@ -3865,17 +3970,17 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
   }
   __pyx_L3:;
 
-  /* "sustained_ihp_c.pyx":175
+  /* "sustained_ihp_c.pyx":193
  *         t = -1/params[2] * log(numerator / denominator)
  * 
  *     return t             # <<<<<<<<<<<<<<
  * 
- * # if __name__ == '__main__':
+ * # GENERALIZED VERSION HERE
  */
   __pyx_r = __pyx_v_t;
   goto __pyx_L0;
 
-  /* "sustained_ihp_c.pyx":152
+  /* "sustained_ihp_c.pyx":170
  * @boundscheck(False)
  * @wraparound(False)
  * cdef inline double theta_cdef(double l, double lhat, double[::1] params) nogil:             # <<<<<<<<<<<<<<
@@ -3885,6 +3990,1194 @@ static CYTHON_INLINE double __pyx_f_15sustained_ihp_c_theta_cdef(double __pyx_v_
 
   /* function exit code */
   __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "sustained_ihp_c.pyx":200
+ * @wraparound(False)
+ * @boundscheck(False)
+ * cdef inline double[::1] next_arrival_generalized(double lstart, double lhat, double balance, double[::1] params, double lower, double upper, double pi) nogil:             # <<<<<<<<<<<<<<
+ *     """
+ *     Generates the next arrival of a sustained IHP.
+ */
+
+static CYTHON_INLINE __Pyx_memviewslice __pyx_f_15sustained_ihp_c_next_arrival_generalized(double __pyx_v_lstart, double __pyx_v_lhat, double __pyx_v_balance, __Pyx_memviewslice __pyx_v_params, double __pyx_v_lower, double __pyx_v_upper, double __pyx_v_pi) {
+  double __pyx_v_s;
+  double __pyx_v_t_to_sustain;
+  double __pyx_v_w;
+  double __pyx_v_lstar;
+  double __pyx_v_collected;
+  double __pyx_v_sust_cost;
+  double __pyx_v_jump_cost;
+  int __pyx_v_condition;
+  double __pyx_v_jump_size;
+  double __pyx_v_d;
+  double __pyx_v_intensity_at_jump_minus;
+  CYTHON_UNUSED double __pyx_v_sustain_drift_time;
+  double __pyx_v_relative_repayment;
+  __Pyx_memviewslice __pyx_r = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_t_1;
+  Py_ssize_t __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
+  Py_ssize_t __pyx_t_4;
+  Py_ssize_t __pyx_t_5;
+  Py_ssize_t __pyx_t_6;
+  Py_ssize_t __pyx_t_7;
+  Py_ssize_t __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
+  Py_ssize_t __pyx_t_10;
+  Py_ssize_t __pyx_t_11;
+  Py_ssize_t __pyx_t_12;
+  Py_ssize_t __pyx_t_13;
+  Py_ssize_t __pyx_t_14;
+  Py_ssize_t __pyx_t_15;
+  Py_ssize_t __pyx_t_16;
+  Py_ssize_t __pyx_t_17;
+  Py_ssize_t __pyx_t_18;
+
+  /* "sustained_ihp_c.pyx":221
+ *     """
+ *     cdef:
+ *         double s = 0.0             # <<<<<<<<<<<<<<
+ *         double t_to_sustain = 0.0
+ *         double w, lstar, intensity_at_jump, collected, sust_cost, jump_cost
+ */
+  __pyx_v_s = 0.0;
+
+  /* "sustained_ihp_c.pyx":222
+ *     cdef:
+ *         double s = 0.0
+ *         double t_to_sustain = 0.0             # <<<<<<<<<<<<<<
+ *         double w, lstar, intensity_at_jump, collected, sust_cost, jump_cost
+ *         bint condition = True
+ */
+  __pyx_v_t_to_sustain = 0.0;
+
+  /* "sustained_ihp_c.pyx":224
+ *         double t_to_sustain = 0.0
+ *         double w, lstar, intensity_at_jump, collected, sust_cost, jump_cost
+ *         bint condition = True             # <<<<<<<<<<<<<<
+ *         #double[::1] single_result = np.empty(4)
+ *     t_to_sustain = theta_cdef(lstart, lhat, params)
+ */
+  __pyx_v_condition = 1;
+
+  /* "sustained_ihp_c.pyx":226
+ *         bint condition = True
+ *         #double[::1] single_result = np.empty(4)
+ *     t_to_sustain = theta_cdef(lstart, lhat, params)             # <<<<<<<<<<<<<<
+ *     jump_size = fmax(0, lhat - lstart)
+ *     while condition:
+ */
+  __pyx_v_t_to_sustain = __pyx_f_15sustained_ihp_c_theta_cdef(__pyx_v_lstart, __pyx_v_lhat, __pyx_v_params);
+
+  /* "sustained_ihp_c.pyx":227
+ *         #double[::1] single_result = np.empty(4)
+ *     t_to_sustain = theta_cdef(lstart, lhat, params)
+ *     jump_size = fmax(0, lhat - lstart)             # <<<<<<<<<<<<<<
+ *     while condition:
+ *         lstar = fmax(lhat, lstart)
+ */
+  __pyx_v_jump_size = fmax(0.0, (__pyx_v_lhat - __pyx_v_lstart));
+
+  /* "sustained_ihp_c.pyx":228
+ *     t_to_sustain = theta_cdef(lstart, lhat, params)
+ *     jump_size = fmax(0, lhat - lstart)
+ *     while condition:             # <<<<<<<<<<<<<<
+ *         lstar = fmax(lhat, lstart)
+ *         w = -log(r2()) / lstar
+ */
+  while (1) {
+    __pyx_t_1 = (__pyx_v_condition != 0);
+    if (!__pyx_t_1) break;
+
+    /* "sustained_ihp_c.pyx":229
+ *     jump_size = fmax(0, lhat - lstart)
+ *     while condition:
+ *         lstar = fmax(lhat, lstart)             # <<<<<<<<<<<<<<
+ *         w = -log(r2()) / lstar
+ *         s = s + w
+ */
+    __pyx_v_lstar = fmax(__pyx_v_lhat, __pyx_v_lstart);
+
+    /* "sustained_ihp_c.pyx":230
+ *     while condition:
+ *         lstar = fmax(lhat, lstart)
+ *         w = -log(r2()) / lstar             # <<<<<<<<<<<<<<
+ *         s = s + w
+ *         d = r2()
+ */
+    __pyx_v_w = ((-log(__pyx_f_15sustained_ihp_c_r2())) / __pyx_v_lstar);
+
+    /* "sustained_ihp_c.pyx":231
+ *         lstar = fmax(lhat, lstart)
+ *         w = -log(r2()) / lstar
+ *         s = s + w             # <<<<<<<<<<<<<<
+ *         d = r2()
+ *         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)
+ */
+    __pyx_v_s = (__pyx_v_s + __pyx_v_w);
+
+    /* "sustained_ihp_c.pyx":232
+ *         w = -log(r2()) / lstar
+ *         s = s + w
+ *         d = r2()             # <<<<<<<<<<<<<<
+ *         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)
+ *         if d * lstar <= intensity_at_jump_minus:
+ */
+    __pyx_v_d = __pyx_f_15sustained_ihp_c_r2();
+
+    /* "sustained_ihp_c.pyx":233
+ *         s = s + w
+ *         d = r2()
+ *         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)             # <<<<<<<<<<<<<<
+ *         if d * lstar <= intensity_at_jump_minus:
+ *             sustain_drift_time = 0.0
+ */
+    __pyx_v_intensity_at_jump_minus = fmax(__pyx_f_15sustained_ihp_c_drift(__pyx_v_s, __pyx_v_lstart, __pyx_v_params), __pyx_v_lhat);
+
+    /* "sustained_ihp_c.pyx":234
+ *         d = r2()
+ *         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)
+ *         if d * lstar <= intensity_at_jump_minus:             # <<<<<<<<<<<<<<
+ *             sustain_drift_time = 0.0
+ *             relative_repayment = potential_repayment_generalized(lower, upper, pi)
+ */
+    __pyx_t_1 = (((__pyx_v_d * __pyx_v_lstar) <= __pyx_v_intensity_at_jump_minus) != 0);
+    if (__pyx_t_1) {
+
+      /* "sustained_ihp_c.pyx":235
+ *         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)
+ *         if d * lstar <= intensity_at_jump_minus:
+ *             sustain_drift_time = 0.0             # <<<<<<<<<<<<<<
+ *             relative_repayment = potential_repayment_generalized(lower, upper, pi)
+ *             collected = balance * relative_repayment * exp(-params[6] * s)
+ */
+      __pyx_v_sustain_drift_time = 0.0;
+
+      /* "sustained_ihp_c.pyx":236
+ *         if d * lstar <= intensity_at_jump_minus:
+ *             sustain_drift_time = 0.0
+ *             relative_repayment = potential_repayment_generalized(lower, upper, pi)             # <<<<<<<<<<<<<<
+ *             collected = balance * relative_repayment * exp(-params[6] * s)
+ *             if jump_size > 0.0:
+ */
+      __pyx_v_relative_repayment = __pyx_f_15sustained_ihp_c_potential_repayment_generalized(__pyx_v_lower, __pyx_v_upper, __pyx_v_pi);
+
+      /* "sustained_ihp_c.pyx":237
+ *             sustain_drift_time = 0.0
+ *             relative_repayment = potential_repayment_generalized(lower, upper, pi)
+ *             collected = balance * relative_repayment * exp(-params[6] * s)             # <<<<<<<<<<<<<<
+ *             if jump_size > 0.0:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ */
+      __pyx_t_2 = 6;
+      __pyx_v_collected = ((__pyx_v_balance * __pyx_v_relative_repayment) * exp(((-(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_2)) )))) * __pyx_v_s)));
+
+      /* "sustained_ihp_c.pyx":238
+ *             relative_repayment = potential_repayment_generalized(lower, upper, pi)
+ *             collected = balance * relative_repayment * exp(-params[6] * s)
+ *             if jump_size > 0.0:             # <<<<<<<<<<<<<<
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ *                         (1 - exp(-params[6] * s))/params[6])
+ */
+      __pyx_t_1 = ((__pyx_v_jump_size > 0.0) != 0);
+      if (__pyx_t_1) {
+
+        /* "sustained_ihp_c.pyx":239
+ *             collected = balance * relative_repayment * exp(-params[6] * s)
+ *             if jump_size > 0.0:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *             # <<<<<<<<<<<<<<
+ *                         (1 - exp(-params[6] * s))/params[6])
+ *             elif t_to_sustain < s:
+ */
+        __pyx_t_3 = 7;
+        __pyx_t_4 = 2;
+        __pyx_t_5 = 1;
+
+        /* "sustained_ihp_c.pyx":240
+ *             if jump_size > 0.0:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ *                         (1 - exp(-params[6] * s))/params[6])             # <<<<<<<<<<<<<<
+ *             elif t_to_sustain < s:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ */
+        __pyx_t_6 = 6;
+
+        /* "sustained_ihp_c.pyx":239
+ *             collected = balance * relative_repayment * exp(-params[6] * s)
+ *             if jump_size > 0.0:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *             # <<<<<<<<<<<<<<
+ *                         (1 - exp(-params[6] * s))/params[6])
+ *             elif t_to_sustain < s:
+ */
+        __pyx_t_7 = 6;
+
+        /* "sustained_ihp_c.pyx":240
+ *             if jump_size > 0.0:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ *                         (1 - exp(-params[6] * s))/params[6])             # <<<<<<<<<<<<<<
+ *             elif t_to_sustain < s:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ */
+        __pyx_v_sust_cost = ((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_3)) ))) * ((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_4)) ))) * (__pyx_v_lhat - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_5)) ))))) * (1.0 - exp(((-(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_6)) )))) * __pyx_v_s)))) / (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_7)) )))));
+
+        /* "sustained_ihp_c.pyx":238
+ *             relative_repayment = potential_repayment_generalized(lower, upper, pi)
+ *             collected = balance * relative_repayment * exp(-params[6] * s)
+ *             if jump_size > 0.0:             # <<<<<<<<<<<<<<
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ *                         (1 - exp(-params[6] * s))/params[6])
+ */
+        goto __pyx_L6;
+      }
+
+      /* "sustained_ihp_c.pyx":241
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ *                         (1 - exp(-params[6] * s))/params[6])
+ *             elif t_to_sustain < s:             # <<<<<<<<<<<<<<
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ *                         (exp(-params[6] * t_to_sustain) - exp(-params[6] * s))/params[6])
+ */
+      __pyx_t_1 = ((__pyx_v_t_to_sustain < __pyx_v_s) != 0);
+      if (__pyx_t_1) {
+
+        /* "sustained_ihp_c.pyx":242
+ *                         (1 - exp(-params[6] * s))/params[6])
+ *             elif t_to_sustain < s:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *             # <<<<<<<<<<<<<<
+ *                         (exp(-params[6] * t_to_sustain) - exp(-params[6] * s))/params[6])
+ *             else:
+ */
+        __pyx_t_8 = 7;
+        __pyx_t_9 = 2;
+        __pyx_t_10 = 1;
+
+        /* "sustained_ihp_c.pyx":243
+ *             elif t_to_sustain < s:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ *                         (exp(-params[6] * t_to_sustain) - exp(-params[6] * s))/params[6])             # <<<<<<<<<<<<<<
+ *             else:
+ *                 sust_cost = 0.0
+ */
+        __pyx_t_11 = 6;
+        __pyx_t_12 = 6;
+
+        /* "sustained_ihp_c.pyx":242
+ *                         (1 - exp(-params[6] * s))/params[6])
+ *             elif t_to_sustain < s:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *             # <<<<<<<<<<<<<<
+ *                         (exp(-params[6] * t_to_sustain) - exp(-params[6] * s))/params[6])
+ *             else:
+ */
+        __pyx_t_13 = 6;
+
+        /* "sustained_ihp_c.pyx":243
+ *             elif t_to_sustain < s:
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ *                         (exp(-params[6] * t_to_sustain) - exp(-params[6] * s))/params[6])             # <<<<<<<<<<<<<<
+ *             else:
+ *                 sust_cost = 0.0
+ */
+        __pyx_v_sust_cost = ((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_8)) ))) * ((((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_9)) ))) * (__pyx_v_lhat - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_10)) ))))) * (exp(((-(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_11)) )))) * __pyx_v_t_to_sustain)) - exp(((-(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_12)) )))) * __pyx_v_s)))) / (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_13)) )))));
+
+        /* "sustained_ihp_c.pyx":241
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ *                         (1 - exp(-params[6] * s))/params[6])
+ *             elif t_to_sustain < s:             # <<<<<<<<<<<<<<
+ *                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
+ *                         (exp(-params[6] * t_to_sustain) - exp(-params[6] * s))/params[6])
+ */
+        goto __pyx_L6;
+      }
+
+      /* "sustained_ihp_c.pyx":245
+ *                         (exp(-params[6] * t_to_sustain) - exp(-params[6] * s))/params[6])
+ *             else:
+ *                 sust_cost = 0.0             # <<<<<<<<<<<<<<
+ *             jump_cost = jump_size * params[7]
+ *             # single_result = np.array([s, collected, sust_cost, jump_cost])
+ */
+      /*else*/ {
+        __pyx_v_sust_cost = 0.0;
+      }
+      __pyx_L6:;
+
+      /* "sustained_ihp_c.pyx":246
+ *             else:
+ *                 sust_cost = 0.0
+ *             jump_cost = jump_size * params[7]             # <<<<<<<<<<<<<<
+ *             # single_result = np.array([s, collected, sust_cost, jump_cost])
+ *             single_result[0] = s
+ */
+      __pyx_t_14 = 7;
+      __pyx_v_jump_cost = (__pyx_v_jump_size * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_14)) ))));
+
+      /* "sustained_ihp_c.pyx":248
+ *             jump_cost = jump_size * params[7]
+ *             # single_result = np.array([s, collected, sust_cost, jump_cost])
+ *             single_result[0] = s             # <<<<<<<<<<<<<<
+ *             single_result[1] = collected
+ *             single_result[2] = sust_cost
+ */
+      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 248, __pyx_L1_error) }
+      __pyx_t_15 = 0;
+      *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_15sustained_ihp_c_single_result.data) + __pyx_t_15)) )) = __pyx_v_s;
+
+      /* "sustained_ihp_c.pyx":249
+ *             # single_result = np.array([s, collected, sust_cost, jump_cost])
+ *             single_result[0] = s
+ *             single_result[1] = collected             # <<<<<<<<<<<<<<
+ *             single_result[2] = sust_cost
+ *             single_result[3] = jump_cost
+ */
+      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 249, __pyx_L1_error) }
+      __pyx_t_16 = 1;
+      *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_15sustained_ihp_c_single_result.data) + __pyx_t_16)) )) = __pyx_v_collected;
+
+      /* "sustained_ihp_c.pyx":250
+ *             single_result[0] = s
+ *             single_result[1] = collected
+ *             single_result[2] = sust_cost             # <<<<<<<<<<<<<<
+ *             single_result[3] = jump_cost
+ *             condition = False
+ */
+      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 250, __pyx_L1_error) }
+      __pyx_t_17 = 2;
+      *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_15sustained_ihp_c_single_result.data) + __pyx_t_17)) )) = __pyx_v_sust_cost;
+
+      /* "sustained_ihp_c.pyx":251
+ *             single_result[1] = collected
+ *             single_result[2] = sust_cost
+ *             single_result[3] = jump_cost             # <<<<<<<<<<<<<<
+ *             condition = False
+ *     return single_result
+ */
+      if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 251, __pyx_L1_error) }
+      __pyx_t_18 = 3;
+      *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_15sustained_ihp_c_single_result.data) + __pyx_t_18)) )) = __pyx_v_jump_cost;
+
+      /* "sustained_ihp_c.pyx":252
+ *             single_result[2] = sust_cost
+ *             single_result[3] = jump_cost
+ *             condition = False             # <<<<<<<<<<<<<<
+ *     return single_result
+ * 
+ */
+      __pyx_v_condition = 0;
+
+      /* "sustained_ihp_c.pyx":234
+ *         d = r2()
+ *         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)
+ *         if d * lstar <= intensity_at_jump_minus:             # <<<<<<<<<<<<<<
+ *             sustain_drift_time = 0.0
+ *             relative_repayment = potential_repayment_generalized(lower, upper, pi)
+ */
+    }
+  }
+
+  /* "sustained_ihp_c.pyx":253
+ *             single_result[3] = jump_cost
+ *             condition = False
+ *     return single_result             # <<<<<<<<<<<<<<
+ * 
+ * @cdivision(True)
+ */
+  if (unlikely(!__pyx_v_15sustained_ihp_c_single_result.memview)) { __Pyx_RaiseUnboundMemoryviewSliceNogil("single_result"); __PYX_ERR(0, 253, __pyx_L1_error) }
+  __PYX_INC_MEMVIEW(&__pyx_v_15sustained_ihp_c_single_result, 1);
+  __pyx_r = __pyx_v_15sustained_ihp_c_single_result;
+  goto __pyx_L0;
+
+  /* "sustained_ihp_c.pyx":200
+ * @wraparound(False)
+ * @boundscheck(False)
+ * cdef inline double[::1] next_arrival_generalized(double lstart, double lhat, double balance, double[::1] params, double lower, double upper, double pi) nogil:             # <<<<<<<<<<<<<<
+ *     """
+ *     Generates the next arrival of a sustained IHP.
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __pyx_r.data = NULL;
+  __pyx_r.memview = NULL;
+  {
+    #ifdef WITH_THREAD
+    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+    #endif
+    __Pyx_AddTraceback("sustained_ihp_c.next_arrival_generalized", __pyx_clineno, __pyx_lineno, __pyx_filename);
+    #ifdef WITH_THREAD
+    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+    #endif
+  }
+  goto __pyx_L2;
+  __pyx_L0:;
+  if (unlikely(!__pyx_r.memview)) {
+    PyErr_SetString(PyExc_TypeError, "Memoryview return value is not initialized");
+  }
+  __pyx_L2:;
+  return __pyx_r;
+}
+
+/* "sustained_ihp_c.pyx":258
+ * @wraparound(False)
+ * @boundscheck(False)
+ * cpdef double[:,::1] calculate_value_mc_gen(double sustain_level, int niter, double balance, double[::1] params, double lower, double upper, double pi):             # <<<<<<<<<<<<<<
+ *     """
+ *     Monte Carlo calculation of a repayment under sustain intensity at lhat
+ */
+
+static PyObject *__pyx_pw_15sustained_ihp_c_5calculate_value_mc_gen(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc_gen(double __pyx_v_sustain_level, int __pyx_v_niter, double __pyx_v_balance, __Pyx_memviewslice __pyx_v_params, double __pyx_v_lower, double __pyx_v_upper, double __pyx_v_pi, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  int __pyx_v_i;
+  __Pyx_memviewslice __pyx_v_value_data = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_r = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  Py_ssize_t __pyx_t_10;
+  __Pyx_memviewslice __pyx_t_11 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_RefNannySetupContext("calculate_value_mc_gen", 0);
+
+  /* "sustained_ihp_c.pyx":281
+ *         double running_sust_costs, running_jump_costs, running_collected, running_s
+ *         double[::1] single_arrival_data# , value_data
+ *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)             # <<<<<<<<<<<<<<
+ *     for i in range(niter):
+ *         value_data[i,:] = next_arrival_generalized(params[0], sustain_level, balance, params, lower, upper, pi)
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_niter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
+  __Pyx_INCREF(__pyx_int_4);
+  __Pyx_GIVEREF(__pyx_int_4);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_int_4);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
+  __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_v_value_data = __pyx_t_6;
+  __pyx_t_6.memview = NULL;
+  __pyx_t_6.data = NULL;
+
+  /* "sustained_ihp_c.pyx":282
+ *         double[::1] single_arrival_data# , value_data
+ *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
+ *     for i in range(niter):             # <<<<<<<<<<<<<<
+ *         value_data[i,:] = next_arrival_generalized(params[0], sustain_level, balance, params, lower, upper, pi)
+ *     return value_data
+ */
+  __pyx_t_7 = __pyx_v_niter;
+  __pyx_t_8 = __pyx_t_7;
+  for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
+    __pyx_v_i = __pyx_t_9;
+
+    /* "sustained_ihp_c.pyx":283
+ *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
+ *     for i in range(niter):
+ *         value_data[i,:] = next_arrival_generalized(params[0], sustain_level, balance, params, lower, upper, pi)             # <<<<<<<<<<<<<<
+ *     return value_data
+ * 
+ */
+    __pyx_t_10 = 0;
+    __pyx_t_11 = __pyx_f_15sustained_ihp_c_next_arrival_generalized((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_10)) ))), __pyx_v_sustain_level, __pyx_v_balance, __pyx_v_params, __pyx_v_lower, __pyx_v_upper, __pyx_v_pi); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 283, __pyx_L1_error)
+    __pyx_t_12.data = __pyx_v_value_data.data;
+    __pyx_t_12.memview = __pyx_v_value_data.memview;
+    __PYX_INC_MEMVIEW(&__pyx_t_12, 0);
+    {
+    Py_ssize_t __pyx_tmp_idx = __pyx_v_i;
+    Py_ssize_t __pyx_tmp_stride = __pyx_v_value_data.strides[0];
+        if ((0)) __PYX_ERR(0, 283, __pyx_L1_error)
+        __pyx_t_12.data += __pyx_tmp_idx * __pyx_tmp_stride;
+}
+
+__pyx_t_12.shape[0] = __pyx_v_value_data.shape[1];
+__pyx_t_12.strides[0] = __pyx_v_value_data.strides[1];
+    __pyx_t_12.suboffsets[0] = -1;
+
+if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0)) __PYX_ERR(0, 283, __pyx_L1_error)
+    __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
+    __pyx_t_12.memview = NULL;
+    __pyx_t_12.data = NULL;
+    __PYX_XDEC_MEMVIEW(&__pyx_t_11, 1);
+    __pyx_t_11.memview = NULL;
+    __pyx_t_11.data = NULL;
+  }
+
+  /* "sustained_ihp_c.pyx":284
+ *     for i in range(niter):
+ *         value_data[i,:] = next_arrival_generalized(params[0], sustain_level, balance, params, lower, upper, pi)
+ *     return value_data             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __PYX_INC_MEMVIEW(&__pyx_v_value_data, 0);
+  __pyx_r = __pyx_v_value_data;
+  goto __pyx_L0;
+
+  /* "sustained_ihp_c.pyx":258
+ * @wraparound(False)
+ * @boundscheck(False)
+ * cpdef double[:,::1] calculate_value_mc_gen(double sustain_level, int niter, double balance, double[::1] params, double lower, double upper, double pi):             # <<<<<<<<<<<<<<
+ *     """
+ *     Monte Carlo calculation of a repayment under sustain intensity at lhat
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_11, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
+  __pyx_r.data = NULL;
+  __pyx_r.memview = NULL;
+  __Pyx_AddTraceback("sustained_ihp_c.calculate_value_mc_gen", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  goto __pyx_L2;
+  __pyx_L0:;
+  if (unlikely(!__pyx_r.memview)) {
+    PyErr_SetString(PyExc_TypeError, "Memoryview return value is not initialized");
+  }
+  __pyx_L2:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_value_data, 1);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15sustained_ihp_c_5calculate_value_mc_gen(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_15sustained_ihp_c_4calculate_value_mc_gen[] = "\n    Monte Carlo calculation of a repayment under sustain intensity at lhat\n    Args:\n        sustain_level: double\n        niter: int\n        balance: double\n        params: object\n        lower: double\n        \n        upper: double\n        \n        pi: double\n        \n\n    Returns: np.ndarray(dim=2)\n        rows - iterations\n        columns - arrival time, collected, sustain_cost, jump_cost\n    ";
+static PyObject *__pyx_pw_15sustained_ihp_c_5calculate_value_mc_gen(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  double __pyx_v_sustain_level;
+  int __pyx_v_niter;
+  double __pyx_v_balance;
+  __Pyx_memviewslice __pyx_v_params = { 0, 0, { 0 }, { 0 }, { 0 } };
+  double __pyx_v_lower;
+  double __pyx_v_upper;
+  double __pyx_v_pi;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("calculate_value_mc_gen (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_sustain_level,&__pyx_n_s_niter,&__pyx_n_s_balance,&__pyx_n_s_params,&__pyx_n_s_lower,&__pyx_n_s_upper,&__pyx_n_s_pi,0};
+    PyObject* values[7] = {0,0,0,0,0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+        CYTHON_FALLTHROUGH;
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        CYTHON_FALLTHROUGH;
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_sustain_level)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_niter)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen", 1, 7, 7, 1); __PYX_ERR(0, 258, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_balance)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen", 1, 7, 7, 2); __PYX_ERR(0, 258, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_params)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen", 1, 7, 7, 3); __PYX_ERR(0, 258, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  4:
+        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_lower)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen", 1, 7, 7, 4); __PYX_ERR(0, 258, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  5:
+        if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_upper)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen", 1, 7, 7, 5); __PYX_ERR(0, 258, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  6:
+        if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_pi)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen", 1, 7, 7, 6); __PYX_ERR(0, 258, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "calculate_value_mc_gen") < 0)) __PYX_ERR(0, 258, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 7) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+      values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+      values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+    }
+    __pyx_v_sustain_level = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_sustain_level == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 258, __pyx_L3_error)
+    __pyx_v_niter = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_niter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 258, __pyx_L3_error)
+    __pyx_v_balance = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_balance == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 258, __pyx_L3_error)
+    __pyx_v_params = __Pyx_PyObject_to_MemoryviewSlice_dc_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_params.memview)) __PYX_ERR(0, 258, __pyx_L3_error)
+    __pyx_v_lower = __pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_lower == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 258, __pyx_L3_error)
+    __pyx_v_upper = __pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_upper == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 258, __pyx_L3_error)
+    __pyx_v_pi = __pyx_PyFloat_AsDouble(values[6]); if (unlikely((__pyx_v_pi == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 258, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 258, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("sustained_ihp_c.calculate_value_mc_gen", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_15sustained_ihp_c_4calculate_value_mc_gen(__pyx_self, __pyx_v_sustain_level, __pyx_v_niter, __pyx_v_balance, __pyx_v_params, __pyx_v_lower, __pyx_v_upper, __pyx_v_pi);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15sustained_ihp_c_4calculate_value_mc_gen(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_sustain_level, int __pyx_v_niter, double __pyx_v_balance, __Pyx_memviewslice __pyx_v_params, double __pyx_v_lower, double __pyx_v_upper, double __pyx_v_pi) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_t_2 = NULL;
+  __Pyx_RefNannySetupContext("calculate_value_mc_gen", 0);
+  __Pyx_XDECREF(__pyx_r);
+  if (unlikely(!__pyx_v_params.memview)) { __Pyx_RaiseUnboundLocalError("params"); __PYX_ERR(0, 258, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_f_15sustained_ihp_c_calculate_value_mc_gen(__pyx_v_sustain_level, __pyx_v_niter, __pyx_v_balance, __pyx_v_params, __pyx_v_lower, __pyx_v_upper, __pyx_v_pi, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
+  __pyx_t_1.memview = NULL;
+  __pyx_t_1.data = NULL;
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("sustained_ihp_c.calculate_value_mc_gen", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_params, 1);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "sustained_ihp_c.pyx":290
+ * @wraparound(False)
+ * @boundscheck(False)
+ * cpdef double[:,::1] calculate_value_mc_gen_nogil(double sustain_level, int niter, double balance, double[::1] params,             # <<<<<<<<<<<<<<
+ *                                              double lower, double upper, double pi):
+ *     """
+ */
+
+static PyObject *__pyx_pw_15sustained_ihp_c_7calculate_value_mc_gen_nogil(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static __Pyx_memviewslice __pyx_f_15sustained_ihp_c_calculate_value_mc_gen_nogil(double __pyx_v_sustain_level, int __pyx_v_niter, double __pyx_v_balance, __Pyx_memviewslice __pyx_v_params, double __pyx_v_lower, double __pyx_v_upper, double __pyx_v_pi, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  int __pyx_v_i;
+  __Pyx_memviewslice __pyx_v_value_data = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_r = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  Py_ssize_t __pyx_t_10;
+  __Pyx_memviewslice __pyx_t_11 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_RefNannySetupContext("calculate_value_mc_gen_nogil", 0);
+
+  /* "sustained_ihp_c.pyx":314
+ *         double running_sust_costs, running_jump_costs, running_collected, running_s
+ *         double[::1] single_arrival_data# , value_data
+ *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)             # <<<<<<<<<<<<<<
+ *     for i in prange(niter, nogil=True, schedule='static'):
+ *         value_data[i,:] = next_arrival_generalized(params[0], sustain_level, balance, params, lower, upper, pi)
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_niter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
+  __Pyx_INCREF(__pyx_int_4);
+  __Pyx_GIVEREF(__pyx_int_4);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_int_4);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
+  __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_v_value_data = __pyx_t_6;
+  __pyx_t_6.memview = NULL;
+  __pyx_t_6.data = NULL;
+
+  /* "sustained_ihp_c.pyx":315
+ *         double[::1] single_arrival_data# , value_data
+ *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
+ *     for i in prange(niter, nogil=True, schedule='static'):             # <<<<<<<<<<<<<<
+ *         value_data[i,:] = next_arrival_generalized(params[0], sustain_level, balance, params, lower, upper, pi)
+ *     return value_data
+ */
+  {
+      #ifdef WITH_THREAD
+      PyThreadState *_save;
+      Py_UNBLOCK_THREADS
+      __Pyx_FastGIL_Remember();
+      #endif
+      /*try:*/ {
+        __pyx_t_7 = __pyx_v_niter;
+        if (1 == 0) abort();
+        {
+            int __pyx_parallel_temp0 = ((int)0xbad0bad0);
+            const char *__pyx_parallel_filename = NULL; int __pyx_parallel_lineno = 0, __pyx_parallel_clineno = 0;
+            PyObject *__pyx_parallel_exc_type = NULL, *__pyx_parallel_exc_value = NULL, *__pyx_parallel_exc_tb = NULL;
+            int __pyx_parallel_why;
+            __pyx_parallel_why = 0;
+            #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+                #undef likely
+                #undef unlikely
+                #define likely(x)   (x)
+                #define unlikely(x) (x)
+            #endif
+            __pyx_t_9 = (__pyx_t_7 - 0 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_9 > 0)
+            {
+                #ifdef _OPENMP
+                #pragma omp parallel private(__pyx_t_10) firstprivate(__pyx_t_11, __pyx_t_12) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb)
+                #endif /* _OPENMP */
+                {
+                    #ifdef _OPENMP
+                    #ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    Py_BEGIN_ALLOW_THREADS
+                    #endif /* _OPENMP */
+                    #ifdef _OPENMP
+                    #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) schedule(static)
+                    #endif /* _OPENMP */
+                    for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_9; __pyx_t_8++){
+                        if (__pyx_parallel_why < 2)
+                        {
+                            __pyx_v_i = (int)(0 + 1 * __pyx_t_8);
+
+                            /* "sustained_ihp_c.pyx":316
+ *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
+ *     for i in prange(niter, nogil=True, schedule='static'):
+ *         value_data[i,:] = next_arrival_generalized(params[0], sustain_level, balance, params, lower, upper, pi)             # <<<<<<<<<<<<<<
+ *     return value_data
+ * 
+ */
+                            __pyx_t_10 = 0;
+                            __pyx_t_11 = __pyx_f_15sustained_ihp_c_next_arrival_generalized((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_params.data) + __pyx_t_10)) ))), __pyx_v_sustain_level, __pyx_v_balance, __pyx_v_params, __pyx_v_lower, __pyx_v_upper, __pyx_v_pi); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 316, __pyx_L8_error)
+                            __pyx_t_12.data = __pyx_v_value_data.data;
+                            __pyx_t_12.memview = __pyx_v_value_data.memview;
+                            __PYX_INC_MEMVIEW(&__pyx_t_12, 0);
+                            {
+    Py_ssize_t __pyx_tmp_idx = __pyx_v_i;
+    Py_ssize_t __pyx_tmp_stride = __pyx_v_value_data.strides[0];
+        if ((0)) __PYX_ERR(0, 316, __pyx_L8_error)
+        __pyx_t_12.data += __pyx_tmp_idx * __pyx_tmp_stride;
+}
+
+__pyx_t_12.shape[0] = __pyx_v_value_data.shape[1];
+__pyx_t_12.strides[0] = __pyx_v_value_data.strides[1];
+    __pyx_t_12.suboffsets[0] = -1;
+
+if (unlikely(__pyx_memoryview_copy_contents(__pyx_t_11, __pyx_t_12, 1, 1, 0) < 0)) __PYX_ERR(0, 316, __pyx_L8_error)
+                            __PYX_XDEC_MEMVIEW(&__pyx_t_12, 0);
+                            __pyx_t_12.memview = NULL;
+                            __pyx_t_12.data = NULL;
+                            __PYX_XDEC_MEMVIEW(&__pyx_t_11, 0);
+                            __pyx_t_11.memview = NULL;
+                            __pyx_t_11.data = NULL;
+                            goto __pyx_L11;
+                            __pyx_L8_error:;
+                            {
+                                #ifdef WITH_THREAD
+                                PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                                #endif
+                                #ifdef _OPENMP
+                                #pragma omp flush(__pyx_parallel_exc_type)
+                                #endif /* _OPENMP */
+                                if (!__pyx_parallel_exc_type) {
+                                  __Pyx_ErrFetchWithState(&__pyx_parallel_exc_type, &__pyx_parallel_exc_value, &__pyx_parallel_exc_tb);
+                                  __pyx_parallel_filename = __pyx_filename; __pyx_parallel_lineno = __pyx_lineno; __pyx_parallel_clineno = __pyx_clineno;
+                                  __Pyx_GOTREF(__pyx_parallel_exc_type);
+                                }
+                                #ifdef WITH_THREAD
+                                __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                                #endif
+                            }
+                            __pyx_parallel_why = 4;
+                            goto __pyx_L10;
+                            __pyx_L10:;
+                            #ifdef _OPENMP
+                            #pragma omp critical(__pyx_parallel_lastprivates1)
+                            #endif /* _OPENMP */
+                            {
+                                __pyx_parallel_temp0 = __pyx_v_i;
+                            }
+                            __pyx_L11:;
+                            #ifdef _OPENMP
+                            #pragma omp flush(__pyx_parallel_why)
+                            #endif /* _OPENMP */
+                        }
+                    }
+                    #ifdef _OPENMP
+                    Py_END_ALLOW_THREADS
+                    #else
+{
+#ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    #endif /* _OPENMP */
+                    /* Clean up any temporaries */
+                    __PYX_XDEC_MEMVIEW(&__pyx_t_11, 0);
+                    __PYX_XDEC_MEMVIEW(&__pyx_t_12, 0);
+                    #ifdef WITH_THREAD
+                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                    #endif
+                    #ifndef _OPENMP
+}
+#endif /* _OPENMP */
+                }
+            }
+            if (__pyx_parallel_exc_type) {
+              /* This may have been overridden by a continue, break or return in another thread. Prefer the error. */
+              __pyx_parallel_why = 4;
+            }
+            if (__pyx_parallel_why) {
+              __pyx_v_i = __pyx_parallel_temp0;
+              switch (__pyx_parallel_why) {
+                    case 4:
+                {
+                    #ifdef WITH_THREAD
+                    PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+                    #endif
+                    __Pyx_GIVEREF(__pyx_parallel_exc_type);
+                    __Pyx_ErrRestoreWithState(__pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb);
+                    __pyx_filename = __pyx_parallel_filename; __pyx_lineno = __pyx_parallel_lineno; __pyx_clineno = __pyx_parallel_clineno;
+                    #ifdef WITH_THREAD
+                    __Pyx_PyGILState_Release(__pyx_gilstate_save);
+                    #endif
+                }
+                goto __pyx_L4_error;
+              }
+            }
+        }
+        #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
+            #undef likely
+            #undef unlikely
+            #define likely(x)   __builtin_expect(!!(x), 1)
+            #define unlikely(x) __builtin_expect(!!(x), 0)
+        #endif
+      }
+
+      /* "sustained_ihp_c.pyx":315
+ *         double[::1] single_arrival_data# , value_data
+ *         double[:, ::1] value_data = np.zeros((niter, 4), dtype=np.float_)
+ *     for i in prange(niter, nogil=True, schedule='static'):             # <<<<<<<<<<<<<<
+ *         value_data[i,:] = next_arrival_generalized(params[0], sustain_level, balance, params, lower, upper, pi)
+ *     return value_data
+ */
+      /*finally:*/ {
+        /*normal exit:*/{
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L5;
+        }
+        __pyx_L4_error: {
+          #ifdef WITH_THREAD
+          __Pyx_FastGIL_Forget();
+          Py_BLOCK_THREADS
+          #endif
+          goto __pyx_L1_error;
+        }
+        __pyx_L5:;
+      }
+  }
+
+  /* "sustained_ihp_c.pyx":317
+ *     for i in prange(niter, nogil=True, schedule='static'):
+ *         value_data[i,:] = next_arrival_generalized(params[0], sustain_level, balance, params, lower, upper, pi)
+ *     return value_data             # <<<<<<<<<<<<<<
+ * 
+ */
+  __PYX_INC_MEMVIEW(&__pyx_v_value_data, 0);
+  __pyx_r = __pyx_v_value_data;
+  goto __pyx_L0;
+
+  /* "sustained_ihp_c.pyx":290
+ * @wraparound(False)
+ * @boundscheck(False)
+ * cpdef double[:,::1] calculate_value_mc_gen_nogil(double sustain_level, int niter, double balance, double[::1] params,             # <<<<<<<<<<<<<<
+ *                                              double lower, double upper, double pi):
+ *     """
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_11, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
+  __pyx_r.data = NULL;
+  __pyx_r.memview = NULL;
+  __Pyx_AddTraceback("sustained_ihp_c.calculate_value_mc_gen_nogil", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  goto __pyx_L2;
+  __pyx_L0:;
+  if (unlikely(!__pyx_r.memview)) {
+    PyErr_SetString(PyExc_TypeError, "Memoryview return value is not initialized");
+  }
+  __pyx_L2:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_value_data, 1);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_15sustained_ihp_c_7calculate_value_mc_gen_nogil(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_15sustained_ihp_c_6calculate_value_mc_gen_nogil[] = "\n    Multi-threading version of calculate_value_mc\n    Monte Carlo calculation of a repayment under sustain intensity at lhat\n    Args:\n        sustain_level: double\n        niter: int\n        balance: double\n        params: object\n        lower: double\n        \n        upper: double\n        \n        pi: double\n\n    Returns: np.ndarray(dim=2)\n        rows - iterations\n        columns - arrival time, collected, sustain_cost, jump_cost\n    ";
+static PyObject *__pyx_pw_15sustained_ihp_c_7calculate_value_mc_gen_nogil(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  double __pyx_v_sustain_level;
+  int __pyx_v_niter;
+  double __pyx_v_balance;
+  __Pyx_memviewslice __pyx_v_params = { 0, 0, { 0 }, { 0 }, { 0 } };
+  double __pyx_v_lower;
+  double __pyx_v_upper;
+  double __pyx_v_pi;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("calculate_value_mc_gen_nogil (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_sustain_level,&__pyx_n_s_niter,&__pyx_n_s_balance,&__pyx_n_s_params,&__pyx_n_s_lower,&__pyx_n_s_upper,&__pyx_n_s_pi,0};
+    PyObject* values[7] = {0,0,0,0,0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+        CYTHON_FALLTHROUGH;
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        CYTHON_FALLTHROUGH;
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_sustain_level)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_niter)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen_nogil", 1, 7, 7, 1); __PYX_ERR(0, 290, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_balance)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen_nogil", 1, 7, 7, 2); __PYX_ERR(0, 290, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_params)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen_nogil", 1, 7, 7, 3); __PYX_ERR(0, 290, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  4:
+        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_lower)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen_nogil", 1, 7, 7, 4); __PYX_ERR(0, 290, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  5:
+        if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_upper)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen_nogil", 1, 7, 7, 5); __PYX_ERR(0, 290, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  6:
+        if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_pi)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen_nogil", 1, 7, 7, 6); __PYX_ERR(0, 290, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "calculate_value_mc_gen_nogil") < 0)) __PYX_ERR(0, 290, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 7) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+      values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+      values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+    }
+    __pyx_v_sustain_level = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_sustain_level == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 290, __pyx_L3_error)
+    __pyx_v_niter = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_niter == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 290, __pyx_L3_error)
+    __pyx_v_balance = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_balance == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 290, __pyx_L3_error)
+    __pyx_v_params = __Pyx_PyObject_to_MemoryviewSlice_dc_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_params.memview)) __PYX_ERR(0, 290, __pyx_L3_error)
+    __pyx_v_lower = __pyx_PyFloat_AsDouble(values[4]); if (unlikely((__pyx_v_lower == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L3_error)
+    __pyx_v_upper = __pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_upper == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L3_error)
+    __pyx_v_pi = __pyx_PyFloat_AsDouble(values[6]); if (unlikely((__pyx_v_pi == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("calculate_value_mc_gen_nogil", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 290, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("sustained_ihp_c.calculate_value_mc_gen_nogil", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_15sustained_ihp_c_6calculate_value_mc_gen_nogil(__pyx_self, __pyx_v_sustain_level, __pyx_v_niter, __pyx_v_balance, __pyx_v_params, __pyx_v_lower, __pyx_v_upper, __pyx_v_pi);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_15sustained_ihp_c_6calculate_value_mc_gen_nogil(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_sustain_level, int __pyx_v_niter, double __pyx_v_balance, __Pyx_memviewslice __pyx_v_params, double __pyx_v_lower, double __pyx_v_upper, double __pyx_v_pi) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_t_2 = NULL;
+  __Pyx_RefNannySetupContext("calculate_value_mc_gen_nogil", 0);
+  __Pyx_XDECREF(__pyx_r);
+  if (unlikely(!__pyx_v_params.memview)) { __Pyx_RaiseUnboundLocalError("params"); __PYX_ERR(0, 290, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_f_15sustained_ihp_c_calculate_value_mc_gen_nogil(__pyx_v_sustain_level, __pyx_v_niter, __pyx_v_balance, __pyx_v_params, __pyx_v_lower, __pyx_v_upper, __pyx_v_pi, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 290, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 290, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
+  __pyx_t_1.memview = NULL;
+  __pyx_t_1.data = NULL;
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("sustained_ihp_c.calculate_value_mc_gen_nogil", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_params, 1);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
@@ -19805,6 +21098,8 @@ static PyTypeObject __pyx_type___pyx_memoryviewslice = {
 static PyMethodDef __pyx_methods[] = {
   {"calculate_value_mc", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_15sustained_ihp_c_1calculate_value_mc, METH_VARARGS|METH_KEYWORDS, __pyx_doc_15sustained_ihp_c_calculate_value_mc},
   {"calculate_value_mc_nogil", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_15sustained_ihp_c_3calculate_value_mc_nogil, METH_VARARGS|METH_KEYWORDS, __pyx_doc_15sustained_ihp_c_2calculate_value_mc_nogil},
+  {"calculate_value_mc_gen", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_15sustained_ihp_c_5calculate_value_mc_gen, METH_VARARGS|METH_KEYWORDS, __pyx_doc_15sustained_ihp_c_4calculate_value_mc_gen},
+  {"calculate_value_mc_gen_nogil", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_15sustained_ihp_c_7calculate_value_mc_gen_nogil, METH_VARARGS|METH_KEYWORDS, __pyx_doc_15sustained_ihp_c_6calculate_value_mc_gen_nogil},
   {0, 0, 0, 0}
 };
 
@@ -19905,6 +21200,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_itemsize, __pyx_k_itemsize, sizeof(__pyx_k_itemsize), 0, 0, 1, 1},
   {&__pyx_kp_s_itemsize_0_for_cython_array, __pyx_k_itemsize_0_for_cython_array, sizeof(__pyx_k_itemsize_0_for_cython_array), 0, 0, 1, 0},
+  {&__pyx_n_s_lower, __pyx_k_lower, sizeof(__pyx_k_lower), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
   {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
@@ -19923,6 +21219,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
   {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
   {&__pyx_n_s_params, __pyx_k_params, sizeof(__pyx_k_params), 0, 0, 1, 1},
+  {&__pyx_n_s_pi, __pyx_k_pi, sizeof(__pyx_k_pi), 0, 0, 1, 1},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_checksum, __pyx_k_pyx_checksum, sizeof(__pyx_k_pyx_checksum), 0, 0, 1, 1},
@@ -19955,11 +21252,12 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
   {&__pyx_n_s_unpack, __pyx_k_unpack, sizeof(__pyx_k_unpack), 0, 0, 1, 1},
   {&__pyx_n_s_update, __pyx_k_update, sizeof(__pyx_k_update), 0, 0, 1, 1},
+  {&__pyx_n_s_upper, __pyx_k_upper, sizeof(__pyx_k_upper), 0, 0, 1, 1},
   {&__pyx_n_s_zeros, __pyx_k_zeros, sizeof(__pyx_k_zeros), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 136, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 272, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 856, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 1038, __pyx_L1_error)
@@ -20247,14 +21545,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__25);
   __Pyx_GIVEREF(__pyx_tuple__25);
 
-  /* "sustained_ihp_c.pyx":11
+  /* "sustained_ihp_c.pyx":12
  * from cython.parallel cimport prange, parallel
  * 
  * cdef double[::1] single_result = np.empty(4)             # <<<<<<<<<<<<<<
+ * srand(time(NULL))
  * 
- * ## Random Generators
  */
-  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_int_4); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_int_4); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
 
@@ -20705,34 +22003,43 @@ if (!__Pyx_RefNanny) {
  * cimport numpy as cnp
  * import  numpy as np             # <<<<<<<<<<<<<<
  * from libc.math cimport log, fmax, exp
- * from libc.stdlib cimport rand, RAND_MAX
+ * from libc.stdlib cimport rand, srand, RAND_MAX
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "sustained_ihp_c.pyx":11
+  /* "sustained_ihp_c.pyx":12
  * from cython.parallel cimport prange, parallel
  * 
  * cdef double[::1] single_result = np.empty(4)             # <<<<<<<<<<<<<<
+ * srand(time(NULL))
  * 
- * ## Random Generators
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_15sustained_ihp_c_single_result, 1);
   __pyx_v_15sustained_ihp_c_single_result = __pyx_t_3;
   __pyx_t_3.memview = NULL;
   __pyx_t_3.data = NULL;
+
+  /* "sustained_ihp_c.pyx":13
+ * 
+ * cdef double[::1] single_result = np.empty(4)
+ * srand(time(NULL))             # <<<<<<<<<<<<<<
+ * 
+ * ## Random Generators
+ */
+  srand(time(NULL));
 
   /* "sustained_ihp_c.pyx":1
  * # distutils: extra_compile_args = -fopenmp             # <<<<<<<<<<<<<<
