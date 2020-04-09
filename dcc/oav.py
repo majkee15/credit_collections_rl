@@ -15,7 +15,7 @@ class OAV(Base):
     The value function is constructed in an itterative manner using bivariate interpolation.
     """
 
-    def __init__(self, p, balance, lstart, nx=100, ny=20, lmax=2):
+    def __init__(self, p, balance, nx=100, ny=20, lmax=2):
         """
         Standard Class initialization.
         Args:
@@ -33,11 +33,10 @@ class OAV(Base):
         """
         super().__init__(__class__.__name__)
         self.v = None
-        self.lstart = lstart
         self.p = p
         self.balance = balance
         self.aavc = AAV(p)
-        self.autonomous_value = self.aavc.u(self.lstart, self.balance)
+        self.u = self.aavc.u
         self.w_ = self.aavc.w_
         self.w0star = self.aavc.w0star
         self.iw = self.comp_iw()
@@ -362,12 +361,12 @@ if __name__ == '__main__':
     # REFERENCE PARAMETERS THAT ARE PICKLED!
     #
     w_start = 500
-    lstart = 2
+    #lstart = 2
     p = Parameters()
     p.r_ = 0.1
     w_array = np.linspace(0, w_start, 100)
     l_array = np.linspace(0, 15, 40)
-    oav = OAV(p, w_start, lstart, nx=200, ny=20, lmax=5)
+    oav = OAV(p, w_start, nx=200, ny=20, lmax=5)
     print(f'w_: {oav.w_}, w0star: {oav.w0star}')
     oav.solve_v()
     oav.plot_vf(plot_aav_flag=True)
