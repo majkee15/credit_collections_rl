@@ -1,7 +1,7 @@
 # The purpose of this script is to decide whether multi threading is worth it for calculate_value_mc function
 
-from optimal_sustain_level.sustained_ihp import Parameters
-from optimal_sustain_level import sustained_ihp_c
+from mc_osl.sustained_ihp import Parameters
+from mc_osl import sustained_ihp_c
 import numpy as np
 
 

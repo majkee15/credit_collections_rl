@@ -165,7 +165,7 @@ class Parameters:
         self.c = 6
         self.r_ = 0.1
         self.chat = self.c / self.delta2
-
+        self.rmean = self._rmean()
     def rdist(self, r):
         """
         PDF of the relative distribution
@@ -175,18 +175,25 @@ class Parameters:
         """
         return 1 / (1 - self.r_)
 
+    def integrand_mean(self, r):
+        return self.rdist(r) * r
+
     def sample_repayment(self, n=1):
         return np.random.uniform(self.r_, 1, n)
+
+    def _rmean(self):
+        return integrate.quad(self.integrand_mean, self.r_, 1)[0]
 
 
 if __name__ == '__main__':
     balance = 500
     params = Parameters()
+    print(params.rmean)
     aavcl = AAV(params)
     print(aavcl.compute_w0star())
     w_array = np.linspace(0, 100, 40)
     l_array = np.linspace(0, 2, 10)
-    aavcl.evaluate_aav(1, w_array, True)
+    aavcl.evaluate_aav(2, w_array, True)
     aavcl.evaluate_aav(l_array, w_array, True)
     aavcl.evaluate_aav(l_array, balance, True)
-    print(aavcl.u(1, balance))
+    print(aavcl.u(2, balance))

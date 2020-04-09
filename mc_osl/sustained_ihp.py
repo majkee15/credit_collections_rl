@@ -1,17 +1,20 @@
 from base import Base
 import numpy as np
 import matplotlib.pyplot as plt
-from optimal_sustain_level import sustained_ihp_c
+from mc_osl import sustained_ihp_c
 import time
 import multiprocessing as mp
 import functools
+
+from dcc import Parameters
 
 
 class SustainedIHP(Base):
     '''
     Wrapper for the cython code to calculate optimal policies based on Weber 2015
     '''
-    def __init__(self, w0, parameters, spacing='linear', ws_points=30, lmax_profile=1.5, niter=1e6,  *args, **kwargs):
+    def __init__(self, w0, parameters, spacing='linear', ws_points=30, lmax_profile=1.5, niter=1e6, npoints_profile=30,
+                 *args, **kwargs):
         """
 
         Args:
@@ -34,7 +37,7 @@ class SustainedIHP(Base):
         self.ws_points = ws_points
         self.n_iter_profile = niter
         self.lmax_profile = lmax_profile
-        self.npoints_profile = 30
+        self.npoints_profile = npoints_profile
         # smart grid differentiation
         if spacing == 'linear':
             self.ws = np.linspace(0, w0, self.ws_points)
@@ -46,7 +49,7 @@ class SustainedIHP(Base):
             raise ValueError('Spacing is supported only for linear and log specifications.')
         self.logger.info(f'Instantiated sustain process @ {__class__.__name__}')
 
-    def calculate_lhat_profile(self, balance, lhatmax, npoints, niter):
+    def calculate_lhat_profile(self, balance, lhatmax, npoints, niter, dist='uniform'):
         # TODO: this is not ideal, slow, a lot of variation in consecutive lambda hats
         """
         Calculates the full cost/collection profile for a single balance (plot lambda hat / collected)
@@ -58,9 +61,21 @@ class SustainedIHP(Base):
                 number of grid points
             niter: int
                 number of iterations to use for a mc account evaluation
+            dist: str
         Returns:
 
         """
+        if dist == 'uniform':
+            calculate_value = sustained_ihp_c.calculate_value_mc_nogil
+        elif dist == 'generalized':
+            def calculate_value(lhat, niter, balance, params):
+                low = 0.1
+                up = 0.9
+                pi = 0.99
+                return sustained_ihp_c.calculate_value_mc_gen_nogil(lhat, niter, balance, params, low, up, pi)
+        else:
+            raise ValueError('Distribution not implemented.')
+
         start_time = time.time()
         lhatmin = self.params[1] + self.params[1] * 0.1
         lambda_hats = np.linspace(lhatmin, lhatmax, npoints)
@@ -72,7 +87,7 @@ class SustainedIHP(Base):
         accvalsmc = np.zeros_like(lambda_hats)
         accvalsmc_std = np.zeros_like(lambda_hats)
         for i, lhat in enumerate(lambda_hats):
-            intermediate_res = np.asarray(sustained_ihp_c.calculate_value_mc(lhat, niter, balance, self.params))
+            intermediate_res = np.asarray(calculate_value(lhat, niter, balance, self.params))
             ar = intermediate_res[:, 0]
             collected = intermediate_res[:, 1]
             sust_cost = intermediate_res[:, 2]
@@ -103,7 +118,7 @@ class SustainedIHP(Base):
             res = pool.map(worker, ws)
             return ws, res
 
-    def calculate_frontier(self,plot_flag=False):
+    def calculate_frontier(self,plot_flag=False, dist='uniform'):
         # ws = np.flip(np.linspace(0, w0, 30))
         # lhatstars = np.zeros_like(self.ws)
         # accvalsmc = np.zeros_like(self.ws)
@@ -114,7 +129,7 @@ class SustainedIHP(Base):
         for i, w in enumerate(self.ws):
             lambda_hats, accvalsmc, accvalsmc_std = self.calculate_lhat_profile(w, self.lmax_profile,
                                                                                 self.npoints_profile,
-                                                                                self.n_iter_profile)
+                                                                                self.n_iter_profile, dist)
             lhatstar_index = np.nanargmin(accvalsmc)
             lhatstars.append(lambda_hats[lhatstar_index])
             accvalues.append(accvalsmc)
@@ -168,39 +183,24 @@ class SustainedIHP(Base):
         return fig
 
 
-class Parameters:
-    '''
-    Defines the parameters of the sustained HP.
-    '''
-    def __init__(self):
-        self.lamdbda0 = 1
-        self.lambdainf = 0.1
-        self.kappa = 0.7
-        self.delta10 = 0.02
-        self.delta11 = 0.5
-        self.delta2 = 1
-        self.rho = 0.06
-        self.c = 6
-        self.r_ = 0.1
-
 
 if __name__ == '__main__':
-    from dcc import OAV
-    PATH_TO_PICKLE = '/Users/mmark/Documents/credit_collections/credit_collections_rl/dcc/ref_parameters'
-    oc = OAV.load(PATH_TO_PICKLE)
-    oc.plot_statespace()
+    # from dcc import OAV
+    # PATH_TO_PICKLE = '/Users/mmark/Documents/credit_collections/credit_collections_rl/dcc/ref_parameters'
+    # oc = OAV.load(PATH_TO_PICKLE)
+    # oc.plot_statespace()
 
-    lambda_hat = 0.11
-    starting_balance = 200
-    niter = 500000
+    starting_balance = 100
+    niter = 1000000
     params = Parameters()
-    sihp = SustainedIHP(starting_balance, params, lmax_profile=3, ws_points=20, niter=niter)
-    approx_lstars = sihp.calculate_frontier(plot_flag=True)
+    sihp = SustainedIHP(starting_balance, params, lmax_profile=2, ws_points=30, niter=niter)
+    approx_lstars = sihp.calculate_frontier(plot_flag=True, dist='uniform')
     print(approx_lstars)
 
+    from osl import OSL
+    osl = OSL(starting_balance, params)
+    lhats, vgreedy = osl.calculate_greedy_frontier()
     fig, ax = plt.subplots()
-    ax.plot(sihp.ws, approx_lstars, 'x')
-    ax.plot(oc.w_vector, oc.lambdastars, 'x')
+    ax.plot(osl.ws, lhats, marker='x')
+    ax.plot(sihp.ws, approx_lstars, marker='x')
     fig.show()
-
-    #

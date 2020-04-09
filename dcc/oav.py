@@ -91,8 +91,8 @@ class OAV(Base):
                                                   - self.p.kappa * self.aavc.beta) * self.aavc.alpha, self.aavc.t) \
                                  * w * self.p.rho + self.p.chat
 
-            res[i] = fsolve(eqlam, np.ones_like(w))
-            # res[i] = brentq(eqlam, self.p.lambdainf, 100)
+            # res[i] = fsolve(eqlam, np.ones_like(w))
+            res[i] = brentq(eqlam, 0, 1000)
         return res
 
     def v0star(self, l, w, lstar=None):
@@ -236,7 +236,7 @@ class OAV(Base):
         # plt.axhline(0)
         # plt.show()
         # lambdastar = fsolve(eqfi, np.array([0.2]))[0]
-        lambdastar = brentq(eqfi, self.p.lambdainf, 100)
+        lambdastar = brentq(eqfi, self.p.lambdainf, 1000)
         try:
             assert lambdastar > 0
         except AssertionError as err:
@@ -358,29 +358,31 @@ def _main():
 
 if __name__ == '__main__':
     #filename = 'ref_parameters'
-    filename = 'precomputed_w500'
+    # filename = 'precomputed_w500'
     # REFERENCE PARAMETERS THAT ARE PICKLED!
     #
-    # w_start = 500
-    # lstart = 1
-    # p = Parameters()
-    # w_array = np.linspace(0, w_start, 100)
-    # l_array = np.linspace(0, 15, 40)
-    # oav = OAV(p, w_start, lstart, nx=200, ny=20, lmax = 15)
-    # oav.solve_v()
-    # oav.plot_vf(plot_aav_flag=True)
-    # oav.plot_statespace()
-    # plt.show()
+    w_start = 500
+    lstart = 2
+    p = Parameters()
+    p.r_ = 0.1
+    w_array = np.linspace(0, w_start, 100)
+    l_array = np.linspace(0, 15, 40)
+    oav = OAV(p, w_start, lstart, nx=200, ny=20, lmax=5)
+    print(f'w_: {oav.w_}, w0star: {oav.w0star}')
+    oav.solve_v()
+    oav.plot_vf(plot_aav_flag=True)
+    oav.plot_statespace()
+    plt.show()
     # oav.save(filename)
 
     # Load pickled file here
 
 
-    oav = OAV.load(filename)
-    oav.plot_statespace()
-    oav.plot_vf(plot_aav_flag=True)
-    print(oav.v(0.8, 40))
-    plt.show()
+    # oav = OAV.load(filename)
+    # oav.plot_statespace()
+    # oav.plot_vf(plot_aav_flag=True)
+    # print(oav.v(0.8, 40))
+    # plt.show()
 
 
 
@@ -388,4 +390,3 @@ if __name__ == '__main__':
     # import cProfile
     # cProfile.run('_main()')
 
-    print(oav.__doc__)

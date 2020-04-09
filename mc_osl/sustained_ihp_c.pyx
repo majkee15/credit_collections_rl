@@ -12,6 +12,8 @@ from cython.parallel cimport prange, parallel
 cdef double[::1] single_result = np.empty(4)
 srand(time(NULL))
 
+cdef double r_ = 0.1
+
 ## Random Generators
 @cdivision(True)
 @wraparound(False)
@@ -93,7 +95,7 @@ cdef inline double[::1] next_arrival(double lstart, double lhat, double balance,
         intensity_at_jump_minus = fmax(drift(s,lstart, params), lhat)
         if d * lstar <= intensity_at_jump_minus:
             sustain_drift_time = 0.0
-            relative_repayment = potential_repayment(0.1, 1)
+            relative_repayment = potential_repayment(r_, 1)
             collected = balance * relative_repayment * exp(-params[6] * s)
             if jump_size > 0.0:
                 sust_cost = params[7] * (params[2] * (lhat - params[1]) *
