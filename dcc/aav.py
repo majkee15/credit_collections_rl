@@ -155,7 +155,7 @@ class Parameters:
     """
 
     def __init__(self):
-        self.lamdbda0 = 0.11
+        self.lambda0 = 0.11
         self.lambdainf = 0.1
         self.kappa = 0.7
         self.delta10 = 0.02
@@ -165,7 +165,8 @@ class Parameters:
         self.c = 6
         self.r_ = 0.1
         self.chat = self.c / self.delta2
-        self.rmean = self._rmean()
+        self._rmean = self.rmean
+
     def rdist(self, r):
         """
         PDF of the relative distribution
@@ -180,8 +181,8 @@ class Parameters:
 
     def sample_repayment(self, n=1):
         return np.random.uniform(self.r_, 1, n)
-
-    def _rmean(self):
+    @property
+    def rmean(self):
         return integrate.quad(self.integrand_mean, self.r_, 1)[0]
 
 
@@ -189,11 +190,13 @@ if __name__ == '__main__':
     balance = 500
     params = Parameters()
     print(params.rmean)
-    aavcl = AAV(params)
-    print(aavcl.compute_w0star())
-    w_array = np.linspace(0, 100, 40)
-    l_array = np.linspace(0, 2, 10)
-    aavcl.evaluate_aav(2, w_array, True)
-    aavcl.evaluate_aav(l_array, w_array, True)
-    aavcl.evaluate_aav(l_array, balance, True)
-    print(aavcl.u(2, balance))
+    params.r_ = 0.99
+    print(params.rmean)
+    # aavcl = AAV(params)
+    # print(aavcl.compute_w0star())
+    # w_array = np.linspace(0, 100, 40)
+    # l_array = np.linspace(0, 2, 10)
+    # aavcl.evaluate_aav(2, w_array, True)
+    # aavcl.evaluate_aav(l_array, w_array, True)
+    # aavcl.evaluate_aav(l_array, balance, True)
+    # print(aavcl.u(2, balance))
