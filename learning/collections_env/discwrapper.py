@@ -16,6 +16,7 @@ class DiscretizedObservationWrapper(gym.ObservationWrapper):
         high_obs = self.observation_space.high if high_obs is None else high_obs
 
         self.n_obs_bins = n_bins
+
         if log:
             self.obs_val_bins = [np.linspace(low_obs[0], high_obs[0], n_bins[0]),
                             np.logspace(0, 20, base=(1-env.params.r_), num=n_bins[1]) * high_obs[1]]

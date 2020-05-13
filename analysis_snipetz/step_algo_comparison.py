@@ -75,7 +75,7 @@ class MotherSimulator(ABC):
         return vals
 
     def plot_value_dist(self, w0, n):
-        aav = AAV(p)
+        aav = AAV(self.params)
         u = -aav.u(self.params.lambda0, w0)
         mc = self.value_acc(w0, n)
         fig, ax = plt.subplots()
@@ -111,6 +111,8 @@ class Thinning(MotherSimulator):
                 rep = self.params.sample_repayment()
                 arrivals = np.append(arrivals, s)
                 repayments = np.append(repayments, rep)
+
+
         return arrivals, repayments
 
 
@@ -231,21 +233,21 @@ if __name__ == '__main__':
     # # Check the full implementations
     #
     chp = Thinning(p)
-    # arrivals, repayments = chp.getpath(10000)
-    # chp.modelcheck(arrivals, repayments, verbose=True)
-    # chp.plot_value_dist(100, n=10000)
+    arrivals, repayments = chp.getpath(10000)
+    chp.modelcheck(arrivals, repayments, verbose=True)
+    chp.plot_value_dist(100, n=10000)
     # #
     # # Check the integral implementations
     # #
-    chpi = IntegralStep(p, dt=0.01)
+    # chpi = IntegralStep(p, dt=0.01)
     # arrivals, repayments = chpi.getpath(10000)
     # chpi.modelcheck(arrivals, repayments, verbose=True)
     # chpi.plot_value_dist(100, n=20000)
 
     # # Check the naive step
-    chpn = NaiveStep(p, dt=0.01)
-    arrivals, repayments = chpn.getpath(1000)
-    chpn.modelcheck(arrivals, repayments, verbose=True)
+    # chpn = NaiveStep(p, dt=0.01)
+    # arrivals, repayments = chpn.getpath(1000)
+    # chpn.modelcheck(arrivals, repayments, verbose=True)
     # chpn.plot_value_dist(100, n=1000)
 
 

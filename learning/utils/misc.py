@@ -9,6 +9,7 @@ from copy import deepcopy
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
+
 class Config:
     def __init__(self, **kwargs):
         # read parameters from parents, and children can override the values.
