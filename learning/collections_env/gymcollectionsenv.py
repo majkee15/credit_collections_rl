@@ -6,7 +6,7 @@ import copy
 from learning.collections_env import utils
 
 MAX_ACCOUNT_BALANCE = 100.0
-MIN_ACCONT_BALANCE = 1
+MIN_ACCONT_BALANCE = 10
 MAX_ACTION = 0.3
 
 

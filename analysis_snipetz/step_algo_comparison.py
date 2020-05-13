@@ -7,6 +7,8 @@ from scipy.stats import kstest
 import seaborn as sns
 
 from abc import ABC, abstractmethod
+
+# Tests the performance of step algorithms
 # Step algorithm performance on value of the account
 
 
@@ -241,8 +243,8 @@ if __name__ == '__main__':
     # chpi.plot_value_dist(100, n=20000)
 
     # # Check the naive step
-    chpn = NaiveStep(p, dt=0.5)
-    arrivals, repayments = chpn.getpath(10000)
+    chpn = NaiveStep(p, dt=0.01)
+    arrivals, repayments = chpn.getpath(1000)
     chpn.modelcheck(arrivals, repayments, verbose=True)
     # chpn.plot_value_dist(100, n=1000)
 
