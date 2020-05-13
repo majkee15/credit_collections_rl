@@ -1,16 +1,51 @@
 from collections_env.gymcollectionsenv import CollectionsEnv
-from collections_env.discwrapper import DiscretizedObservationWrapper, DiscretizedActionWrapper
+from collections_env.discwrapper import DiscretizedObservationWrapper# , DiscretizedActionWrapper
+from dcc import Parameters, AAV
+from collections_env import utils
+
+
 import matplotlib.pyplot as plt
 import numpy as np
-from dcc import Parameters, AAV
+from scipy.stats import kstest
+
+import unittest
 
 SEED = 1
+
+
+class TestContinuousEnvironment(unittest.TestCase):
+    def __init__(self, *args, **kwargs):
+        super(TestContinuousEnvironment, self).__init__(*args, **kwargs)
+        #self.seed = np.random.seed(SEED)
+        self.env = CollectionsEnv()
+
+    def test_distribution_properties(self):
+        action = 0
+        self.env.dt = 0.02
+        self.env.reset()
+        while True:
+            ob, rew, done, _ = self.env.step(action)
+            # lambdas.append(ob[0])
+            # ws.append(ob[1])
+            if len(self.env.arrivals) >= 1000:
+                break
+        arrivals = np.array(self.env.arrivals)
+        repayments = np.array(self.env.repayments)
+        p_value = utils.modelcheck(arrivals, repayments, self.env.params)
+        msg = f'P_value: {p_value} on {len(self.env.arrivals)} arrivals.'
+        self.assertGreater(p_value, 0.05, msg)
+
+
+
+
+
+
 def test1(dt):
     """
     Plots the realization of the process according to the environment
     Returns:
-
     """
+
     np.random.seed(SEED)
     env = CollectionsEnv()
     env.dt = dt
@@ -155,9 +190,9 @@ def test3():
 
 
 
-if __name__ == '__main__':
-    dt = 0.01
-    test1(dt)
-    test2(dt)
+# if __name__ == '__main__':
+#     dt = 0.01
+#     test1(dt)
+#     test2(dt)
 
 
