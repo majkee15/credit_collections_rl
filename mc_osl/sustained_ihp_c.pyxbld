@@ -1,6 +1,0 @@
-def make_ext(modname, pyxfilename):
-    from distutils.extension import Extension
-    from numpy import get_include
-    return Extension(name=modname,
-                     sources=[pyxfilename],
-                     include_dirs=[get_include()])

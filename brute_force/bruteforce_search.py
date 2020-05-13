@@ -10,7 +10,7 @@ from chp import CHP
 
 
 class BruteForce(Base):
-    # conducts a brute force search for optimal control policy of a form
+    # conducts a brute force search for optimal control policies of a form
     # f(w) = max(0, m(w-b)
     # m,b \in \mathbb{R}
     def __init__(self, chp, data_dir, delta, bmax=10, mmax=1, mc_iterations=10000):

@@ -1,12 +1,10 @@
-from collections_env.gymcollectionsenv import CollectionsEnv
-from collections_env.discwrapper import DiscretizedObservationWrapper# , DiscretizedActionWrapper
+from learning.collections_env import CollectionsEnv
+from learning.collections_env.discwrapper import DiscretizedObservationWrapper# , DiscretizedActionWrapper
 from dcc import Parameters, AAV
-from collections_env import utils
-
+from learning.collections_env import utils
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import kstest
 
 import unittest
 
@@ -27,13 +25,13 @@ class TestContinuousEnvironment(unittest.TestCase):
             ob, rew, done, _ = self.env.step(action)
             # lambdas.append(ob[0])
             # ws.append(ob[1])
-            if len(self.env.arrivals) >= 1000:
+            if len(self.env.arrivals) >= 3000:
                 break
         arrivals = np.array(self.env.arrivals)
         repayments = np.array(self.env.repayments)
         p_value = utils.modelcheck(arrivals, repayments, self.env.params)
         msg = f'P_value: {p_value} on {len(self.env.arrivals)} arrivals.'
-        self.assertGreater(p_value, 0.05, msg)
+        self.assertGreater(p_value, 0.01, msg)
 
 
 

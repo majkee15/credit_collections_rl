@@ -1,1 +1,1 @@
-# Brute force bandit implementation of linear policy search
+# Brute force bandit implementation of linear policies search

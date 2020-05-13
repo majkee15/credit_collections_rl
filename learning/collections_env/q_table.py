@@ -1,10 +1,7 @@
-import gym
 from collections import defaultdict
-from collections_env.discwrapper import DiscretizedObservationWrapper, DiscretizedActionWrapper
-from collections_env import CollectionsEnv
+from learning.collections_env import DiscretizedObservationWrapper, DiscretizedActionWrapper
+from learning.collections_env import CollectionsEnv
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 Q = defaultdict(float)
 gamma = 0.99  # Discounting factor

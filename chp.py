@@ -1,4 +1,4 @@
-# simulate an exponential controlled HP with control policy given by f(w) = lambda
+# simulate an exponential controlled HP with control policies given by f(w) = lambda
 import numpy as np
 import matplotlib.pyplot as plt
 from base import Base

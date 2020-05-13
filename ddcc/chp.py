@@ -1,4 +1,4 @@
-# simulate an exponential controlled HP with control policy given by f(w) = lambda
+# simulate an exponential controlled HP with control policies given by f(w) = lambda
 import numpy as np
 import matplotlib.pyplot as plt
 from base import Base
@@ -7,7 +7,7 @@ from dcc import Parameters
 
 class CHP(Base):
     """
-    Simulates an exponential marked controlled Hawkes Process with control policy prescribed by f(w) = lambda
+    Simulates an exponential marked controlled Hawkes Process with control policies prescribed by f(w) = lambda
     """
     def __init__(self, starting_balance, starting_intensity, params, collection_horizon=1000, control_function=None,
                  value_precision_thershold=1e-3):

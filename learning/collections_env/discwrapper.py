@@ -7,7 +7,6 @@ class DiscretizedObservationWrapper(gym.ObservationWrapper):
     """
     This wrapper converts a Box observation into a single integer.
     """
-
     def __init__(self, env, n_bins=(40, 25), low_obs=None, high_obs=None, log=False):
         super().__init__(env)
         # Check whether the env is already discrete

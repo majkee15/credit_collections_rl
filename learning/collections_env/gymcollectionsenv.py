@@ -3,7 +3,7 @@ from gym import spaces
 import numpy as np
 from dcc import Parameters
 import copy
-from collections_env import utils
+from learning.collections_env import utils
 
 MAX_ACCOUNT_BALANCE = 100.0
 MIN_ACCONT_BALANCE = 1

@@ -1,1 +1,0 @@
-from collections_env.gymcollectionsenv import CollectionsEnv
