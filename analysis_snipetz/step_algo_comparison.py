@@ -223,6 +223,9 @@ class StepSizeEffect:
 
         fig, ax = plt.subplots()
         ax.plot(self.dts, pvals, marker='x')
+        label = self.simulator.name
+        ax.set_title(label)
+        ax.set_ylim([0,1])
         fig.show()
 
 
@@ -233,31 +236,33 @@ if __name__ == '__main__':
     # # Check the full implementations
     #
     chp = Thinning(p)
-    arrivals, repayments = chp.getpath(10000)
-    chp.modelcheck(arrivals, repayments, verbose=True)
-    chp.plot_value_dist(100, n=10000)
-    # #
-    # # Check the integral implementations
-    # #
-    # chpi = IntegralStep(p, dt=0.01)
+    # arrivals, repayments = chp.getpath(10000)
+    # chp.modelcheck(arrivals, repayments, verbose=True)
+    # chp.plot_value_dist(100, n=10000)
+    #
+    # Check the integral implementations
+    #
+    chpi = IntegralStep(p, dt=0.02)
     # arrivals, repayments = chpi.getpath(10000)
     # chpi.modelcheck(arrivals, repayments, verbose=True)
-    # chpi.plot_value_dist(100, n=20000)
+    # chpi.plot_value_dist(100, n=1000)
 
-    # # Check the naive step
-    # chpn = NaiveStep(p, dt=0.01)
+    # Check the naive step
+    chpn = NaiveStep(p, dt=0.02)
     # arrivals, repayments = chpn.getpath(1000)
     # chpn.modelcheck(arrivals, repayments, verbose=True)
     # chpn.plot_value_dist(100, n=1000)
 
 
     # Check the effect of stepsize
-    #
+
     # dts = np.logspace(-4, 0, 4)
-    # dts = np.linspace(0.005, 0.4, 10)
-    # sim = StepSizeEffect(chpn, dts)
-    # sim.sim_value(w)
-    # sim.sim_pvalue()
+    dts = np.linspace(0.001, 0.5, 40)
+    simn = StepSizeEffect(chpn, dts)
+    simi = StepSizeEffect(chpi, dts)
+    #sim.sim_value(w)
+    simn.sim_pvalue()
+    simi.sim_pvalue()
 
    #  sim.sim_distributions(w, n=5000)
 
