@@ -372,6 +372,8 @@ if __name__ == '__main__':
     oav.plot_vf(plot_aav_flag=True)
     oav.plot_statespace()
     plt.show()
+    print(oav.v(0.11, 100))
+    print(oav.u(0.11, 100))
     # oav.save(filename)
 
     # Load pickled file here

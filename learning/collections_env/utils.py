@@ -2,6 +2,7 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.stats import kstest
 
+
 def lambda_bound(wstart, wtarget, p):
     n = iw(wstart, wtarget, p)
     return n * (p.delta10 + p.delta11) + p.lambda0

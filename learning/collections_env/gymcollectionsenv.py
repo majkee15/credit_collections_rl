@@ -6,8 +6,8 @@ import copy
 from learning.collections_env import utils
 
 MAX_ACCOUNT_BALANCE = 100.0
-MIN_ACCONT_BALANCE = 10
-MAX_ACTION = 0.3
+MIN_ACCOUNT_BALANCE = 10
+MAX_ACTION = 1.0
 
 
 class CollectionsEnv(gym.Env):
@@ -18,16 +18,16 @@ class CollectionsEnv(gym.Env):
 
         # Environment specific
         self.params = Parameters()
-        self.dt = 0.01
+        self.dt = 0.1
         self.w0 = MAX_ACCOUNT_BALANCE
         self.lambda0 = self.params.lambda0
         self.starting_state = np.array([self.lambda0, self.w0], dtype=np.float32)
 
         # GYM specific attributes
         self.action_space = spaces.Box(low=np.array([0]), high=np.array([MAX_ACTION]), dtype=np.float16)
-        self.MIN_ACCONT_BALANCE = MIN_ACCONT_BALANCE
-        MAX_LAMBDA = utils.lambda_bound(MAX_ACCOUNT_BALANCE, MIN_ACCONT_BALANCE, self.params)
-        self.observation_space = spaces.Box(low=np.array([self.params.lambdainf, self.MIN_ACCONT_BALANCE]),
+        self.MIN_ACCOUNT_BALANCE = MIN_ACCOUNT_BALANCE
+        MAX_LAMBDA = utils.lambda_bound(MAX_ACCOUNT_BALANCE, MIN_ACCOUNT_BALANCE, self.params)
+        self.observation_space = spaces.Box(low=np.array([self.params.lambdainf, self.MIN_ACCOUNT_BALANCE]),
                                             high=np.array([MAX_LAMBDA, MAX_ACCOUNT_BALANCE]),
                                             dtype=np.float16)
         self.reward_range = (0, MAX_ACCOUNT_BALANCE)
@@ -79,7 +79,7 @@ class CollectionsEnv(gym.Env):
         reward = (r * self.current_state[1] - action * self.params.c) * discount_factor
         self.current_state[1] = self.current_state[1] * (1 - r)
 
-        if self.current_state[1] < self.MIN_ACCONT_BALANCE:
+        if self.current_state[1] < self.MIN_ACCOUNT_BALANCE:
             self.done = True
 
         return self.current_state, reward, self.done, None
@@ -94,6 +94,9 @@ class CollectionsEnv(gym.Env):
 
     def render(self, mode='human', close=False):
         pass
+
+    def reward(self, r, action, dc):
+        (r * self.current_state[1] - action * self.params.c) * dc
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-from learning.collections_env import CollectionsEnv
+from learning.collections_env.gymcollectionsenv import CollectionsEnv
 from learning.collections_env.discwrapper import DiscretizedObservationWrapper# , DiscretizedActionWrapper
 from dcc import Parameters, AAV
 from learning.collections_env import utils
@@ -19,8 +19,9 @@ class TestContinuousEnvironment(unittest.TestCase):
 
     def test_distribution_properties(self):
         action = 0
-        self.env.dt = 0.02
+        self.env.dt = 0.05
         self.env.reset()
+        # lambdas = []
         while True:
             ob, rew, done, _ = self.env.step(action)
             # lambdas.append(ob[0])
@@ -31,6 +32,8 @@ class TestContinuousEnvironment(unittest.TestCase):
         repayments = np.array(self.env.repayments)
         p_value = utils.modelcheck(arrivals, repayments, self.env.params)
         msg = f'P_value: {p_value} on {len(self.env.arrivals)} arrivals.'
+        # plt.plot(lambdas)
+        # plt.show()
         self.assertGreater(p_value, 0.01, msg)
 
 

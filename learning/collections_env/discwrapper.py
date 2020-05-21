@@ -1,6 +1,6 @@
 import gym
 import numpy as np
-
+import math
 
 # Discretized observation wrapper
 class DiscretizedObservationWrapper(gym.ObservationWrapper):
@@ -18,8 +18,10 @@ class DiscretizedObservationWrapper(gym.ObservationWrapper):
         self.n_obs_bins = n_bins
 
         if log:
-            self.obs_val_bins = [np.linspace(low_obs[0], high_obs[0], n_bins[0]),
-                            np.logspace(0, 20, base=(1-env.params.r_), num=n_bins[1]) * high_obs[1]]
+            self.obs_val_bins = [np.logspace(math.log(low_obs[0], np.e ** (-env.params.kappa)),
+                                             math.log(high_obs[0], np.e ** (-env.params.kappa)), n_bins[0],
+                                             base=np.e ** (-env.params.kappa)),
+                            np.flip(np.logspace(0, 20, base=(1-env.params.r_), num=n_bins[1]) * high_obs[1])]
         else:
             self.obs_val_bins = [np.linspace(h[0], h[1], n_bins[i]) for i, h in
                                  enumerate(zip(low_obs.flatten(), high_obs.flatten()))]
@@ -51,18 +53,23 @@ class DiscretizedActionWrapper(gym.ActionWrapper):
     This wrapper converts a Box observation into a single integer.
     """
 
-    def __init__(self, env, n_bins=10, low=None, high=None):
+    def __init__(self, env, given_bins=None, n_bins=10, low=None, high=None):
         super().__init__(env)
         # Check whether the env is already discrete
         assert isinstance(env.action_space, gym.spaces.Box)
 
         low = self.action_space.low if low is None else low
         high = self.action_space.high if high is None else high
-
-        self.n_action_bins = n_bins
-        self.action_val_bins = [np.linspace(l, h, n_bins) for l, h in
-                                zip(low.flatten(), high.flatten())]
-        self.action_space = gym.spaces.Discrete(self.action_val_bins[0].shape[0])
+        if given_bins is None:
+            self.n_action_bins = n_bins
+            self.action_val_bins = [np.linspace(l, h, n_bins) for l, h in
+                                    zip(low.flatten(), high.flatten())]
+            self.action_space = gym.spaces.Discrete(self.action_val_bins[0].shape[0])
+        else:
+            self.action_val_bins = [given_bins]
+            self.n_action_bins = given_bins.shape[0]
+            self.action_space = gym.spaces.Discrete(self.action_val_bins[0].shape[0])
+            self.action_space.n = self.n_action_bins
         ## Not needed
 
 
@@ -77,3 +84,5 @@ class DiscretizedActionWrapper(gym.ActionWrapper):
         #           for x, bins in zip(action.flatten(), self.val_bins)]
         # digits = np.digitize(action, self.action_val_bins[0], right=True)
         return self.action_val_bins[0][action]
+
+
