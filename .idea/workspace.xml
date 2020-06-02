@@ -1,0 +1,1334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="credit_collections_rl" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/learning/collections_env/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="18" column="64" selection-start-line="18" selection-start-column="64" selection-end-line="18" selection-end-column="64" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/learning/policies/qlearning.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="669">
+              <caret line="92" selection-start-line="92" selection-end-line="92" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/learning/collections_env/gymcollectionsenv.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="211">
+              <caret line="78" column="77" selection-start-line="78" selection-start-column="72" selection-end-line="78" selection-end-column="77" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/learning/collections_env/test_environment.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="452">
+              <caret line="34" column="27" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#51#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4159">
+              <caret line="20" column="27" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dcc/oav.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="623">
+              <caret line="375" column="22" selection-start-line="375" selection-start-column="22" selection-end-line="375" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#35#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/learning/collections_env/discwrapper.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="460">
+              <caret line="25" column="79" selection-start-line="25" selection-start-column="79" selection-end-line="25" selection-end-column="79" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/learning/utils/wrappers.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1140">
+              <caret line="59" selection-start-line="59" selection-end-line="59" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/learning/utils/misc.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="40" selection-start-column="40" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>r_</find>
+      <find>env.obser</find>
+      <find>diff</find>
+      <find>close</find>
+      <find>s0</find>
+      <find>array</find>
+      <find>reset</find>
+      <find>actio</find>
+      <find>start</find>
+      <find>res</find>
+      <find>action</find>
+      <find>sim</find>
+      <find>print</find>
+      <find>sample</find>
+      <find>starting_state</find>
+      <find>confi</find>
+      <find>aav</find>
+      <find>log</find>
+      <find>infty</find>
+      <find>drift</find>
+      <find>naive</find>
+      <find>integral</find>
+      <find>r</find>
+      <find>mixi</find>
+      <find>Mix</find>
+      <find>memory</find>
+      <find>ACCONT</find>
+      <find>Transi</find>
+      <find>kappa</find>
+      <find>disco</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/optimal_sustain_level/setup.py" />
+        <option value="$PROJECT_DIR$/optimal_sustain_level/gil_nogil_timing.py" />
+        <option value="$PROJECT_DIR$/chp.py" />
+        <option value="$PROJECT_DIR$/ddcc/__init__.py" />
+        <option value="$PROJECT_DIR$/chp/chp_c.py" />
+        <option value="$PROJECT_DIR$/ddcc/chp.py" />
+        <option value="$PROJECT_DIR$/chp/__init__.py" />
+        <option value="$PROJECT_DIR$/chp/aut_mc.py" />
+        <option value="$PROJECT_DIR$/chp/chp.py" />
+        <option value="$PROJECT_DIR$/optimal_sustain_level/sustained_ihp.py" />
+        <option value="$PROJECT_DIR$/optimal_sustain_level/sustained_ihp_c.pyx" />
+        <option value="$PROJECT_DIR$/mc_osl/__init__.py" />
+        <option value="$PROJECT_DIR$/osl/__init__.py" />
+        <option value="$PROJECT_DIR$/osl/osl_engine.py" />
+        <option value="$PROJECT_DIR$/mc_osl/sustained_ihp.py" />
+        <option value="$PROJECT_DIR$/collections_env/collections_env.py" />
+        <option value="$PROJECT_DIR$/mc_osl/sustained_ihp_c.pyx" />
+        <option value="$PROJECT_DIR$/collections_env/collectionsenv.py" />
+        <option value="$PROJECT_DIR$/collections_env/__init__.py" />
+        <option value="$PROJECT_DIR$/collections_env/q_table.py" />
+        <option value="$PROJECT_DIR$/policy/policy.py" />
+        <option value="$PROJECT_DIR$/policy/base.py" />
+        <option value="$PROJECT_DIR$/brute_force/__init__.py" />
+        <option value="$PROJECT_DIR$/policy/qlearning.py" />
+        <option value="$PROJECT_DIR$/hp_sim/hawkesstep.py" />
+        <option value="$PROJECT_DIR$/hp_sim/exact_thinning.py" />
+        <option value="$PROJECT_DIR$/hp_sim/hp_sim.py" />
+        <option value="$PROJECT_DIR$/collections_env/testing_environment.py" />
+        <option value="$PROJECT_DIR$/dcc/aav.py" />
+        <option value="$PROJECT_DIR$/collections_env/gymcollectionsenv.py" />
+        <option value="$PROJECT_DIR$/collections_env/utils.py" />
+        <option value="$PROJECT_DIR$/collections_env/test_environment.py" />
+        <option value="$PROJECT_DIR$/collections_env/discwrapper.py" />
+        <option value="$PROJECT_DIR$/utils/misc.py" />
+        <option value="$PROJECT_DIR$/hp_sim/step_algo_comparison.py" />
+        <option value="$PROJECT_DIR$/learning/policies/base.py" />
+        <option value="$PROJECT_DIR$/learning/memory.py" />
+        <option value="$PROJECT_DIR$/learning/policies/memory.py" />
+        <option value="$PROJECT_DIR$/learning/policies/dqn.py" />
+        <option value="$PROJECT_DIR$/learning/utils/misc.py" />
+        <option value="$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py" />
+        <option value="$PROJECT_DIR$/learning/policies/__init__.py" />
+        <option value="$PROJECT_DIR$/learning/policies/qlearningLily.py" />
+        <option value="$PROJECT_DIR$/learning/utils/wrappers.py" />
+        <option value="$PROJECT_DIR$/learning/utils/pricer.py" />
+        <option value="$PROJECT_DIR$/learning/collections_env/gymcollectionsenv.py" />
+        <option value="$PROJECT_DIR$/learning/collections_env/discwrapper.py" />
+        <option value="$PROJECT_DIR$/dcc/oav.py" />
+        <option value="$PROJECT_DIR$/learning/policies/qlearning.py" />
+        <option value="$PROJECT_DIR$/learning/collections_env/utils.py" />
+        <option value="$PROJECT_DIR$/learning/collections_env/test_environment.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="credit_collections_rl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/Documents/credit_collections/credit_collections_rl" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/Documents/credit_collections/credit_collections_rl" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="analysis_snipetz" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/Documents/credit_collections/credit_collections_rl" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="brute_force" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/Documents/credit_collections/credit_collections_rl" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="learning" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/Documents/credit_collections/credit_collections_rl" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="learning" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="collections_env" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/Documents/credit_collections/credit_collections_rl" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="learning" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="policies" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/Documents/credit_collections/credit_collections_rl" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="learning" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="utils" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="credit_collections_rl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="credit_collections_rl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="credit_collections_rl" type="462c0819:PsiDirectoryNode" />
+              <item name="brute_force" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="credit_collections_rl" type="462c0819:PsiDirectoryNode" />
+              <item name="dcc" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="credit_collections_rl" type="462c0819:PsiDirectoryNode" />
+              <item name="optimal_sustain_level" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="ignore_missing_gitignore" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/collections_env" />
+      <recent name="$PROJECT_DIR$/osl" />
+      <recent name="$PROJECT_DIR$/optimal_sustain_level" />
+      <recent name="$PROJECT_DIR$/chp" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/learning/policies" />
+      <recent name="$PROJECT_DIR$/learning" />
+      <recent name="$PROJECT_DIR$/osl" />
+      <recent name="$PROJECT_DIR$/optimal_sustain_level" />
+      <recent name="$PROJECT_DIR$/dynamic_credit_collection" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python tests.pytest for test_environment.TestContinuousEnvironment.test_distribution_properties">
+    <configuration name="oav" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="credit_collections_RL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dcc" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dcc/oav.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pricer" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="credit_collections_RL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/utils" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/utils/pricer.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="qlearning" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="credit_collections_RL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/policies" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/policies/qlearning.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="step_algo_comparison" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="credit_collections_RL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/analysis_snipetz" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="credit_collections_RL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/collections_env" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_environment.TestContinuousEnvironment.test_distribution_properties&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.oav" />
+      <item itemvalue="Python.pricer" />
+      <item itemvalue="Python.qlearning" />
+      <item itemvalue="Python tests.pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" />
+      <item itemvalue="Python.step_algo_comparison" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" />
+        <item itemvalue="Python.step_algo_comparison" />
+        <item itemvalue="Python.oav" />
+        <item itemvalue="Python.qlearning" />
+        <item itemvalue="Python.pricer" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="" />
+      <created>1574256955523</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1574256955523</updated>
+      <workItem from="1574256960673" duration="32580000" />
+      <workItem from="1574674911954" duration="63626000" />
+      <workItem from="1575281767921" duration="424000" />
+      <workItem from="1575282271687" duration="17579000" />
+      <workItem from="1575459784894" duration="13176000" />
+      <workItem from="1576596610792" duration="630000" />
+      <workItem from="1576598444366" duration="6844000" />
+      <workItem from="1576679403045" duration="1944000" />
+      <workItem from="1577972544587" duration="9000" />
+      <workItem from="1579774114306" duration="527000" />
+      <workItem from="1579944213564" duration="35684000" />
+      <workItem from="1580219563117" duration="277000" />
+      <workItem from="1580749119933" duration="3000" />
+      <workItem from="1582024059394" duration="10509000" />
+      <workItem from="1582455263431" duration="14704000" />
+      <workItem from="1582556450394" duration="12075000" />
+      <workItem from="1582727009230" duration="512000" />
+      <workItem from="1582730618633" duration="32000" />
+      <workItem from="1582808054020" duration="23786000" />
+      <workItem from="1583062725211" duration="19710000" />
+      <workItem from="1583671201758" duration="2014000" />
+      <workItem from="1583687249228" duration="48534000" />
+      <workItem from="1584281327912" duration="2840000" />
+      <workItem from="1584435604216" duration="20322000" />
+      <workItem from="1584611319946" duration="4937000" />
+      <workItem from="1585228970641" duration="2659000" />
+      <workItem from="1585559788636" duration="3100000" />
+      <workItem from="1585589143386" duration="30366000" />
+      <workItem from="1585740467831" duration="25462000" />
+      <workItem from="1586334389433" duration="18930000" />
+      <workItem from="1586607042757" duration="72000" />
+      <workItem from="1586961814049" duration="2969000" />
+      <workItem from="1587015851556" duration="19842000" />
+      <workItem from="1587117197315" duration="3973000" />
+      <workItem from="1587133774894" duration="12177000" />
+      <workItem from="1587307007325" duration="29415000" />
+      <workItem from="1587493331005" duration="28048000" />
+      <workItem from="1587632314618" duration="6475000" />
+      <workItem from="1587646870991" duration="880000" />
+      <workItem from="1588151066047" duration="18096000" />
+      <workItem from="1589212378161" duration="53885000" />
+      <workItem from="1589474441878" duration="4000" />
+      <workItem from="1590044738222" duration="6473000" />
+    </task>
+    <task id="LOCAL-00001" summary="first_commit">
+      <created>1574424688615</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1574424688616</updated>
+    </task>
+    <task id="LOCAL-00002" summary="working CHP class">
+      <created>1574940505503</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1574940505503</updated>
+    </task>
+    <task id="LOCAL-00003" summary="working CHP class">
+      <created>1574946970042</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1574946970042</updated>
+    </task>
+    <task id="LOCAL-00004" summary="working CHP class">
+      <created>1575398961920</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1575398961922</updated>
+    </task>
+    <task id="LOCAL-00005" summary="adding a value precision condition for simulation to lighten the computational load">
+      <created>1575475564662</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1575475564662</updated>
+    </task>
+    <task id="LOCAL-00006" summary="adding a value precision condition for simulation to lighten the computational load&#10;BruteForce sim parameters">
+      <created>1575478378354</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1575478378354</updated>
+    </task>
+    <task id="LOCAL-00007" summary="adding a value precision condition for simulation to lighten the computational load&#10;BruteForce sim parameters">
+      <created>1575478753822</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1575478753822</updated>
+    </task>
+    <task id="LOCAL-00008" summary="adding a value precision condition for simulation to lighten the computational load&#10;BruteForce sim parameters">
+      <created>1575480063922</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1575480063922</updated>
+    </task>
+    <task id="LOCAL-00009" summary="cython implementation of the valuation engine">
+      <created>1583062806155</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1583062806155</updated>
+    </task>
+    <task id="LOCAL-00010" summary="oop design of the aav class">
+      <created>1583090185659</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1583090185660</updated>
+    </task>
+    <task id="LOCAL-00011" summary="class wrapper for the cython code base">
+      <created>1583163134472</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1583163134472</updated>
+    </task>
+    <task id="LOCAL-00012" summary="class wrapper for the cython code base">
+      <created>1583163240360</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1583163240360</updated>
+    </task>
+    <task id="LOCAL-00013" summary="implementation of Weber &amp; Chehrazi 2016 Optimal method">
+      <created>1583932399981</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1583932399981</updated>
+    </task>
+    <task id="LOCAL-00014" summary="implementation of Weber &amp; Chehrazi 2016 Optimal method">
+      <created>1584523806281</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1584523806281</updated>
+    </task>
+    <task id="LOCAL-00015" summary="making the code legible :D">
+      <created>1584542447154</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1584542447154</updated>
+    </task>
+    <task id="LOCAL-00016" summary="multithreading cython with prange">
+      <created>1585662461772</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1585662461773</updated>
+    </task>
+    <task id="LOCAL-00017" summary="generalized distribution">
+      <created>1585820243918</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1585820243919</updated>
+    </task>
+    <task id="LOCAL-00018" summary="various fixes">
+      <created>1586419430247</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1586419430247</updated>
+    </task>
+    <task id="LOCAL-00019" summary="breaking the api of DCC removing lstart from input">
+      <created>1586419510490</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1586419510490</updated>
+    </task>
+    <task id="LOCAL-00020" summary="breaking the api of DCC removing lstart from input">
+      <created>1589212615803</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1589212615803</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Tested different step sizes">
+      <created>1589383560911</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1589383560911</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Functional environment &#10;KS-test for environment process">
+      <created>1589404611891</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1589404611891</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Cleaning up">
+      <created>1589405814825</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1589405814825</updated>
+    </task>
+    <task id="LOCAL-00024" summary="DQN">
+      <created>1589410049723</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1589410049723</updated>
+    </task>
+    <task id="LOCAL-00025" summary="DQN">
+      <created>1589411280710</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1589411280710</updated>
+    </task>
+    <task id="LOCAL-00026" summary="DQN">
+      <created>1589435136670</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1589435136670</updated>
+    </task>
+    <task id="LOCAL-00027" summary="fixed utils kernel bug - the KS test passes now">
+      <created>1590053486273</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1590053486273</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 09h 17m 23s.xml">
+      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 09h 17m 44s.xml">
+      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 09h 17m 53s.xml">
+      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 09h 18m 31s.xml">
+      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 13m 48s.xml">
+      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 21m 12s.xml">
+      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 24m 35s.xml">
+      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 28m 59s.xml">
+      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 29m 42s.xml">
+      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 30m 44s.xml">
+      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
+    </history-entry>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="596104000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <layout>
+      <window_info id="Favorites" order="0" sideWeight="0.5007133" side_tool="true" weight="0.18530351" />
+      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49928674" visible="true" weight="0.16910867" />
+      <window_info id="DB Browser" order="2" />
+      <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="0" sideWeight="0.4993895" weight="0.3287037" />
+      <window_info anchor="bottom" id="Version Control" order="1" sideWeight="0.498779" weight="0.3265306" />
+      <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.83516484" weight="0.1632653" />
+      <window_info anchor="bottom" id="Database Changes" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.32295483" side_tool="true" weight="0.28004667" />
+      <window_info anchor="bottom" id="Python Console" order="5" sideWeight="0.4993895" weight="0.3265306" />
+      <window_info anchor="bottom" id="DB Execution Console" order="6" />
+      <window_info anchor="bottom" id="Message" order="7" />
+      <window_info anchor="bottom" id="Find" order="8" weight="0.327551" />
+      <window_info anchor="bottom" id="Run" order="9" sideWeight="0.67704517" weight="0.09897959" />
+      <window_info anchor="bottom" id="Debug" order="10" sideWeight="0.64835167" weight="0.29387754" />
+      <window_info anchor="bottom" id="Cvs" order="11" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="12" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="13" />
+      <window_info anchor="bottom" id="Messages" order="14" />
+      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="15" weight="0.32908458" />
+      <window_info anchor="right" id="Database" order="0" weight="0.32967034" />
+      <window_info anchor="right" id="SciView" order="1" visible="true" weight="0.23565324" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="2" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.17838125" />
+      <window_info id="DB Browser" order="2" />
+      <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="0" sideWeight="0.4993895" weight="0.3287037" />
+      <window_info anchor="bottom" id="Version Control" order="1" sideWeight="0.498779" weight="0.3275463" />
+      <window_info anchor="bottom" id="Terminal" order="2" sideWeight="0.83516484" weight="0.27546296" />
+      <window_info anchor="bottom" id="Database Changes" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.32295483" side_tool="true" weight="0.28004667" />
+      <window_info anchor="bottom" id="Python Console" order="5" sideWeight="0.4993895" weight="0.3275463" />
+      <window_info anchor="bottom" id="DB Execution Console" order="6" />
+      <window_info anchor="bottom" id="Message" order="7" />
+      <window_info anchor="bottom" id="Find" order="8" weight="0.32865497" />
+      <window_info active="true" anchor="bottom" id="Run" order="9" sideWeight="0.67704517" visible="true" weight="0.19274612" />
+      <window_info anchor="bottom" id="Debug" order="10" sideWeight="0.64835167" weight="0.33678755" />
+      <window_info anchor="bottom" id="Cvs" order="11" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="12" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="13" />
+      <window_info anchor="bottom" id="Messages" order="14" />
+      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="15" weight="0.32908458" />
+      <window_info anchor="right" id="Database" order="0" weight="0.32967034" />
+      <window_info anchor="right" id="SciView" order="1" visible="true" weight="0.18849841" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="2" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="first_commit" />
+    <MESSAGE value="working CHP class" />
+    <MESSAGE value="adding a value precision condition for simulation to lighten the computational load" />
+    <MESSAGE value="adding a value precision condition for simulation to lighten the computational load&#10;BruteForce sim parameters" />
+    <MESSAGE value="cython implementation of the valuation engine" />
+    <MESSAGE value="oop design of the aav class" />
+    <MESSAGE value="class wrapper for the cython code base" />
+    <MESSAGE value="implementation of Weber &amp; Chehrazi 2016 Optimal method" />
+    <MESSAGE value="making the code legible :D" />
+    <MESSAGE value="multithreading cython with prange" />
+    <MESSAGE value="generalized distribution" />
+    <MESSAGE value="various fixes" />
+    <MESSAGE value="breaking the api of DCC removing lstart from input" />
+    <MESSAGE value="Tested different step sizes" />
+    <MESSAGE value="Functional environment &#10;KS-test for environment process" />
+    <MESSAGE value="Cleaning up" />
+    <MESSAGE value="DQN" />
+    <MESSAGE value="fixed utils kernel bug - the KS test passes now" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed utils kernel bug - the KS test passes now" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint suspend="NONE" type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/credit_collections_rl$bandits_implementation.coverage" NAME="bandits_implementation Coverage Results" MODIFIED="1576681377509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$setup.coverage" NAME="setup Coverage Results" MODIFIED="1583153058715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$collections_env.coverage" NAME="collections_env Coverage Results" MODIFIED="1587378730202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_RL$plot_account.coverage" NAME="plot_account Coverage Results" MODIFIED="1574352613049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$chp__2_.coverage" NAME="chp (2) Coverage Results" MODIFIED="1585808180016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_environment.coverage" NAME="testing_environment Coverage Results" MODIFIED="1587642361733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$base.coverage" NAME="base Coverage Results" MODIFIED="1589406308575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_RL$environment_engine__1_.coverage" NAME="environment_engine Coverage Results" MODIFIED="1574267108724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$oav__1_.coverage" NAME="oav (1) Coverage Results" MODIFIED="1585229636107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_cython_extension.coverage" NAME="testing_cython_extension Coverage Results" MODIFIED="1583153084651" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$qlearning.coverage" NAME="qlearning Coverage Results" MODIFIED="1589452041189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$misc.coverage" NAME="misc Coverage Results" MODIFIED="1589405528224" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$gymcollectionsenv.coverage" NAME="gymcollectionsenv Coverage Results" MODIFIED="1589408992471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihpv2.coverage" NAME="sustained_ihpv2 Coverage Results" MODIFIED="1585661933149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$osl_engine.coverage" NAME="osl_engine Coverage Results" MODIFIED="1586961861910" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/osl" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$hawkesstep.coverage" NAME="hawkesstep Coverage Results" MODIFIED="1589271990866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1589410008358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1589411172930" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_RL$environment_engine.coverage" NAME="environment_engine Coverage Results" MODIFIED="1574257431757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp__1_.coverage" NAME="sustained_ihp (1) Coverage Results" MODIFIED="1586363442240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mc_osl" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$aav.coverage" NAME="aav Coverage Results" MODIFIED="1586434846195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$chp__1_.coverage" NAME="chp (1) Coverage Results" MODIFIED="1589405769572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$bruteforce_search.coverage" NAME="bruteforce_search Coverage Results" MODIFIED="1575480207008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$q_table.coverage" NAME="q_table Coverage Results" MODIFIED="1587490783197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment.coverage" NAME="pytest for test_environment.TestContinuousEnvironment Coverage Results" MODIFIED="1589403167747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_RL$exp_chp.coverage" NAME="exp_chp Coverage Results" MODIFIED="1574416424865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$collectionsenv.coverage" NAME="collectionsenv Coverage Results" MODIFIED="1589383516842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$wrappers.coverage" NAME="wrappers Coverage Results" MODIFIED="1589445857501" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
+    <SUITE FILE_PATH="coverage/credit_collections_RL$CHP.coverage" NAME="CHP Coverage Results" MODIFIED="1574428081832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$chp.coverage" NAME="chp Coverage Results" MODIFIED="1589404672655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ddcc" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties.coverage" NAME="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties Coverage Results" MODIFIED="1590053429260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$demo_contours.coverage" NAME="demo_contours Coverage Results" MODIFIED="1575288849134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$step_algo_comparison.coverage" NAME="step_algo_comparison Coverage Results" MODIFIED="1590046706686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_in_testing_environment_py.coverage" NAME="pytest in testing_environment.py Coverage Results" MODIFIED="1587642043871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$exact_thinning.coverage" NAME="exact_thinning Coverage Results" MODIFIED="1589277356259" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$hp_sim.coverage" NAME="hp_sim Coverage Results" MODIFIED="1589270028200" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_in_test_environment_py.coverage" NAME="pytest in test_environment.py Coverage Results" MODIFIED="1589404087104" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pricer.coverage" NAME="pricer Coverage Results" MODIFIED="1589450672665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$oav.coverage" NAME="oav Coverage Results" MODIFIED="1589459479443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp_c_pyx.coverage" NAME="sustained_ihp_c.pyx Coverage Results" MODIFIED="1585828504788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$gil_nogil_timing.coverage" NAME="gil_nogil_timing Coverage Results" MODIFIED="1585650500747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$step_algo_comparison__1_.coverage" NAME="step_algo_comparison (1) Coverage Results" MODIFIED="1589412265517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp.coverage" NAME="sustained_ihp Coverage Results" MODIFIED="1585828522904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$aut_mc.coverage" NAME="aut_mc Coverage Results" MODIFIED="1585753241841" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$discwrapper.coverage" NAME="discwrapper Coverage Results" MODIFIED="1587632668652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>ob</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>[np.linspace(h[0], h[1], n_bins[i] + 1) for i, h in
+                             enumerate(zip(low_obs.flatten(), high_obs.flatten()))]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>[np.linspace(h[0], h[1], i + 1) for i, h in
+                             enumerate(zip(low_obs.flatten(), high_obs.flatten()))]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.round(base, 2) ** np.round(exponent, 2)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.round(exponent, 2)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.power(np.round(base,2), np.round(exponent,2))</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.power(np.round(base,2), exponent)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.power(round(base,2), exponent)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>cell</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ob</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>plt.show()</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>plt.plot(lambdas)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>envdiscr._ind_to_cell(ob)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>envdiscr._ind_to_cont(ob)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>digits[0] * self.n_obs_bins[1] + digits[1]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.observation_space.low</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.low_obs</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/osl/mc/Testing_the_extension.ipynb">
+      <provider selected="true" editor-type-id="jupyter-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chp/chp_c.pyx" />
+    <entry file="file://$PROJECT_DIR$/osl/mc/testing_cython_extension.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/osl/mc/sustained_ihp_c.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/osl/mc/chp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1120">
+          <caret line="56" column="4" selection-start-line="56" selection-start-column="4" selection-end-line="58" selection-end-column="95" />
+          <folding>
+            <element signature="e#83#101#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collections_env/rewards.jpg" />
+    <entry file="file://$PROJECT_DIR$/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/space_wrappers/observation_wrappers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-52">
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/space_wrappers/tests/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/space_wrappers/transform.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-591" />
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/python/3.7.6_1/Frameworks/Python.framework/Versions/3.7/lib/python3.7/codecs.py" />
+    <entry file="file://$PROJECT_DIR$/collections_env/erect.jpg" />
+    <entry file="file://$PROJECT_DIR$/osl/exact/analysis_of_closed_forms.ipynb">
+      <provider selected="true" editor-type-id="jupyter-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/brute_force/bandits_implementation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2189">
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/brute_force/bruteforce_search.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/brute_force/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="59" lean-forward="true" selection-start-column="59" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.7/site-packages/numpy/core/_methods.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="160" selection-start-line="160" selection-end-line="160" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hp_sim/exact_thinning.py" />
+    <entry file="file://$PROJECT_DIR$/hp_sim/hp_sim.py" />
+    <entry file="file://$PROJECT_DIR$/hp_sim/hawkesstep.py" />
+    <entry file="file://$PROJECT_DIR$/learning/collections_env/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="22" column="50" lean-forward="true" selection-start-line="22" selection-start-column="50" selection-end-line="22" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/collections_env/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="46" selection-start-column="46" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/collections_env/q_table.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="33" column="55" selection-start-line="33" selection-start-column="55" selection-end-line="33" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/collections_env/collectionsenv.py" />
+    <entry file="file://$PROJECT_DIR$/ddcc/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ddcc/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ddcc/chp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="859">
+          <caret line="283" column="34" selection-start-line="100" selection-start-column="12" selection-end-line="100" selection-end-column="46" />
+          <folding>
+            <element signature="e#83#101#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/osl/exact/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="30" selection-start-column="30" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/osl/mc/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chp/chp.py" />
+    <entry file="file://$PROJECT_DIR$/learning/policies/memory.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1280">
+          <caret line="64" selection-start-line="64" selection-end-line="64" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/policies/dqn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="18" selection-start-column="18" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/policies/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="846">
+          <caret line="115" column="40" selection-start-line="86" selection-start-column="15" selection-end-line="86" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/policies/logs/dqn/20200514-003410/events.out.tfevents.1589409250.michaels-mac.home.58152.5.v2">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file:///usr/local/lib/python3.7/site-packages/gym/spaces/space.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="15" column="8" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.7/site-packages/gym/spaces/discrete.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/utils/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/policies/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dcc/aav.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="783">
+          <caret line="182" column="47" selection-start-line="182" selection-start-column="47" selection-end-line="182" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/utils/pricer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1900">
+          <caret line="100" column="32" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/collections_env/discwrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="25" column="79" selection-start-line="25" selection-start-column="79" selection-end-line="25" selection-end-column="79" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/utils/wrappers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1140">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/utils/misc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="40" selection-start-column="40" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/policies/qlearningLily.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="623">
+          <caret line="82" column="48" selection-start-line="82" selection-start-column="45" selection-end-line="82" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dcc/oav.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="623">
+          <caret line="375" column="22" selection-start-line="375" selection-start-column="22" selection-end-line="375" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4159">
+          <caret line="20" column="27" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/collections_env/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="18" column="64" selection-start-line="18" selection-start-column="64" selection-end-line="18" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/collections_env/test_environment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="452">
+          <caret line="34" column="27" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/collections_env/gymcollectionsenv.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="78" column="77" selection-start-line="78" selection-start-column="72" selection-end-line="78" selection-end-column="77" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/policies/qlearning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="669">
+          <caret line="92" selection-start-line="92" selection-end-line="92" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
