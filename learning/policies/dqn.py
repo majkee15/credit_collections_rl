@@ -13,8 +13,8 @@ from learning.utils.misc import plot_learning_curve
 
 
 class DefaultConfig(TrainConfig):
-    n_episodes = 1000
-    warmup_episodes = 500
+    n_episodes = 600
+    warmup_episodes = 400
 
     # fixed learning rate
     learning_rate = 0.00025
@@ -27,11 +27,11 @@ class DefaultConfig(TrainConfig):
     epsilon = 1.0
     epsilon_final = 0.05
     memory_size = 100000
-    target_update_every_step = 10
+    target_update_every_step = 25
     log_every_episode = 10
 
     batch_normalization = False
-    batch_size = 256
+    batch_size = 512
 
 
 class DQNAgent(Policy, BaseModelMixin):
@@ -113,7 +113,8 @@ class DQNAgent(Policy, BaseModelMixin):
             main_q = self.main_net.predict_on_batch(states)
             main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
 
-            error = tf.square(target_value - main_value) * 0.5
+            td_error = target_value - main_value
+            error = tf.square(td_error) * 0.5
             error = tf.reduce_mean(error)
 
 
@@ -198,7 +199,7 @@ class DQNAgent(Policy, BaseModelMixin):
         self.action_bins = tf.keras.models.load_model(os.path.join(model_path, 'action_bins.npy'))
 
 if __name__ == '__main__':
-    actions_bins = np.array([0, 0.2])
+    actions_bins = np.array([0, 0.1, 1])
     layers_shape = (64, 64, 64)
     n_actions = len(actions_bins)
     c_env = CollectionsEnv(continuous_reward=True)
