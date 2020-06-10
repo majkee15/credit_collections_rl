@@ -20,6 +20,8 @@ class ReplayMemory:
             self.buffer.append(record)
         elif isinstance(record, list):
             self.buffer += record
+        else:
+            raise NotImplementedError('Has to be a tuple class.')
 
         while self.capacity and self.size > self.capacity:
             self.buffer.pop(0)

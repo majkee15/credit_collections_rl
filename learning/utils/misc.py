@@ -1,4 +1,4 @@
-import matplotlib; matplotlib.use('Agg')
+import matplotlib#; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -8,6 +8,7 @@ from gym.wrappers.monitor import load_results
 from copy import deepcopy
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+RESOURCE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'resources'))
 
 
 class Config:
@@ -61,7 +62,7 @@ class Config:
         return self.as_dict().get(name, default)
 
     def __repr__(self):
-        return super().__repr__() + "\n" + self.dumps()
+        return super().__repr__() + "\n" # + self.dumps()
 
 
 def plot_learning_curve(filename, value_dict, xlabel='step'):
@@ -76,8 +77,8 @@ def plot_learning_curve(filename, value_dict, xlabel='step'):
         ax.grid('k--', alpha=0.6)
 
     plt.tight_layout()
-    os.makedirs(os.path.join(REPO_ROOT, 'figs'), exist_ok=True)
-    plt.savefig(os.path.join(REPO_ROOT, 'figs', filename))
+    os.makedirs(os.path.join(RESOURCE_ROOT, 'figs'), exist_ok=True)
+    plt.savefig(os.path.join(RESOURCE_ROOT, 'figs', filename))
 
 
 def plot_from_monitor_results(monitor_dir, window=10):
@@ -105,6 +106,18 @@ def plot_from_monitor_results(monitor_dir, window=10):
     plt.savefig(os.path.join(REPO_ROOT, 'figs', os.path.basename(monitor_dir) + '-monitor'))
 
 
-if __name__ == '__main__':
-    print(REPO_ROOT)
-    config = Config()
+# if __name__ == '__main__':
+#     class TrainConfig(Config):
+#         lr = 0.001
+#         n_steps = 10000
+#         warmup_steps = 5000
+#         batch_size = 64
+#         log_every_step = 1000
+#
+#         # give an extra bonus if done; only needed for certain tasks.
+#         done_reward = None
+#     cf = TrainConfig()
+#     # print(cf)
+#     print(cf.__dict__)
+#     print(cf.log_every_step)
+#     print(cf)

@@ -102,6 +102,7 @@ class MotherSimulator():
         label = self.name + ' dt:' + str(self.dt)
         ax.set_title(label)
         fig.show()
+        return mc
 
 
 class StepSizeEffect:
@@ -161,6 +162,6 @@ if __name__ == '__main__':
     dt = 0.05
     params = Parameters()
     ms = MotherSimulator(dt, params)
-    print(ms.plot_value_dist(w0, n=500))
+    print(ms.plot_value_dist(w0, n=1000))
 
 

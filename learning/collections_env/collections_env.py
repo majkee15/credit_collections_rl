@@ -13,7 +13,7 @@ MAX_ACTION = 1.0
 class CollectionsEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self):
+    def __init__(self, continuous_reward=True):
         super(CollectionsEnv, self).__init__()
 
         # Environment specific
@@ -42,6 +42,9 @@ class CollectionsEnv(gym.Env):
         self.accumulated_under_intensity = 0
         self.arrivals = []
         self.repayments = []
+
+        # Continuous reward
+        self.continuous_reward = continuous_reward
 
     def reset(self):
         self.current_state[:] = self.starting_state[:]
@@ -78,10 +81,16 @@ class CollectionsEnv(gym.Env):
             drifted = self.drift(self.dt, self.current_state[0])
             self.current_state[0] = drifted
             r = 0
-        # sparse reward formulation
-        # reward = (r * self.current_state[1] - action * self.params.c) * discount_factor
-        reward = self.current_state[1] * discount_factor * self.params.rmean * self.current_state[0] * self.dt
-        self.current_state[1] = self.current_state[1] * (1 - r) - action * self.params.c
+
+        # reward formulation
+        if self.continuous_reward:
+            reward = self.current_state[1] * discount_factor * self.params.rmean * self.current_state[0] * self.dt \
+                     - discount_factor * action * self.params.c
+        else:
+            # sparse reward formulation
+            reward = (r * self.current_state[1] - action * self.params.c) * discount_factor
+
+        self.current_state[1] = self.current_state[1] * (1 - r) # - action * self.params.c
 
         if self.current_state[1] < self.MIN_ACCOUNT_BALANCE:
             self.done = True
@@ -104,6 +113,7 @@ class CollectionsEnv(gym.Env):
 
 
 if __name__ == '__main__':
+
     import matplotlib.pyplot as plt
     env = CollectionsEnv()
     env.dt = 0.1
@@ -112,13 +122,15 @@ if __name__ == '__main__':
     lambdas = []
     ws = []
     counter = 0
+    cum_rew = 0
     for step in range(nsteps):
         ob, rew, done, _ = env.step(0)
         lambdas.append(ob[0])
         ws.append(ob[1])
         if rew > 0:
-            print(rew)
+            # print(rew)
             counter += 1
+            cum_rew += rew
 
         # if counter > 50:
         #     break
@@ -129,3 +141,5 @@ if __name__ == '__main__':
     plt.plot(x, ws, marker='x')
     # plt.plot(ws)
     plt.show()
+
+    print(cum_rew)
