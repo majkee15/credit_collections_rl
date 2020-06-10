@@ -1,6 +1,8 @@
 import os
+
 import logging
 import datetime
+
 
 import numpy as np
 import tensorflow as tf
@@ -9,6 +11,7 @@ from gym.utils import colorize
 
 from learning.utils.misc import Config
 from learning.utils.misc import REPO_ROOT, RESOURCE_ROOT
+
 
 
 class TrainConfig(Config):
@@ -23,21 +26,21 @@ class TrainConfig(Config):
 
 
 class Policy:
+
     def __init__(self, env, name, training=True, deterministic=False):
         self.env = env
+
         self.training = training
         self.name = name
 
         if deterministic:
             np.random.seed(1)
-            tf.set_random_seed(1)
 
         # # Logger:
         # print('Getting logger')
         # self.logger = logging.getLogger(name)
         # self.logger.setLevel(os.getenv('LOG_LEVEL', 'INFO'))
         # self.logger.warning('Instantiated class ' + self.__class__.__name__)
-
 
     @property
     def act_size(self):
@@ -102,6 +105,7 @@ class BaseModelMixin:
 
     def _get_dir(self, dir_name):
         path = os.path.join(RESOURCE_ROOT, dir_name, self.model_name, self.current_time)
+
         os.makedirs(path, exist_ok=True)
         return path
 
