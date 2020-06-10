@@ -1,154 +1,210 @@
+# dqn policy
+import os
 import numpy as np
 import tensorflow as tf
-
-import gym
-import os
 import datetime
-from gym import wrappers
 
-from learning.collections_env.gymcollectionsenv import CollectionsEnv
-from learning.utils.wrappers import DiscretizedActionWrapper
+from learning.collections_env import CollectionsEnv
+from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization
 
-
-class MyModel(tf.keras.Model):
-    def __init__(self, num_states, hidden_units, num_actions):
-        super(MyModel, self).__init__()
-        self.input_layer = tf.keras.layers.InputLayer(input_shape=(num_states,))
-        self.hidden_layers = []
-        for i in hidden_units:
-            self.hidden_layers.append(tf.keras.layers.Dense(
-                i, activation='tanh', kernel_initializer='RandomNormal'))
-        self.output_layer = tf.keras.layers.Dense(
-            num_actions, activation='linear', kernel_initializer='RandomNormal')
-
-    @tf.function
-    def call(self, inputs):
-        z = self.input_layer(inputs)
-        for layer in self.hidden_layers:
-            z = layer(z)
-        output = self.output_layer(z)
-        return output
+from learning.policies.memory import Transition, ReplayMemory
+from learning.policies.base import Policy, BaseModelMixin, TrainConfig
+from learning.utils.misc import plot_learning_curve
 
 
-class DQN:
-    def __init__(self, num_states, num_actions, hidden_units, gamma, max_experiences, min_experiences, batch_size, lr):
-        self.num_actions = num_actions
-        self.batch_size = batch_size
-        self.optimizer = tf.optimizers.Adam(lr)
-        self.gamma = gamma
-        self.model = MyModel(num_states, hidden_units, num_actions)
-        self.experience = {'s': [], 'a': [], 'r': [], 's2': [], 'done': []}
-        self.max_experiences = max_experiences
-        self.min_experiences = min_experiences
+class DefaultConfig(TrainConfig):
+    n_episodes = 600
+    warmup_episodes = 400
 
-    def predict(self, inputs):
-        return self.model(np.atleast_2d(inputs.astype('float32')))
+    # fixed learning rate
+    learning_rate = 0.00025
+    end_learning_rate = 0.00025
+    # decaying learning rate
+    learning_rate = tf.keras.optimizers.schedules.PolynomialDecay(initial_learning_rate=learning_rate,
+                                                                  decay_steps=warmup_episodes,
+                                                                   end_learning_rate=end_learning_rate, power=1.0)
+    gamma = 1.0
+    epsilon = 1.0
+    epsilon_final = 0.05
+    memory_size = 100000
+    target_update_every_step = 25
+    log_every_episode = 10
 
-    def train(self, TargetNet):
-        if len(self.experience['s']) < self.min_experiences:
-            return 0
-        ids = np.random.randint(low=0, high=len(self.experience['s']), size=self.batch_size)
-        states = np.asarray([self.experience['s'][i] for i in ids])
-        actions = np.asarray([self.experience['a'][i] for i in ids])
-        rewards = np.asarray([self.experience['r'][i] for i in ids])
-        states_next = np.asarray([self.experience['s2'][i] for i in ids])
-        dones = np.asarray([self.experience['done'][i] for i in ids])
-        value_next = np.max(TargetNet.predict(states_next), axis=1)
-        actual_values = np.where(dones, rewards, rewards + self.gamma * value_next)
+    batch_normalization = False
+    batch_size = 512
 
+
+class DQNAgent(Policy, BaseModelMixin):
+
+    def __init__(self, env, name, config=None, training=True, layers=(128, 128, 128)):
+
+        Policy.__init__(self, env, name, training=training)
+        BaseModelMixin.__init__(self, name)
+
+        self.env = env
+        self.config = config
+        self.batch_size = self.config.batch_size
+        self.memory = ReplayMemory(capacity=self.config.memory_size)
+        self.layers = layers
+
+        # Optimizer
+        self.optimizer = tf.keras.optimizers.RMSprop(learning_rate=self.config.learning_rate)#, clipnorm=5)
+        # Target net
+        self.target_net = tf.keras.Sequential()
+        self.target_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
+        for i, layer_size in enumerate(self.layers):
+            self.target_net.add(tf.keras.layers.Dense(layer_size, activation='relu'))
+            if self.config.batch_normalization:
+                self.target_net.add(tf.keras.layers.BatchNormalization())
+        self.target_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear'))
+        self.target_net.build()
+
+        self.target_net.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
+
+        # Main net
+        self.main_net = tf.keras.Sequential()
+        self.main_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
+        for i, layer_size in enumerate(self.layers):
+            self.main_net.add(tf.keras.layers.Dense(layer_size, activation='relu'))
+            if self.config.batch_normalization:
+                self.main_net.add(tf.keras.layers.BatchNormalization())
+        self.main_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear'))
+        self.main_net.build()
+
+        self.main_net.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
+
+    # def append_sample(self, state, action, reward, next_state, done):
+    #     self.memory.append((state, action, reward, next_state, done))
+
+    def get_action(self, state, epsilon):
+        q_value = self.main_net.predict_on_batch(state[None, :])
+        if np.random.rand() <= epsilon:
+            # print('Taking random')
+            action = np.random.choice(self.act_size)
+        else:
+            action = np.argmax(q_value)
+        return action, q_value
+
+    def update_target(self):
+        self.target_net.set_weights(self.main_net.get_weights())
+
+    def train(self):
+        batch = self.memory.sample(self.batch_size)
+        states = batch['s']
+        actions = batch['a']
+        rewards = batch['r']
+        next_states = batch['s_next']
+        dones = batch['done']
+
+        dqn_variable = self.main_net.trainable_variables
         with tf.GradientTape() as tape:
-            selected_action_values = tf.math.reduce_sum(
-                self.predict(states) * tf.one_hot(actions, self.num_actions), axis=1)
-            loss = tf.math.reduce_mean(tf.square(actual_values - selected_action_values))
-        variables = self.model.trainable_variables
-        gradients = tape.gradient(loss, variables)
-        self.optimizer.apply_gradients(zip(gradients, variables))
-        return loss
+            tape.watch(dqn_variable)
+            # simple dqn
+            # target_q = self.target_net.predict_on_batch(next_states)
+            # next_action = np.argmax(target_q.numpy(), axis=1)
+            # double_dqn
+            target_q = self.main_net.predict_on_batch(next_states)
+            next_action = np.argmax(target_q.numpy(), axis=1)
+            target_q = self.target_net.predict_on_batch(next_states)
 
-    def get_action(self, states, epsilon):
-        if np.random.random() < epsilon:
-            return np.random.choice(self.num_actions)
-        else:
-            return np.argmax(self.predict(np.atleast_2d(states))[0])
+            target_value = tf.reduce_sum(tf.one_hot(next_action, self.act_size) * target_q, axis=1)
+            target_value = (1 - dones) * self.config.gamma * target_value + rewards
 
-    def add_experience(self, exp):
-        if len(self.experience['s']) >= self.max_experiences:
-            for key in self.experience.keys():
-                self.experience[key].pop(0)
-        for key, value in exp.items():
-            self.experience[key].append(value)
+            main_q = self.main_net.predict_on_batch(states)
+            main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
 
-    def copy_weights(self, TrainNet):
-        variables1 = self.model.trainable_variables
-        variables2 = TrainNet.model.trainable_variables
-        for v1, v2 in zip(variables1, variables2):
-            v1.assign(v2.numpy())
+            td_error = target_value - main_value
+            error = tf.square(td_error) * 0.5
+            error = tf.reduce_mean(error)
 
 
-def play_game(env, TrainNet, TargetNet, epsilon, copy_step):
-    rewards = 0
-    iter = 0
-    done = False
-    observations = env.reset()
-    losses = list()
-    while not done:
-        action = TrainNet.get_action(observations, epsilon)
-        # print(f'Action: {action}')
-        prev_observations = observations
-        observations, reward, done, _ = env.step(action)
-        rewards += reward
-        if done:
-            print('Done')
-            env.reset()
+        # loss = self.main_net.train_on_batch(states, target_value)
+        dqn_grads = tape.gradient(error, dqn_variable)
+        self.optimizer.apply_gradients(zip(dqn_grads, dqn_variable))
+        return error
 
-        exp = {'s': prev_observations, 'a': action, 'r': reward, 's2': observations, 'done': done}
-        TrainNet.add_experience(exp)
-        loss = TrainNet.train(TargetNet)
-        if isinstance(loss, int):
-            losses.append(loss)
-        else:
-            losses.append(loss.numpy())
-        iter += 1
-        if iter % copy_step == 0:
-            TargetNet.copy_weights(TrainNet)
-    return rewards, np.mean(losses)
+    def run(self):
+
+        n_episodes = self.config.n_episodes
+        warmup_episodes = self.config.warmup_episodes
+        epsilon = self.config.epsilon
+        epsilon_final = self.config.epsilon_final
+        loss = None
+        eps_drop = (epsilon - epsilon_final) / warmup_episodes
+
+        total_rewards = np.empty(n_episodes)
+
+        for i in range(n_episodes):
+            state = self.env.reset()
+            done = False
+
+            score = 0
+            while not done:
+                action, q_value = self.get_action(state, epsilon)
+                next_state, reward, done, info = self.env.step(action)
+                self.memory.add(Transition(state, action, reward, next_state, done))
+                score += reward
+
+                state = next_state
+
+                if self.memory.size > self.batch_size:
+                    loss = self.train()
+                    if i % self.config.target_update_every_step == 0:
+                        self.update_target()
+
+            if epsilon > epsilon_final:
+                epsilon = max(epsilon_final, epsilon - eps_drop)
+
+            total_rewards[i] = score
+            avg_rewards = total_rewards[max(0, i - 100):(i + 1)].mean()
+
+            with self.writer.as_default():
+                with tf.name_scope('Performance'):
+                    tf.summary.scalar('episode reward', score, step=i)
+                    tf.summary.scalar('running avg reward(100)', avg_rewards, step=i)
+                    tf.summary.scalar('loss', 0 if loss is None else loss, step=i)
+                    tf.summary.histogram('Weights', self.main_net.weights[0], step=i)
+
+
+            if i % self.config.log_every_episode == 0:
+                print("episode:", i, "/", self.config.n_episodes, "episode reward:", score,"avg reward (last 100):",
+                      avg_rewards, "eps:", epsilon, "Learning rate (10e3):",
+                      (self.optimizer._decayed_lr(tf.float32).numpy() * 1000))
+
+        plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
+        self.save()
+
+    # Summary writing routines
+
+    def write_summaries(self):
+        with tf.name_scope('Layer 1'):
+            with tf.name_scope('W'):
+                mean = tf.reduce_mean(W)
+                tf.summary.scalar('mean', mean)
+            stddev = tf.sqrt(tf.reduce_mean(tf.square(W - mean)))
+            tf.summary.scalar('stddev', stddev)
+            tf.summary.histogram('histogram', var)
+
+    def save(self):
+       #current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        path_model = os.path.join(self.model_dir, 'main_net.h5')
+        path_actions = os.path.join(self.model_dir, 'action_bins.npy')
+        self.main_net.save(path_model)
+        np.save(path_actions, self.env.action_bins)
+
+    def load(self, model_path):
+
+        self.main_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
+        self.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
+        self.action_bins = tf.keras.models.load_model(os.path.join(model_path, 'action_bins.npy'))
 
 if __name__ == '__main__':
-    env = CollectionsEnv()
-    env = DiscretizedActionWrapper(env, n_bins=3)
+    actions_bins = np.array([0, 0.1, 1])
+    layers_shape = (64, 64, 64)
+    n_actions = len(actions_bins)
+    c_env = CollectionsEnv(continuous_reward=True)
+    environment = DiscretizedActionWrapper(c_env, actions_bins)
+    environment = StateNormalization(environment)
 
-    gamma = 0.99
-    copy_step = 25
-    num_states = len(env.observation_space.sample())
-    num_actions = env.action_space.n
-    hidden_units = [20, 20]
-    max_experiences = 10000
-    min_experiences = 100
-    batch_size = 32
-    lr = 1e-2
-    current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    log_dir = 'logs/dqn/' + current_time
-    summary_writer = tf.summary.create_file_writer(log_dir)
-
-    TrainNet = DQN(num_states, num_actions, hidden_units, gamma, max_experiences, min_experiences, batch_size, lr)
-    TargetNet = DQN(num_states, num_actions, hidden_units, gamma, max_experiences, min_experiences, batch_size, lr)
-    N = 50000
-    total_rewards = np.empty(N)
-    epsilon = 0.99
-    decay = 0.9999
-    min_epsilon = 0.1
-    for n in range(N):
-        epsilon = max(min_epsilon, epsilon * decay)
-        total_reward, losses = play_game(env, TrainNet, TargetNet, epsilon, copy_step)
-        total_rewards[n] = total_reward
-        avg_rewards = total_rewards[max(0, n - 100):(n + 1)].mean()
-        with summary_writer.as_default():
-            tf.summary.scalar('episode reward', total_reward, step=n)
-            tf.summary.scalar('running avg reward(100)', avg_rewards, step=n)
-            tf.summary.scalar('average loss)', losses, step=n)
-        if n % 100 == 0:
-            print("episode:", n, "episode reward:", total_reward, "eps:", epsilon, "avg reward (last 100):",
-                  avg_rewards,
-                  "episode loss: ", losses)
-    print("avg reward for last 100 episodes:", avg_rewards)
-    env.close()
+    dqn = DQNAgent(environment, 'DDQN', training=True, config=DefaultConfig())
+    dqn.run()

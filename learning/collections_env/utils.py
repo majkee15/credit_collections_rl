@@ -2,6 +2,7 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.stats import kstest
 
+# Collection of code snipetz for the collection environment
 
 def lambda_bound(wstart, wtarget, p):
     n = iw(wstart, wtarget, p)

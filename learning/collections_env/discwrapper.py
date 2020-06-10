@@ -86,3 +86,9 @@ class DiscretizedActionWrapper(gym.ActionWrapper):
         return self.action_val_bins[0][action]
 
 
+if __name__ == '__main__':
+    from learning.collections_env.collections_env import CollectionsEnv
+    env = CollectionsEnv()
+    env = DiscretizedObservationWrapper(env)
+    print(env.step(0))
+
