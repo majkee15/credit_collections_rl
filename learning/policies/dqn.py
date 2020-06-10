@@ -17,12 +17,12 @@ class DefaultConfig(TrainConfig):
     warmup_episodes = 500
 
     # fixed learning rate
-    learning_rate = 0.001
-    end_learning_rate = 0.0001
+    learning_rate = 0.00025
+    end_learning_rate = 0.00025
     # decaying learning rate
     learning_rate = tf.keras.optimizers.schedules.PolynomialDecay(initial_learning_rate=learning_rate,
                                                                   decay_steps=warmup_episodes,
-                                                                  end_learning_rate=end_learning_rate, power=1.0)
+                                                                   end_learning_rate=end_learning_rate, power=1.0)
     gamma = 1.0
     epsilon = 1.0
     epsilon_final = 0.05
@@ -31,7 +31,7 @@ class DefaultConfig(TrainConfig):
     log_every_episode = 10
 
     batch_normalization = False
-    batch_size = 512
+    batch_size = 256
 
 
 class DQNAgent(Policy, BaseModelMixin):
@@ -113,8 +113,9 @@ class DQNAgent(Policy, BaseModelMixin):
             main_q = self.main_net.predict_on_batch(states)
             main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
 
-            error = tf.square(main_value - target_value) * 0.5
+            error = tf.square(target_value - main_value) * 0.5
             error = tf.reduce_mean(error)
+
 
         # loss = self.main_net.train_on_batch(states, target_value)
         dqn_grads = tape.gradient(error, dqn_variable)
@@ -197,8 +198,8 @@ class DQNAgent(Policy, BaseModelMixin):
         self.action_bins = tf.keras.models.load_model(os.path.join(model_path, 'action_bins.npy'))
 
 if __name__ == '__main__':
-    actions_bins = np.array([0, 1])
-    layers_shape = (128, 128, 128)
+    actions_bins = np.array([0, 0.2])
+    layers_shape = (64, 64, 64)
     n_actions = len(actions_bins)
     c_env = CollectionsEnv(continuous_reward=True)
     environment = DiscretizedActionWrapper(c_env, actions_bins)
