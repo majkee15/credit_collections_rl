@@ -1,5 +1,4 @@
 from learning.collections_env.collections_env import CollectionsEnv
-from learning.collections_env.discwrapper import DiscretizedObservationWrapper# , DiscretizedActionWrapper
 from dcc import Parameters, AAV
 from learning.collections_env import utils
 
@@ -14,7 +13,7 @@ SEED = 1
 class TestContinuousEnvironment(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(TestContinuousEnvironment, self).__init__(*args, **kwargs)
-        #self.seed = np.random.seed(SEED)
+        self.seed = np.random.seed(SEED)
         self.env = CollectionsEnv()
 
     def test_distribution_properties(self):
@@ -176,24 +175,3 @@ def test3():
     plt.show()
     print(exact_v)
     print(np.mean(reward_per_episode))
-
-#
-# def test4():
-#     env = CollectionsEnv()
-#     denv = DiscretizedObservationWrapper(env, [10, 100])
-#     denva = DiscretizedActionWrapper(denv)
-#     a = 2
-#     ind = denva.action(a)
-#     print(ind)
-#     print(denva._aind_to_cell(ind))
-
-
-
-
-
-# if __name__ == '__main__':
-#     dt = 0.01
-#     test1(dt)
-#     test2(dt)
-
-

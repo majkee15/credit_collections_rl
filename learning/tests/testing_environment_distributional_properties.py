@@ -7,22 +7,22 @@ from scipy.stats import kstest
 import seaborn as sns
 import logging
 
-from abc import ABC, abstractmethod
-
 from joblib import Parallel, delayed
 from multiprocessing import cpu_count
 
-# Tests the performance of step algorithms
-# Step algorithm performance on value of the account
+
+from learning.collections_env.collections_env import CollectionsEnv
 
 
-class MotherSimulator(ABC):
-    def __init__(self, params, dt):
-        self.params = params
+class MotherSimulator():
+    def __init__(self, dt, params):
         self.dt = dt
+        self.params = params
         self.name = 'Abstract'
         self.logger = logging.getLogger('MotherSimulator logger')
         self.logger.setLevel(os.getenv('LOG_LEVEL', 'INFO'))
+
+        self.env = CollectionsEnv()
 
     def kernel(self, t, r):
         # Return Kernel evaluation at time t
@@ -67,17 +67,28 @@ class MotherSimulator(ABC):
         return self.params.lambdainf + (lambda_start - self.params.lambdainf) * np.exp(-self.params.kappa * s)
 
 
-    @abstractmethod
     def getpath(self, horizon):
-        pass
+        state = self.env.reset()
+        rew_path = []
+        state_path = []
+        t = 0
+        done = False
+        while not done:
+            t += self.env.dt
+            state, reward, done, _ = self.env.step(0)
+            rew_path.append(reward)
+            state_path.append(state[0])
+
+        return np.sum(np.array(rew_path))
 
     def value_acc(self, w0, n=5000):
         vals = []
         horizon = -np.log(10e-16) / self.params.kappa
         for i in range(n):
-            arrivals, repayments = self.getpath(horizon)
-            res = np.cumprod(1 - repayments) * w0
-            vals.append(np.sum(- np.diff(np.insert(res, 0, w0)) * np.exp(-self.params.rho * arrivals)))
+            val = self.getpath(horizon)
+            # res = np.cumprod(1 - repayments) * w0
+            # vals.append(np.sum(- np.diff(np.insert(res, 0, w0)) * np.exp(-self.params.rho * arrivals)))
+            vals.append(val)
         return vals
 
     def plot_value_dist(self, w0, n):
@@ -91,106 +102,6 @@ class MotherSimulator(ABC):
         label = self.name + ' dt:' + str(self.dt)
         ax.set_title(label)
         fig.show()
-
-
-class Thinning(MotherSimulator):
-    # Defines account valuation through the Ogata's thinning method
-
-    def __init__(self, params):
-        dt = 1
-        super().__init__(params, dt)
-        self.name = 'Thinning'
-
-    def getpath(self, horizon):
-        # Simulation method based on Ogata's thinning algo
-        arrivals = np.array([])
-        repayments = np.array([])
-        n = 0
-        s = 0
-        while s < horizon:
-            lstar = self.getlambda(s, arrivals, repayments)
-            w = -np.log(np.random.rand()) / lstar
-            s = s + w
-            d = np.random.rand()
-
-            if d * lstar <= self.getlambda(s, arrivals, repayments):
-                n += 1
-                rep = self.params.sample_repayment()
-                arrivals = np.append(arrivals, s)
-                repayments = np.append(repayments, rep)
-
-
-        return arrivals, repayments
-
-
-class IntegralStep(MotherSimulator):
-    def __init__(self, params, dt):
-        super().__init__(params, dt)
-        self.name = 'Integral'
-
-    def intensity_integral(self, t, lambda0):
-        # Computes the integral of the intensity function
-        return self.params.lambdainf * t + (lambda0 - self.params.lambdainf) * \
-               (1 - np.exp(-self.params.kappa * t)) / self.params.kappa
-
-    def getpath(self, horizon):
-        arrivals = []
-        lambdas = [self.params.lambda0]
-        repayments = []
-        l0 = self.params.lambda0
-        t = 0
-        t_from_jump = 0
-        draw = np.random.exponential(1)
-        while t <= horizon:
-            t += self.dt
-            t_from_jump += self.dt
-            if self.intensity_integral(t_from_jump, l0) >= draw:
-                arrivals.append(t)
-                r = self.params.sample_repayment()[0]
-                repayments.append(r)
-                l0 = lambdas[-1] + self.params.delta10 + self.params.delta11 * r
-                lambdas.append(l0)
-                draw = np.random.exponential(1)
-                t_from_jump = 0
-            else:
-                lambdas.append(self.drift(t_from_jump, l0))
-
-        arrivals = np.array(arrivals)
-        repayments = np.array(repayments)
-        return arrivals, repayments#, np.array(lambdas)
-
-
-class NaiveStep(MotherSimulator):
-    def __init__(self, params, dt):
-        super().__init__(params, dt)
-        self.name = 'Naive'
-
-    def getpath(self, horizon):
-        arrivals = []
-        # lambdas = [self.params.lambda0]
-        repayments = []
-        l0 = self.params.lambda0
-        t = 0
-        t_from_jump = 0
-        while t <= horizon:
-            t += self.dt
-            t_from_jump += self.dt
-            draw = np.random.random()
-            threshold = l0 * self.dt
-            if draw <= threshold:
-                arrivals.append(t)
-                r = self.params.sample_repayment()[0]
-                repayments.append(r)
-                l0 = l0 + self.params.delta10 + self.params.delta11 * r
-                t_from_jump = 0
-            else:
-                l0 = self.drift(self.dt, lambda_start=l0)
-            #l ambdas.append(l0)
-        arrivals = np.array(arrivals)
-        repayments = np.array(repayments)
-        # plt.plot(lambdas)
-        # plt.show()
-        return arrivals, repayments  # , np.array(lambdas)
 
 
 class StepSizeEffect:
@@ -246,40 +157,10 @@ class StepSizeEffect:
 
 
 if __name__ == '__main__':
-    p = Parameters()
-    w = 100
-    # # Check the full implementations
-    #
-    chp = Thinning(p)
-    arrivals, repayments = chp.getpath(10000)
-    chp.modelcheck(arrivals, repayments, verbose=True)
-    chp.plot_value_dist(100, n=10000)
-    #
-    # Check the integral implementations
-    #
-    chpi = IntegralStep(p, dt=0.02)
-    arrivals, repayments = chpi.getpath(10000)
-    chpi.modelcheck(arrivals, repayments, verbose=True)
-    chpi.plot_value_dist(100, n=1000)
-
-    # Check the naive step
-    chpn = NaiveStep(p, dt=0.02)
-    arrivals, repayments = chpn.getpath(1000)
-    chpn.modelcheck(arrivals, repayments, verbose=True)
-    chpn.plot_value_dist(100, n=1000)
-
-
-    # Check the effect of stepsize
-
-    # dts = np.logspace(-4, 0, 4)
-    dts = np.linspace(0.001, 0.5, 40)
-    simn = StepSizeEffect(chpn, dts)
-    simi = StepSizeEffect(chpi, dts)
-    #sim.sim_value(w)
-    simn.sim_pvalue()
-    simi.sim_pvalue()
-
-   #  sim.sim_distributions(w, n=5000)
-
+    w0 = 100
+    dt = 0.05
+    params = Parameters()
+    ms = MotherSimulator(dt, params)
+    print(ms.plot_value_dist(w0, n=500))
 
 

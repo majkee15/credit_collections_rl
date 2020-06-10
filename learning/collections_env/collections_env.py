@@ -6,7 +6,7 @@ import copy
 from learning.collections_env import utils
 
 MAX_ACCOUNT_BALANCE = 100.0
-MIN_ACCOUNT_BALANCE = 10
+MIN_ACCOUNT_BALANCE = 1
 MAX_ACTION = 1.0
 
 
@@ -18,7 +18,7 @@ class CollectionsEnv(gym.Env):
 
         # Environment specific
         self.params = Parameters()
-        self.dt = 0.1
+        self.dt = 0.05
         self.w0 = MAX_ACCOUNT_BALANCE
         self.lambda0 = self.params.lambda0
         self.starting_state = np.array([self.lambda0, self.w0], dtype=np.float32)
@@ -26,6 +26,7 @@ class CollectionsEnv(gym.Env):
         # GYM specific attributes
         self.action_space = spaces.Box(low=np.array([0]), high=np.array([MAX_ACTION]), dtype=np.float16)
         self.MIN_ACCOUNT_BALANCE = MIN_ACCOUNT_BALANCE
+        self.MAX_ACTION = MAX_ACTION
         MAX_LAMBDA = utils.lambda_bound(MAX_ACCOUNT_BALANCE, MIN_ACCOUNT_BALANCE, self.params)
         self.observation_space = spaces.Box(low=np.array([self.params.lambdainf, self.MIN_ACCOUNT_BALANCE]),
                                             high=np.array([MAX_LAMBDA, MAX_ACCOUNT_BALANCE]),
@@ -40,7 +41,7 @@ class CollectionsEnv(gym.Env):
         self._draw = np.random.exponential(1)
         self.accumulated_under_intensity = 0
         self.arrivals = []
-        self.repayments =[]
+        self.repayments = []
 
     def reset(self):
         self.current_state[:] = self.starting_state[:]
@@ -72,12 +73,15 @@ class CollectionsEnv(gym.Env):
             self.accumulated_under_intensity = 0
             self.arrivals.append(self.current_time)
             self.repayments.append(r)
+
         else:
             drifted = self.drift(self.dt, self.current_state[0])
             self.current_state[0] = drifted
             r = 0
-        reward = (r * self.current_state[1] - action * self.params.c) * discount_factor
-        self.current_state[1] = self.current_state[1] * (1 - r)
+        # sparse reward formulation
+        # reward = (r * self.current_state[1] - action * self.params.c) * discount_factor
+        reward = self.current_state[1] * discount_factor * self.params.rmean * self.current_state[0] * self.dt
+        self.current_state[1] = self.current_state[1] * (1 - r) - action * self.params.c
 
         if self.current_state[1] < self.MIN_ACCOUNT_BALANCE:
             self.done = True
