@@ -66,7 +66,6 @@ class MotherSimulator():
         # deterministic draft between jumps
         return self.params.lambdainf + (lambda_start - self.params.lambdainf) * np.exp(-self.params.kappa * s)
 
-
     def getpath(self, horizon):
         state = self.env.reset()
         rew_path = []

@@ -13,15 +13,15 @@ from learning.utils.misc import plot_learning_curve
 
 
 class DefaultConfig(TrainConfig):
-    n_episodes = 600
-    warmup_episodes = 400
+    n_episodes = 1000
+    warmup_episodes = 500
 
     # fixed learning rate
     learning_rate = 0.001
     end_learning_rate = 0.0001
     # decaying learning rate
     learning_rate = tf.keras.optimizers.schedules.PolynomialDecay(initial_learning_rate=learning_rate,
-                                                                  decay_steps=n_episodes,
+                                                                  decay_steps=warmup_episodes,
                                                                   end_learning_rate=end_learning_rate, power=1.0)
     gamma = 1.0
     epsilon = 1.0
@@ -99,9 +99,13 @@ class DQNAgent(Policy, BaseModelMixin):
         dqn_variable = self.main_net.trainable_variables
         with tf.GradientTape() as tape:
             tape.watch(dqn_variable)
-            target_q = self.target_net.predict_on_batch(next_states)
+            # simple dqn
+            # target_q = self.target_net.predict_on_batch(next_states)
+            # next_action = np.argmax(target_q.numpy(), axis=1)
+            # double_dqn
+            target_q = self.main_net.predict_on_batch(next_states)
             next_action = np.argmax(target_q.numpy(), axis=1)
-            # the next saction should be selected using the online net
+            target_q = self.target_net.predict_on_batch(next_states)
 
             target_value = tf.reduce_sum(tf.one_hot(next_action, self.act_size) * target_q, axis=1)
             target_value = (1 - dones) * self.config.gamma * target_value + rewards
@@ -127,7 +131,6 @@ class DQNAgent(Policy, BaseModelMixin):
         eps_drop = (epsilon - epsilon_final) / warmup_episodes
 
         total_rewards = np.empty(n_episodes)
-
 
         for i in range(n_episodes):
             state = self.env.reset()
@@ -182,18 +185,22 @@ class DQNAgent(Policy, BaseModelMixin):
 
     def save(self):
        #current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        path = os.path.join(self.model_dir, self.current_time + '.h5')
-        self.main_net.save(path)
+        path_model = os.path.join(self.model_dir, 'main_net.h5')
+        path_actions = os.path.join(self.model_dir, 'action_bins.npy')
+        self.main_net.save(path_model)
+        np.save(path_actions, self.env.action_bins)
 
-    def load(self, modelh5):
-        self.main_net = tf.keras.models.load_model(modelh5)
-        self.target_net = tf.keras.models.load_model(modelh5)
+    def load(self, model_path):
+
+        self.main_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
+        self.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
+        self.action_bins = tf.keras.models.load_model(os.path.join(model_path, 'action_bins.npy'))
 
 if __name__ == '__main__':
-    actions_bins = np.array([0, 0.5])
+    actions_bins = np.array([0, 1])
     layers_shape = (128, 128, 128)
     n_actions = len(actions_bins)
-    c_env = CollectionsEnv(continuous_reward=False)
+    c_env = CollectionsEnv(continuous_reward=True)
     environment = DiscretizedActionWrapper(c_env, actions_bins)
     environment = StateNormalization(environment)
 
