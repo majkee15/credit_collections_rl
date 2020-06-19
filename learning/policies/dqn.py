@@ -13,12 +13,12 @@ from learning.utils.misc import plot_learning_curve
 
 
 class DefaultConfig(TrainConfig):
-    n_episodes = 600
-    warmup_episodes = 400
+    n_episodes = 10000
+    warmup_episodes = 5000
 
     # fixed learning rate
-    learning_rate = 0.00025
-    end_learning_rate = 0.00025
+    learning_rate = 0.001
+    end_learning_rate = 0.0001
     # decaying learning rate
     learning_rate = tf.keras.optimizers.schedules.PolynomialDecay(initial_learning_rate=learning_rate,
                                                                   decay_steps=warmup_episodes,
@@ -30,7 +30,7 @@ class DefaultConfig(TrainConfig):
     target_update_every_step = 25
     log_every_episode = 10
 
-    batch_normalization = False
+    batch_normalization = True
     batch_size = 512
 
 
@@ -41,7 +41,6 @@ class DQNAgent(Policy, BaseModelMixin):
         Policy.__init__(self, env, name, training=training)
         BaseModelMixin.__init__(self, name)
 
-        self.env = env
         self.config = config
         self.batch_size = self.config.batch_size
         self.memory = ReplayMemory(capacity=self.config.memory_size)
@@ -196,10 +195,10 @@ class DQNAgent(Policy, BaseModelMixin):
 
         self.main_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
         self.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
-        self.action_bins = tf.keras.models.load_model(os.path.join(model_path, 'action_bins.npy'))
+        self.action_bins = np.load(os.path.join(model_path, 'action_bins.npy'))
 
 if __name__ == '__main__':
-    actions_bins = np.array([0, 0.1, 1])
+    actions_bins = np.array([0, 1.0])
     layers_shape = (64, 64, 64)
     n_actions = len(actions_bins)
     c_env = CollectionsEnv(continuous_reward=True)

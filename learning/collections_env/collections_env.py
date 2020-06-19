@@ -47,7 +47,7 @@ class CollectionsEnv(gym.Env):
         self.continuous_reward = continuous_reward
 
     def reset(self):
-        self.current_state[:] = self.starting_state[:]
+        self.current_state = self.starting_state.copy()
         self.done = False
         self.current_step = 0
         self.current_time = 0

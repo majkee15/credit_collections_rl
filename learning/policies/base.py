@@ -85,7 +85,7 @@ class Policy:
             while not done:
                 a, q = self.get_action(ob, epsilon=0.0)
                 new_ob, r, done, _ = self.env.step(a)
-                self.env.render()
+                # self.env.render()
                 reward += r
                 ob = new_ob
 

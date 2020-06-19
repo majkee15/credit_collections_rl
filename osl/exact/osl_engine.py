@@ -83,6 +83,11 @@ class OSL(Base):
             lambda_hats[i] = res.x
         return lambda_hats, v_greedy
 
+    def opt_greedy_v(self, l, w):
+        x0 = np.array([1.0])
+        res = minimize(self.greedy_v, x0, args=(w, l), bounds=[(self.p.lambdainf, None)])
+        return res
+
 if __name__ == '__main__':
     from dcc import Parameters
     p = Parameters()

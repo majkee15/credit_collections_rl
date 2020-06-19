@@ -330,7 +330,7 @@ class OAV(Base):
         ax.set_title('Value Function Evaluated on a grid.')
         ax.set_ylabel('Intensity')
         ax.set_xlabel('Balance')
-        return fig
+        return fig, ax
 
     def save(self, filename):
         f_name = filename + '.pickle'
