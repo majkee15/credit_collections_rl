@@ -7,9 +7,13 @@ import datetime
 from learning.collections_env import CollectionsEnv
 from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization
 
-from learning.policies.memory import Transition, ReplayMemory
+from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplayMemory
 from learning.policies.base import Policy, BaseModelMixin, TrainConfig
 from learning.utils.misc import plot_learning_curve
+from learning.utils.annealing_schedule import AnnealingSchedule
+
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
@@ -20,18 +24,29 @@ class DefaultConfig(TrainConfig):
     learning_rate = 0.001
     end_learning_rate = 0.0001
     # decaying learning rate
-    learning_rate = tf.keras.optimizers.schedules.PolynomialDecay(initial_learning_rate=learning_rate,
-                                                                  decay_steps=warmup_episodes,
-                                                                   end_learning_rate=end_learning_rate, power=1.0)
+    # learning_rate = tf.keras.optimizers.schedules.PolynomialDecay(initial_learning_rate=learning_rate,
+    #                                                               decay_steps=warmup_episodes,
+    #                                                               end_learning_rate=end_learning_rate, power=1.0)
+    learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, n_episodes)
     gamma = 1.0
     epsilon = 1.0
     epsilon_final = 0.05
-    memory_size = 100000
-    target_update_every_step = 25
+    epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
+    target_update_every_step = 100
     log_every_episode = 10
 
+    # Memory setting
     batch_normalization = True
     batch_size = 512
+    memory_size = 10000
+    # PER setting
+
+    prioritized_memory_replay = True
+    replay_alpha = 0.2
+    replay_beta = 0.4
+    replay_beta_final = 1.0
+    beta_schedule = AnnealingSchedule(replay_beta, replay_beta_final, warmup_episodes)
+    prior_eps = 1e-6
 
 
 class DQNAgent(Policy, BaseModelMixin):
@@ -43,11 +58,15 @@ class DQNAgent(Policy, BaseModelMixin):
 
         self.config = config
         self.batch_size = self.config.batch_size
-        self.memory = ReplayMemory(capacity=self.config.memory_size)
+        if config.prioritized_memory_replay:
+            self.memory = PrioritizedReplayMemory(alpha=config.replay_alpha, capacity=config.memory_size)
+        else:
+            self.memory = ReplayMemory(capacity=self.config.memory_size)
         self.layers = layers
 
         # Optimizer
-        self.optimizer = tf.keras.optimizers.RMSprop(learning_rate=self.config.learning_rate)#, clipnorm=5)
+        self.global_lr = tf.Variable(self.config.learning_rate_schedule.current_p, trainable=False)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.global_lr)#, clipnorm=5)
         # Target net
         self.target_net = tf.keras.Sequential()
         self.target_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
@@ -72,6 +91,8 @@ class DQNAgent(Policy, BaseModelMixin):
 
         self.main_net.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
 
+        # number of training epochs = global - step
+        self.global_step = 0
     # def append_sample(self, state, action, reward, next_state, done):
     #     self.memory.append((state, action, reward, next_state, done))
 
@@ -94,6 +115,9 @@ class DQNAgent(Policy, BaseModelMixin):
         rewards = batch['r']
         next_states = batch['s_next']
         dones = batch['done']
+        if self.config.prioritized_memory_replay:
+            idx = batch['indices']
+            weights = batch['weights']
 
         dqn_variable = self.main_net.trainable_variables
         with tf.GradientTape() as tape:
@@ -113,23 +137,37 @@ class DQNAgent(Policy, BaseModelMixin):
             main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
 
             td_error = target_value - main_value
-            error = tf.square(td_error) * 0.5
-            error = tf.reduce_mean(error)
+
+            element_wise_loss = tf.square(td_error) * 0.5
+
+            if self.config.prioritized_memory_replay:
+                error = tf.reduce_mean(element_wise_loss * weights)
+            else:
+                error = tf.reduce_mean(element_wise_loss)
 
 
+        if self.config.prioritized_memory_replay:
+            self.memory.update_priorities(idx, np.abs(td_error.numpy()) + self.config.prior_eps)
         # loss = self.main_net.train_on_batch(states, target_value)
         dqn_grads = tape.gradient(error, dqn_variable)
         self.optimizer.apply_gradients(zip(dqn_grads, dqn_variable))
-        return error
+        # Logging
+        self.global_step += 1
+        with self.writer.as_default():
+            with tf.name_scope('Network'):
+                tf.summary.histogram('Weights', self.main_net.weights[0], step=self.global_step)
+                tf.summary.histogram('Gradients', dqn_grads[0], step=self.global_step)
+                tf.summary.histogram('Predictions', main_value, step=self.global_step)
+                tf.summary.histogram('Target', target_value, step=self.global_step)
+                tf.summary.histogram('TD error', td_error, step=self.global_step)
+                tf.summary.histogram('Elementwise Loss', element_wise_loss, step=self.global_step)
+                tf.summary.scalar('Loss', tf.reduce_mean(element_wise_loss), step=self.global_step)
+        return tf.reduce_mean(element_wise_loss)
 
     def run(self):
 
         n_episodes = self.config.n_episodes
-        warmup_episodes = self.config.warmup_episodes
-        epsilon = self.config.epsilon
-        epsilon_final = self.config.epsilon_final
         loss = None
-        eps_drop = (epsilon - epsilon_final) / warmup_episodes
 
         total_rewards = np.empty(n_episodes)
 
@@ -139,7 +177,7 @@ class DQNAgent(Policy, BaseModelMixin):
 
             score = 0
             while not done:
-                action, q_value = self.get_action(state, epsilon)
+                action, q_value = self.get_action(state, self.config.epsilon_schedule.current_p)
                 next_state, reward, done, info = self.env.step(action)
                 self.memory.add(Transition(state, action, reward, next_state, done))
                 score += reward
@@ -151,23 +189,27 @@ class DQNAgent(Policy, BaseModelMixin):
                     if i % self.config.target_update_every_step == 0:
                         self.update_target()
 
-            if epsilon > epsilon_final:
-                epsilon = max(epsilon_final, epsilon - eps_drop)
-
             total_rewards[i] = score
             avg_rewards = total_rewards[max(0, i - 100):(i + 1)].mean()
+
+            self.config.epsilon_schedule.anneal()
+            self.config.beta_schedule.anneal()
+            self.global_lr = self.config.learning_rate_schedule.anneal()
 
             with self.writer.as_default():
                 with tf.name_scope('Performance'):
                     tf.summary.scalar('episode reward', score, step=i)
                     tf.summary.scalar('running avg reward(100)', avg_rewards, step=i)
-                    tf.summary.scalar('loss', 0 if loss is None else loss, step=i)
-                    tf.summary.histogram('Weights', self.main_net.weights[0], step=i)
 
+                if self.config.prioritized_memory_replay:
+                    with tf.name_scope('Schedules'):
+                        tf.summary.scalar('Beta', self.config.beta_schedule.current_p, step=i)
+                        tf.summary.scalar('Epsilon', self.config.epsilon_schedule.current_p, step=i)
+                        tf.summary.scalar('Learning rate', self.optimizer._decayed_lr(tf.float32).numpy(), step=i)
 
             if i % self.config.log_every_episode == 0:
                 print("episode:", i, "/", self.config.n_episodes, "episode reward:", score,"avg reward (last 100):",
-                      avg_rewards, "eps:", epsilon, "Learning rate (10e3):",
+                      avg_rewards, "eps:", self.config.epsilon_schedule.current_p, "Learning rate (10e3):",
                       (self.optimizer._decayed_lr(tf.float32).numpy() * 1000))
 
         plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
@@ -205,5 +247,5 @@ if __name__ == '__main__':
     environment = DiscretizedActionWrapper(c_env, actions_bins)
     environment = StateNormalization(environment)
 
-    dqn = DQNAgent(environment, 'DDQN', training=True, config=DefaultConfig())
+    dqn = DQNAgent(environment, 'DDQNPER', training=True, config=DefaultConfig())
     dqn.run()

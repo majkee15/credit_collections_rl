@@ -64,6 +64,9 @@ class Config:
     def __repr__(self):
         return super().__repr__() + "\n" # + self.dumps()
 
+    def save(self):
+        pass
+
 
 def plot_learning_curve(filename, value_dict, xlabel='step'):
     # Plot step vs the mean(last 50 episodes' rewards)

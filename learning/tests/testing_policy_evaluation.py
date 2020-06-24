@@ -7,15 +7,15 @@ from copy import deepcopy
 action_bins = np.array([0, 1.0])
 
 environment = CollectionsEnv(continuous_reward=False)
-# environment = DiscretizedActionWrapper(environment, action_bins)
+environment = DiscretizedActionWrapper(environment, action_bins)
 # environment = StateNormalization(environment)
 
 print(f"Reseting: {environment.reset()}")
 print(f"Step: {environment.step(0)}")
 print(f"Reseting: {environment.reset()}")
 
-environment.starting_state = np.array([10, 100])
-print(f"Setting start: {environment.starting_state}")
+environment.env.starting_state = 2#np.array([10, 100])
+print(f"Setting start: {environment.env.starting_state}")
 print(f"Reseting: {environment.reset()}")
 
 #

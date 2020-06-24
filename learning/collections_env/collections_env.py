@@ -46,6 +46,19 @@ class CollectionsEnv(gym.Env):
         # Continuous reward
         self.continuous_reward = continuous_reward
 
+    @property
+    def starting_state(self):
+        return self.__starting_state
+
+    @starting_state.setter
+    def starting_state(self, starting_state):
+        if isinstance(starting_state, np.ndarray):
+            if starting_state.shape[0] == 2:
+                self.__starting_state = starting_state
+            print('Setting')
+        else:
+            raise TypeError(f"Cannot assign {starting_state} int starting state.")
+
     def reset(self):
         self.current_state = self.starting_state.copy()
         self.done = False
