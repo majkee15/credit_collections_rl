@@ -5,7 +5,7 @@ from dcc import Parameters
 import copy
 from learning.collections_env import utils
 
-MAX_ACCOUNT_BALANCE = 100.0
+MAX_ACCOUNT_BALANCE = 200.0
 MIN_ACCOUNT_BALANCE = 1
 MAX_ACTION = 1.0
 
@@ -13,7 +13,8 @@ MAX_ACTION = 1.0
 class CollectionsEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, continuous_reward=True):
+    def __init__(self, continuous_reward=True, randomize_start=False,
+                 starting_state=None):
         super(CollectionsEnv, self).__init__()
 
         # Environment specific
@@ -21,15 +22,18 @@ class CollectionsEnv(gym.Env):
         self.dt = 0.05
         self.w0 = MAX_ACCOUNT_BALANCE
         self.lambda0 = self.params.lambda0
-        self.starting_state = np.array([self.lambda0, self.w0], dtype=np.float32)
+        if starting_state is None:
+            self.starting_state = np.array([self.lambda0, self.w0], dtype=np.float32)
+        else:
+            self.starting_state = starting_state
 
         # GYM specific attributes
         self.action_space = spaces.Box(low=np.array([0]), high=np.array([MAX_ACTION]), dtype=np.float16)
         self.MIN_ACCOUNT_BALANCE = MIN_ACCOUNT_BALANCE
         self.MAX_ACTION = MAX_ACTION
-        MAX_LAMBDA = utils.lambda_bound(MAX_ACCOUNT_BALANCE, MIN_ACCOUNT_BALANCE, self.params)
+        self.MAX_LAMBDA = utils.lambda_bound(MAX_ACCOUNT_BALANCE, MIN_ACCOUNT_BALANCE, self.params)
         self.observation_space = spaces.Box(low=np.array([self.params.lambdainf, self.MIN_ACCOUNT_BALANCE]),
-                                            high=np.array([MAX_LAMBDA, MAX_ACCOUNT_BALANCE]),
+                                            high=np.array([self.MAX_LAMBDA, MAX_ACCOUNT_BALANCE]),
                                             dtype=np.float16)
         self.reward_range = (0, MAX_ACCOUNT_BALANCE)
 
@@ -46,6 +50,9 @@ class CollectionsEnv(gym.Env):
         # Continuous reward
         self.continuous_reward = continuous_reward
 
+        # randomize starts
+        self.randomize_start = randomize_start
+
     @property
     def starting_state(self):
         return self.__starting_state
@@ -60,7 +67,12 @@ class CollectionsEnv(gym.Env):
             raise TypeError(f"Cannot assign {starting_state} int starting state.")
 
     def reset(self):
-        self.current_state = self.starting_state.copy()
+        if self.randomize_start:
+            draw_lambda = np.random.uniform(self.params.lambda0, 5)
+            draw_w = np.random.uniform(10, MAX_ACCOUNT_BALANCE)
+            self.current_state = np.array([draw_lambda, draw_w])
+        else:
+            self.current_state = self.starting_state.copy()
         self.done = False
         self.current_step = 0
         self.current_time = 0
@@ -128,7 +140,7 @@ class CollectionsEnv(gym.Env):
 if __name__ == '__main__':
 
     import matplotlib.pyplot as plt
-    env = CollectionsEnv()
+    env = CollectionsEnv(randomize_start=True)
     env.dt = 0.1
     nsteps = 30000
     x = np.linspace(0, nsteps * env.dt, nsteps)
@@ -156,3 +168,7 @@ if __name__ == '__main__':
     plt.show()
 
     print(cum_rew)
+
+    print(env.reset())
+    print(env.reset())
+    print(env.reset())

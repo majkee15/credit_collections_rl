@@ -19,16 +19,15 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="starting state as a property - before">
-      <change afterPath="$PROJECT_DIR$/learning/utils/annealing_schedule.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/learning/utils/segment_tree.py" afterDir="false" />
+    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="PER + advanced tb logging">
+      <change afterPath="$PROJECT_DIR$/learning/policies/dqn_lattice.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Untitled.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Untitled.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/collections_env/collections_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/collections_env/collections_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/notebooks/explore_learned_policies.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/learning/notebooks/explore_learned_policies.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/policies/dqn.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/policies/memory.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/memory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/tests/testing_policy_evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/tests/testing_policy_evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/utils/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/misc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/utils/annealing_schedule.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/annealing_schedule.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +104,7 @@
       <recent name="$PROJECT_DIR$/optimal_sustain_level" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.dqn">
+  <component name="RunManager" selected="Python.dqn_lattice">
     <configuration name="collections_env" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -142,6 +141,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/policies/dqn.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="dqn_lattice" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="credit_collections_RL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\majke\anaconda3\envs\tf2-gpu\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/policies" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/policies/dqn_lattice.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -216,38 +237,21 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="credit_collections_RL" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/collections_env" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_environment.TestContinuousEnvironment.test_distribution_properties&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python.testing_policy_evaluation" />
       <item itemvalue="Python.dqn" />
       <item itemvalue="Python.setup" />
       <item itemvalue="Python.testing_continuous_reward" />
       <item itemvalue="Python.collections_env" />
-      <item itemvalue="Python tests.pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" />
+      <item itemvalue="Python.dqn_lattice" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.dqn_lattice" />
         <item itemvalue="Python.dqn" />
         <item itemvalue="Python.collections_env" />
         <item itemvalue="Python.testing_continuous_reward" />
         <item itemvalue="Python.setup" />
-        <item itemvalue="Python tests.pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" />
       </list>
     </recent_temporary>
   </component>
@@ -307,7 +311,10 @@
       <workItem from="1591826965565" duration="1669000" />
       <workItem from="1591858264249" duration="29747000" />
       <workItem from="1592928783939" duration="1219000" />
-      <workItem from="1592949264390" duration="13638000" />
+      <workItem from="1592949264390" duration="17509000" />
+      <workItem from="1593070527594" duration="10799000" />
+      <workItem from="1593425473471" duration="1491000" />
+      <workItem from="1593530890200" duration="11120000" />
     </task>
     <task id="LOCAL-00001" summary="first_commit">
       <created>1574424688615</created>
@@ -505,40 +512,15 @@
       <option name="project" value="LOCAL" />
       <updated>1592583597934</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="PER + advanced tb logging">
+      <created>1593041405756</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1593041405756</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
-  </component>
-  <component name="TestHistory">
-    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 09h 17m 23s.xml">
-      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 09h 17m 44s.xml">
-      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 09h 17m 53s.xml">
-      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 09h 18m 31s.xml">
-      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 13m 48s.xml">
-      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 21m 12s.xml">
-      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 24m 35s.xml">
-      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 28m 59s.xml">
-      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 29m 42s.xml">
-      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties - 2020.05.21 at 11h 30m 44s.xml">
-      <configuration name="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties" configurationId="tests" />
-    </history-entry>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
@@ -575,13 +557,14 @@
     <MESSAGE value="DQN" />
     <MESSAGE value="fixed utils kernel bug - the KS test passes now" />
     <MESSAGE value="starting state as a property - before" />
-    <option name="LAST_COMMIT_MESSAGE" value="starting state as a property - before" />
+    <MESSAGE value="PER + advanced tb logging" />
+    <option name="LAST_COMMIT_MESSAGE" value="PER + advanced tb logging" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592583912374">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593531115262">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592583912374" />
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1593531115262" />
     <state x="1052" y="144" key="#xdebugger.evaluate" timestamp="1592569121393">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -590,22 +573,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1591876925265" />
-    <state width="1877" height="259" key="GridCell.Tab.0.bottom" timestamp="1593033832935">
+    <state width="1877" height="259" key="GridCell.Tab.0.bottom" timestamp="1593618016109">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="259" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593033832935" />
-    <state width="1877" height="259" key="GridCell.Tab.0.center" timestamp="1593033832935">
+    <state width="1877" height="259" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593618016109" />
+    <state width="1877" height="259" key="GridCell.Tab.0.center" timestamp="1593618016109">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="259" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593033832935" />
-    <state width="1877" height="259" key="GridCell.Tab.0.left" timestamp="1593033832935">
+    <state width="1877" height="259" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593618016108" />
+    <state width="1877" height="259" key="GridCell.Tab.0.left" timestamp="1593618016108">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="259" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593033832935" />
-    <state width="1877" height="259" key="GridCell.Tab.0.right" timestamp="1593033832935">
+    <state width="1877" height="259" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593618016108" />
+    <state width="1877" height="259" key="GridCell.Tab.0.right" timestamp="1593618016109">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="259" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593033832935" />
+    <state width="1877" height="259" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593618016109" />
     <state width="1877" height="248" key="GridCell.Tab.1.bottom" timestamp="1592583904939">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -664,9 +647,10 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$hp_sim.coverage" NAME="hp_sim Coverage Results" MODIFIED="1589270028200" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$oav.coverage" NAME="oav Coverage Results" MODIFIED="1589459479443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$misc.coverage" NAME="misc Coverage Results" MODIFIED="1589405528224" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice.coverage" NAME="dqn_lattice Coverage Results" MODIFIED="1593618016103" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$testing_continuous_reward.coverage" NAME="testing_continuous_reward Coverage Results" MODIFIED="1591876810258" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp__1_.coverage" NAME="sustained_ihp (1) Coverage Results" MODIFIED="1586363442240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mc_osl" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$collections_env.coverage" NAME="collections_env Coverage Results" MODIFIED="1592583913766" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$collections_env.coverage" NAME="collections_env Coverage Results" MODIFIED="1593075237452" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$bruteforce_search.coverage" NAME="bruteforce_search Coverage Results" MODIFIED="1575480207008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp_c_pyx.coverage" NAME="sustained_ihp_c.pyx Coverage Results" MODIFIED="1585828504788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp.coverage" NAME="sustained_ihp Coverage Results" MODIFIED="1585828522904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
@@ -686,7 +670,7 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties.coverage" NAME="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties Coverage Results" MODIFIED="1590053429260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$discwrapper.coverage" NAME="discwrapper Coverage Results" MODIFIED="1587632668652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$demo_contours.coverage" NAME="demo_contours Coverage Results" MODIFIED="1575288849134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1593033832931" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1593088391612" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$step_algo_comparison__1_.coverage" NAME="step_algo_comparison (1) Coverage Results" MODIFIED="1589412265517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$oav__1_.coverage" NAME="oav (1) Coverage Results" MODIFIED="1585229636107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$wrappers.coverage" NAME="wrappers Coverage Results" MODIFIED="1589445857501" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />

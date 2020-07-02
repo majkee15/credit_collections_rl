@@ -2,6 +2,7 @@
 import os
 import numpy as np
 import tensorflow as tf
+import tensorflow_lattice as tfl
 import datetime
 
 from learning.collections_env import CollectionsEnv
@@ -13,12 +14,12 @@ from learning.utils.misc import plot_learning_curve
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
-    n_episodes = 5000
-    warmup_episodes = 3000
+    n_episodes = 2000
+    warmup_episodes = 1400
 
     # fixed learning rate
     learning_rate = 0.001
@@ -32,7 +33,7 @@ class DefaultConfig(TrainConfig):
     epsilon = 1.0
     epsilon_final = 0.05
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
-    target_update_every_step = 100
+    target_update_every_step = 50
     log_every_episode = 10
 
     # Memory setting
@@ -48,12 +49,10 @@ class DefaultConfig(TrainConfig):
     beta_schedule = AnnealingSchedule(replay_beta, replay_beta_final, warmup_episodes, inverse=True)
     prior_eps = 1e-6
 
-    # progression plot
 
+class DQNAgentLattice(Policy, BaseModelMixin):
 
-class DQNAgent(Policy, BaseModelMixin):
-
-    def __init__(self, env, name, config=None, training=True, layers=(128, 128, 128)):
+    def __init__(self, env, name, config=None, training=True, lattice_sizes=[10, 10]):
 
         Policy.__init__(self, env, name, training=training)
         BaseModelMixin.__init__(self, name)
@@ -64,39 +63,56 @@ class DQNAgent(Policy, BaseModelMixin):
             self.memory = PrioritizedReplayMemory(alpha=config.replay_alpha, capacity=config.memory_size)
         else:
             self.memory = ReplayMemory(capacity=self.config.memory_size)
-        self.layers = layers
 
-        # Optimizer
-        self.global_lr = tf.Variable(self.config.learning_rate_schedule.current_p, trainable=False)
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.global_lr)#, clipnorm=5)
-        # Target net
-        self.target_net = tf.keras.Sequential()
-        self.target_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
-        for i, layer_size in enumerate(self.layers):
-            self.target_net.add(tf.keras.layers.Dense(layer_size, activation='relu'))
-            if self.config.batch_normalization:
-                self.target_net.add(tf.keras.layers.BatchNormalization())
-        self.target_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear'))
-        self.target_net.build()
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)#, clipnorm=5)
 
-        self.target_net.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
+        lattice_sizes = [20, 20]
+        lattice = tfl.layers.Lattice(
+            # Number of vertices along each dimension.
+            units=2,
+            lattice_sizes=lattice_sizes,
+            # You can specify monotonicity constraints.
+            monotonicities=['increasing', 'increasing'],
+            output_min=0.0,
+            output_max=self.env.w0)
+        calibrator_w = tfl.layers.PWLCalibration(
+            input_keypoints=np.linspace(0, self.env.w0, num=120),
+            units=1,
 
-        # Main net
-        self.main_net = tf.keras.Sequential()
-        self.main_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
-        for i, layer_size in enumerate(self.layers):
-            self.main_net.add(tf.keras.layers.Dense(layer_size, activation='relu'))
-            if self.config.batch_normalization:
-                self.main_net.add(tf.keras.layers.BatchNormalization())
-        self.main_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear'))
-        self.main_net.build()
+            dtype=tf.float32,
+            output_min=0.0,
+            output_max=lattice_sizes[0] - 1.0,
+            monotonicity='increasing')
 
-        self.main_net.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
+        calibrator_l = tfl.layers.PWLCalibration(
+            # Every PWLCalibration layer must have keypoints of piecewise linear
+            # function specified. Easiest way to specify them is to uniformly cover
+            # entire input range by using numpy.linspace().
+            input_keypoints=np.linspace(0, self.env.MAX_LAMBDA, num=200),
+            units=1,
+            # You need to ensure that input keypoints have same dtype as layer input.
+            # You can do it by setting dtype here or by providing keypoints in such
+            # format which will be converted to deisred tf.dtype by default.
+            dtype=tf.float32,
+            # Output range must correspond to expected lattice input range.
+            output_min=0.0,
+            output_max=lattice_sizes[1] - 1.0,
+            monotonicity='increasing')
 
-        # number of training epochs = global - step
+        combined_calibrators = combined_calibrators = tfl.layers.ParallelCombination([calibrator_w, calibrator_l],
+                                                                                     single_output=True)
+
+        model = tf.keras.models.Sequential()
+        model.add(combined_calibrators)
+        model.add(tf.keras.layers.RepeatVector(2))
+        model.add(lattice)
+        model.compile(loss=tf.keras.losses.mean_squared_error,
+                      optimizer=tf.keras.optimizers.Adam(learning_rate=0.001))
+
+        self.main_net = model
+
+        self.target_net = tf.keras.models.clone_model(model)
         self.global_step = 0
-    # def append_sample(self, state, action, reward, next_state, done):
-    #     self.memory.append((state, action, reward, next_state, done))
 
     def get_action(self, state, epsilon):
         q_value = self.main_net.predict_on_batch(state[None, :])
@@ -207,12 +223,12 @@ class DQNAgent(Policy, BaseModelMixin):
                     with tf.name_scope('Schedules'):
                         tf.summary.scalar('Beta', self.config.beta_schedule.current_p, step=i)
                         tf.summary.scalar('Epsilon', self.config.epsilon_schedule.current_p, step=i)
-                        tf.summary.scalar('Learning rate', self.optimizer._decayed_lr(tf.float32).numpy(), step=i)
+                        # tf.summary.scalar('Learning rate', self.optimizer._decayed_lr(tf.float32).numpy(), step=i)
 
             if i % self.config.log_every_episode == 0:
                 print("episode:", i, "/", self.config.n_episodes, "episode reward:", score,"avg reward (last 100):",
-                      avg_rewards, "eps:", self.config.epsilon_schedule.current_p, "Learning rate (10e3):",
-                      (self.optimizer._decayed_lr(tf.float32).numpy() * 1000))
+                      avg_rewards, "eps:", self.config.epsilon_schedule.current_p, "Learning rate (10e3):",)
+                      #(self.optimizer._decayed_lr(tf.float32).numpy() * 1000))
 
         plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
         self.save()
@@ -240,17 +256,18 @@ class DQNAgent(Policy, BaseModelMixin):
 
     def load(self, model_path):
 
-        self.main_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
-        self.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
+        # self.main_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
+        # self.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
+        self.main_net.load_weights(os.path.join(model_path, 'main_net.h5'))
+        self.target_net.load_weights(os.path.join(model_path, 'main_net.h5'))
         self.action_bins = np.load(os.path.join(model_path, 'action_bins.npy'))
 
 if __name__ == '__main__':
     actions_bins = np.array([0, 1.0])
-    layers_shape = (64, 64, 64)
     n_actions = len(actions_bins)
     c_env = CollectionsEnv(continuous_reward=True, randomize_start=False)
     environment = DiscretizedActionWrapper(c_env, actions_bins)
-    environment = StateNormalization(environment)
+   #  environment = StateNormalization(environment)
 
-    dqn = DQNAgent(environment, 'DDQNPER', training=True, config=DefaultConfig())
+    dqn = DQNAgentLattice(environment, 'DQNLattice', training=True, config=DefaultConfig())
     dqn.run()

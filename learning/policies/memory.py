@@ -3,6 +3,8 @@ import numpy as np
 import itertools
 import random
 from typing import Dict, List, Tuple
+import pickle
+
 
 from learning.utils.segment_tree import SumSegmentTree, MinSegmentTree
 
@@ -70,6 +72,19 @@ class ReplayMemory:
 
     def __len__(self):
         return self.size
+
+    # @classmethod
+    # def load(cls, filename):
+    #     f = open(filename, 'rb')
+    #     tmp_dict = pickle.load(f)
+    #     f.close()
+    #
+    #     cls.__dict__.update(tmp_dict)
+
+    def save(self, filename):
+        f = open(filename, 'wb')
+        pickle.dump(self.buffer, f, 2)
+        f.close()
 
 
 
