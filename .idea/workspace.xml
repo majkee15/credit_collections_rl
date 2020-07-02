@@ -19,10 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="Lattice Agent">
+    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="Plot learned policy">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/policies/dqn.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/utils/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/misc.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -309,7 +308,7 @@
       <workItem from="1592949264390" duration="17509000" />
       <workItem from="1593070527594" duration="10799000" />
       <workItem from="1593425473471" duration="1491000" />
-      <workItem from="1593530890200" duration="12865000" />
+      <workItem from="1593530890200" duration="14291000" />
     </task>
     <task id="LOCAL-00001" summary="first_commit">
       <created>1574424688615</created>
@@ -521,7 +520,14 @@
       <option name="project" value="LOCAL" />
       <updated>1593700612145</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Plot learned policy">
+      <created>1593702495262</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1593702495262</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -561,7 +567,8 @@
     <MESSAGE value="starting state as a property - before" />
     <MESSAGE value="PER + advanced tb logging" />
     <MESSAGE value="Lattice Agent" />
-    <option name="LAST_COMMIT_MESSAGE" value="Lattice Agent" />
+    <MESSAGE value="Plot learned policy" />
+    <option name="LAST_COMMIT_MESSAGE" value="Plot learned policy" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593531115262">
@@ -576,22 +583,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1591876925265" />
-    <state width="1877" height="259" key="GridCell.Tab.0.bottom" timestamp="1593702260969">
+    <state width="1877" height="259" key="GridCell.Tab.0.bottom" timestamp="1593702475401">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="259" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593702260969" />
-    <state width="1877" height="259" key="GridCell.Tab.0.center" timestamp="1593702260969">
+    <state width="1877" height="259" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593702475401" />
+    <state width="1877" height="259" key="GridCell.Tab.0.center" timestamp="1593702475400">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="259" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593702260969" />
-    <state width="1877" height="259" key="GridCell.Tab.0.left" timestamp="1593702260969">
+    <state width="1877" height="259" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593702475400" />
+    <state width="1877" height="259" key="GridCell.Tab.0.left" timestamp="1593702475400">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="259" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593702260969" />
-    <state width="1877" height="259" key="GridCell.Tab.0.right" timestamp="1593702260969">
+    <state width="1877" height="259" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593702475400" />
+    <state width="1877" height="259" key="GridCell.Tab.0.right" timestamp="1593702475400">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="259" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593702260969" />
+    <state width="1877" height="259" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593702475400" />
     <state width="1877" height="248" key="GridCell.Tab.1.bottom" timestamp="1592583904939">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -673,7 +680,7 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties.coverage" NAME="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties Coverage Results" MODIFIED="1590053429260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$discwrapper.coverage" NAME="discwrapper Coverage Results" MODIFIED="1587632668652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$demo_contours.coverage" NAME="demo_contours Coverage Results" MODIFIED="1575288849134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1593702475396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1593703806956" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$step_algo_comparison__1_.coverage" NAME="step_algo_comparison (1) Coverage Results" MODIFIED="1589412265517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$oav__1_.coverage" NAME="oav (1) Coverage Results" MODIFIED="1585229636107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$wrappers.coverage" NAME="wrappers Coverage Results" MODIFIED="1589445857501" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />

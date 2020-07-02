@@ -3,7 +3,9 @@ import os
 import numpy as np
 import tensorflow as tf
 import datetime
+
 import matplotlib.pyplot as plt
+import matplotlib as m
 
 from learning.collections_env import CollectionsEnv
 from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization
@@ -260,13 +262,26 @@ class DQNAgent(Policy, BaseModelMixin):
         for i, xp in enumerate(w):
             for j, yp in enumerate(l):
                 fixed_obs = np.array([yp, xp])
-               # z[j, i] = np.amax(self.main_net.predict_on_batch(self.env.observation(fixed_obs[None, :])))
+                z[j, i] = np.amax(self.main_net.predict_on_batch(self.env.observation(fixed_obs[None, :])))
                 p[j, i] = environment.action(np.argmax(self.env.observation(
                     self.main_net.predict_on_batch(fixed_obs[None, :]))))
 
-        fig, ax = plt.subplots()
-        im = ax.pcolor(ww, ll, p)
+        fig, ax = plt.subplots(nrows=1, ncols=2)
+        im = ax[0].pcolor(ww, ll, p)
+        cdict = {
+            'red': ((0.0, 0.25, .25), (0.02, .59, .59), (1., 1., 1.)),
+            'green': ((0.0, 0.0, 0.0), (0.02, .45, .45), (1., .97, .97)),
+            'blue': ((0.0, 1.0, 1.0), (0.02, .75, .75), (1., 0.45, 0.45))
+        }
+
+        cm = m.colors.LinearSegmentedColormap('my_colormap', cdict, 1024)
+        im = ax[0].pcolor(ww, ll, p, cmap=cm)
         fig.colorbar(im)
+
+        CS = ax[1].contour(ww, ll, z)
+        ax[1].clabel(CS, inline=1, fontsize=10)
+        ax[1].set_title('Simplest default with labels')
+
         with self.writer.as_default():
             with tf.name_scope('Learning progress'):
                 tf.summary.image("Learned policy", plot_to_image(fig), step=i)
