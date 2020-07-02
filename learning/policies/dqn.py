@@ -3,13 +3,14 @@ import os
 import numpy as np
 import tensorflow as tf
 import datetime
+import matplotlib.pyplot as plt
 
 from learning.collections_env import CollectionsEnv
 from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization
 
 from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplayMemory
 from learning.policies.base import Policy, BaseModelMixin, TrainConfig
-from learning.utils.misc import plot_learning_curve
+from learning.utils.misc import plot_learning_curve, plot_to_image
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
@@ -49,7 +50,8 @@ class DefaultConfig(TrainConfig):
     prior_eps = 1e-6
 
     # progression plot
-
+    plot_progression_flag = True
+    plot_every_episode = 10
 
 class DQNAgent(Policy, BaseModelMixin):
 
@@ -214,6 +216,9 @@ class DQNAgent(Policy, BaseModelMixin):
                       avg_rewards, "eps:", self.config.epsilon_schedule.current_p, "Learning rate (10e3):",
                       (self.optimizer._decayed_lr(tf.float32).numpy() * 1000))
 
+            if i % self.config.plot_every_episode == 0 and self.config.plot_progression_flag:
+                self.plot_policy(i)
+
         plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
         self.save()
 
@@ -243,6 +248,29 @@ class DQNAgent(Policy, BaseModelMixin):
         self.main_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
         self.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
         self.action_bins = np.load(os.path.join(model_path, 'action_bins.npy'))
+
+    def plot_policy(self, i):
+        w_points = 20
+        l_points = 20
+        l = np.linspace(self.env.observation_space.low[0], self.env.observation_space.high[0], l_points)
+        w = np.linspace(self.env.observation_space.low[1], self.env.observation_space.high[1], w_points)
+        ww, ll = np.meshgrid(w, l)
+        z = np.zeros_like(ww)
+        p = np.zeros_like(ww)
+        for i, xp in enumerate(w):
+            for j, yp in enumerate(l):
+                fixed_obs = np.array([yp, xp])
+               # z[j, i] = np.amax(self.main_net.predict_on_batch(self.env.observation(fixed_obs[None, :])))
+                p[j, i] = environment.action(np.argmax(self.env.observation(
+                    self.main_net.predict_on_batch(fixed_obs[None, :]))))
+
+        fig, ax = plt.subplots()
+        im = ax.pcolor(ww, ll, p)
+        fig.colorbar(im)
+        with self.writer.as_default():
+            with tf.name_scope('Learning progress'):
+                tf.summary.image("Learned policy", plot_to_image(fig), step=i)
+        return fig
 
 if __name__ == '__main__':
     actions_bins = np.array([0, 1.0])

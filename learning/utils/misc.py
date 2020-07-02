@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import pandas as pd
+import io
+import tensorflow as tf
 
 from gym.wrappers.monitor import load_results
 from copy import deepcopy
@@ -108,6 +110,22 @@ def plot_from_monitor_results(monitor_dir, window=10):
     os.makedirs(os.path.join(REPO_ROOT, 'figs'), exist_ok=True)
     plt.savefig(os.path.join(REPO_ROOT, 'figs', os.path.basename(monitor_dir) + '-monitor'))
 
+
+def plot_to_image(figure):
+    """Converts the matplotlib plot specified by 'figure' to a PNG image and
+    returns it. The supplied figure is closed and inaccessible after this call."""
+    # Save the plot to a PNG in memory.
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    # Closing the figure prevents it from being displayed directly inside
+    # the notebook.
+    plt.close(figure)
+    buf.seek(0)
+    # Convert PNG buffer to TF image
+    image = tf.image.decode_png(buf.getvalue(), channels=4)
+    # Add the batch dimension
+    image = tf.expand_dims(image, 0)
+    return image
 
 # if __name__ == '__main__':
 #     class TrainConfig(Config):
