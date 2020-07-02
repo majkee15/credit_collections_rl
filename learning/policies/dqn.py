@@ -35,7 +35,7 @@ class DefaultConfig(TrainConfig):
     epsilon = 1.0
     epsilon_final = 0.05
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
-    target_update_every_step = 100
+    target_update_every_step = 50
     log_every_episode = 10
 
     # Memory setting
@@ -53,7 +53,10 @@ class DefaultConfig(TrainConfig):
 
     # progression plot
     plot_progression_flag = True
-    plot_every_episode = 10
+    plot_every_episode = target_update_every_step
+
+    # constraint weights
+    constraing_weights = True
 
 class DQNAgent(Policy, BaseModelMixin):
 
@@ -89,7 +92,8 @@ class DQNAgent(Policy, BaseModelMixin):
         self.main_net = tf.keras.Sequential()
         self.main_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
         for i, layer_size in enumerate(self.layers):
-            self.main_net.add(tf.keras.layers.Dense(layer_size, activation='relu'))
+            self.main_net.add(tf.keras.layers.Dense(layer_size, activation='relu',
+                                                    kernel_constraint=tf.keras.constraints.non_neg()))
             if self.config.batch_normalization:
                 self.main_net.add(tf.keras.layers.BatchNormalization())
         self.main_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear'))
@@ -252,8 +256,8 @@ class DQNAgent(Policy, BaseModelMixin):
         self.action_bins = np.load(os.path.join(model_path, 'action_bins.npy'))
 
     def plot_policy(self, i):
-        w_points = 20
-        l_points = 20
+        w_points = 60
+        l_points = 60
         l = np.linspace(self.env.observation_space.low[0], self.env.observation_space.high[0], l_points)
         w = np.linspace(self.env.observation_space.low[1], self.env.observation_space.high[1], w_points)
         ww, ll = np.meshgrid(w, l)
@@ -280,7 +284,7 @@ class DQNAgent(Policy, BaseModelMixin):
 
         CS = ax[1].contour(ww, ll, z)
         ax[1].clabel(CS, inline=1, fontsize=10)
-        ax[1].set_title('Simplest default with labels')
+        ax[1].set_title('Value function')
 
         with self.writer.as_default():
             with tf.name_scope('Learning progress'):
