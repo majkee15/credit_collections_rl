@@ -13,6 +13,7 @@ from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization
 from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplayMemory
 from learning.policies.base import Policy, BaseModelMixin, TrainConfig
 from learning.utils.misc import plot_learning_curve, plot_to_image
+from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
@@ -32,8 +33,8 @@ class DefaultConfig(TrainConfig):
     #                                                               end_learning_rate=end_learning_rate, power=1.0)
     learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, n_episodes)
     gamma = 1.0
-    epsilon = 1.0
-    epsilon_final = 0.05
+    epsilon = 0.05
+    epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
     target_update_every_step = 50
     log_every_episode = 10
@@ -73,32 +74,10 @@ class DQNAgent(Policy, BaseModelMixin):
         # Optimizer
         self.global_lr = tf.Variable(self.config.learning_rate_schedule.current_p, trainable=False)
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.global_lr)#, clipnorm=5)
-        # Target net
-        self.target_net = tf.keras.Sequential()
-        self.target_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
-        for i, layer_size in enumerate(self.layers):
-            self.target_net.add(tf.keras.layers.Dense(layer_size, activation='relu'))
-            if self.config.batch_normalization:
-                self.target_net.add(tf.keras.layers.BatchNormalization())
-        self.target_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear',
-                                                  kernel_constraint=tf.keras.constraints.NonNeg()))
-        self.target_net.build()
 
-        self.target_net.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
-
-        # Main net
-        self.main_net = tf.keras.Sequential()
-        self.main_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
-        for i, layer_size in enumerate(self.layers):
-            self.main_net.add(tf.keras.layers.Dense(layer_size, activation='relu')),
-                                                   # kernel_constraint=tf.keras.constraints.non_neg()))
-            if self.config.batch_normalization:
-                self.main_net.add(tf.keras.layers.BatchNormalization())
-        self.main_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear'))
-        self.main_net.build()
-
-        self.main_net.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
-
+        self.target_net = construct_nn(env, self.layers, self.config, initialize=True)
+        self.main_net = tf.keras.models.clone_model(self.target_net)
+        self.main_net.set_weights(self.target_net.get_weights())
         # number of training epochs = global - step
         self.global_step = 0
     # def append_sample(self, state, action, reward, next_state, done):
@@ -293,7 +272,7 @@ if __name__ == '__main__':
     actions_bins = np.array([0, 1.0])
     layers_shape = (64, 64, 64)
     n_actions = len(actions_bins)
-    c_env = CollectionsEnv(continuous_reward=True, randomize_start=False)
+    c_env = CollectionsEnv(continuous_reward=True, randomize_start=False, max_lambda=5.0)
     environment = DiscretizedActionWrapper(c_env, actions_bins)
     environment = StateNormalization(environment)
 

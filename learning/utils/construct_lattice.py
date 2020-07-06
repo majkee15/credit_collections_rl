@@ -89,7 +89,7 @@ def construct_lattice(env):
         dtype=tf.float32,
         # Output range must correspond to expected lattice input range.
         output_min=0.0,
-        output_max=max_w * 2,
+        output_max=max_w * 4,
         monotonicity='increasing')
 
     callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=5)

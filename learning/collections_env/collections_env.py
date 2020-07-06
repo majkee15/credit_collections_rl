@@ -14,7 +14,7 @@ class CollectionsEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, continuous_reward=True, randomize_start=False,
-                 starting_state=None):
+                 starting_state=None, max_lambda=None):
         super(CollectionsEnv, self).__init__()
 
         # Environment specific
@@ -31,7 +31,10 @@ class CollectionsEnv(gym.Env):
         self.action_space = spaces.Box(low=np.array([0]), high=np.array([MAX_ACTION]), dtype=np.float16)
         self.MIN_ACCOUNT_BALANCE = MIN_ACCOUNT_BALANCE
         self.MAX_ACTION = MAX_ACTION
-        self.MAX_LAMBDA = utils.lambda_bound(MAX_ACCOUNT_BALANCE, MIN_ACCOUNT_BALANCE, self.params)
+        if max_lambda is None:
+            self.MAX_LAMBDA = utils.lambda_bound(MAX_ACCOUNT_BALANCE, MIN_ACCOUNT_BALANCE, self.params)
+        else:
+            self.MAX_LAMBDA = max_lambda
         self.observation_space = spaces.Box(low=np.array([self.params.lambdainf, self.MIN_ACCOUNT_BALANCE]),
                                             high=np.array([self.MAX_LAMBDA, MAX_ACCOUNT_BALANCE]),
                                             dtype=np.float16)
