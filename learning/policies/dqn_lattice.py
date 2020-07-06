@@ -4,14 +4,18 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_lattice as tfl
 import datetime
+import matplotlib.pyplot as plt
+import matplotlib as m
 
 from learning.collections_env import CollectionsEnv
 from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization
 
 from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplayMemory
 from learning.policies.base import Policy, BaseModelMixin, TrainConfig
-from learning.utils.misc import plot_learning_curve
+from learning.utils.misc import plot_learning_curve, plot_to_image
 from learning.utils.annealing_schedule import AnnealingSchedule
+
+from learning.utils.construct_lattice import construct_lattice
 
 
 # os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
@@ -49,10 +53,14 @@ class DefaultConfig(TrainConfig):
     beta_schedule = AnnealingSchedule(replay_beta, replay_beta_final, warmup_episodes, inverse=True)
     prior_eps = 1e-6
 
+    # progression plot
+    plot_progression_flag = True
+    plot_every_episode = target_update_every_step
+
 
 class DQNAgentLattice(Policy, BaseModelMixin):
 
-    def __init__(self, env, name, config=None, training=True, lattice_sizes=[10, 10]):
+    def __init__(self, env, name, config=None, training=True):
 
         Policy.__init__(self, env, name, training=training)
         BaseModelMixin.__init__(self, name)
@@ -66,52 +74,9 @@ class DQNAgentLattice(Policy, BaseModelMixin):
 
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)#, clipnorm=5)
 
-        lattice_sizes = [20, 20]
-        lattice = tfl.layers.Lattice(
-            # Number of vertices along each dimension.
-            units=2,
-            lattice_sizes=lattice_sizes,
-            # You can specify monotonicity constraints.
-            monotonicities=['increasing', 'increasing'],
-            output_min=0.0,
-            output_max=self.env.w0)
-        calibrator_w = tfl.layers.PWLCalibration(
-            input_keypoints=np.linspace(0, self.env.w0, num=120),
-            units=1,
+        self.main_net = construct_lattice(self.env)
 
-            dtype=tf.float32,
-            output_min=0.0,
-            output_max=lattice_sizes[0] - 1.0,
-            monotonicity='increasing')
-
-        calibrator_l = tfl.layers.PWLCalibration(
-            # Every PWLCalibration layer must have keypoints of piecewise linear
-            # function specified. Easiest way to specify them is to uniformly cover
-            # entire input range by using numpy.linspace().
-            input_keypoints=np.linspace(0, self.env.MAX_LAMBDA, num=200),
-            units=1,
-            # You need to ensure that input keypoints have same dtype as layer input.
-            # You can do it by setting dtype here or by providing keypoints in such
-            # format which will be converted to deisred tf.dtype by default.
-            dtype=tf.float32,
-            # Output range must correspond to expected lattice input range.
-            output_min=0.0,
-            output_max=lattice_sizes[1] - 1.0,
-            monotonicity='increasing')
-
-        combined_calibrators = combined_calibrators = tfl.layers.ParallelCombination([calibrator_w, calibrator_l],
-                                                                                     single_output=True)
-
-        model = tf.keras.models.Sequential()
-        model.add(combined_calibrators)
-        model.add(tf.keras.layers.RepeatVector(2))
-        model.add(lattice)
-        model.compile(loss=tf.keras.losses.mean_squared_error,
-                      optimizer=tf.keras.optimizers.Adam(learning_rate=0.001))
-
-        self.main_net = model
-
-        self.target_net = tf.keras.models.clone_model(model)
+        self.target_net = construct_lattice(self.env)
         self.global_step = 0
 
     def get_action(self, state, epsilon):
@@ -230,10 +195,49 @@ class DQNAgentLattice(Policy, BaseModelMixin):
                       avg_rewards, "eps:", self.config.epsilon_schedule.current_p, "Learning rate (10e3):",)
                       #(self.optimizer._decayed_lr(tf.float32).numpy() * 1000))
 
+            if i % self.config.plot_every_episode == 0 and self.config.plot_progression_flag:
+                print('Plotting policy')
+                self.plot_policy(i)
+
         plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
         self.save()
 
     # Summary writing routines
+
+    def plot_policy(self, step_i):
+        w_points = 60
+        l_points = 60
+        l = np.linspace(self.env.observation_space.low[0], self.env.observation_space.high[0], l_points)
+        w = np.linspace(self.env.observation_space.low[1], self.env.observation_space.high[1], w_points)
+        ww, ll = np.meshgrid(w, l)
+        z = np.zeros_like(ww)
+        p = np.zeros_like(ww)
+        for i, xp in enumerate(w):
+            for j, yp in enumerate(l):
+                fixed_obs = np.array([yp, xp])
+                z[j, i] = np.amax(self.main_net.predict_on_batch(fixed_obs[None, :]))
+                p[j, i] = environment.action(np.argmax(self.main_net.predict_on_batch(fixed_obs[None, :])))
+
+        fig, ax = plt.subplots(nrows=1, ncols=2)
+        im = ax[0].pcolor(ww, ll, p)
+        cdict = {
+            'red': ((0.0, 0.25, .25), (0.02, .59, .59), (1., 1., 1.)),
+            'green': ((0.0, 0.0, 0.0), (0.02, .45, .45), (1., .97, .97)),
+            'blue': ((0.0, 1.0, 1.0), (0.02, .75, .75), (1., 0.45, 0.45))
+        }
+
+        cm = m.colors.LinearSegmentedColormap('my_colormap', cdict, 1024)
+        im = ax[0].pcolor(ww, ll, p, cmap=cm)
+        fig.colorbar(im)
+
+        CS = ax[1].contour(ww, ll, z)
+        ax[1].clabel(CS, inline=1, fontsize=10)
+        ax[1].set_title('Value function')
+
+        with self.writer.as_default():
+            with tf.name_scope('Learning progress'):
+                tf.summary.image("Learned policy", plot_to_image(fig), step=step_i)
+        return fig
 
     def write_summaries(self):
         with tf.name_scope('Layer 1'):

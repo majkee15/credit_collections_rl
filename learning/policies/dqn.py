@@ -55,9 +55,6 @@ class DefaultConfig(TrainConfig):
     plot_progression_flag = True
     plot_every_episode = target_update_every_step
 
-    # constraint weights
-    constraing_weights = True
-
 class DQNAgent(Policy, BaseModelMixin):
 
     def __init__(self, env, name, config=None, training=True, layers=(128, 128, 128)):
@@ -83,7 +80,8 @@ class DQNAgent(Policy, BaseModelMixin):
             self.target_net.add(tf.keras.layers.Dense(layer_size, activation='relu'))
             if self.config.batch_normalization:
                 self.target_net.add(tf.keras.layers.BatchNormalization())
-        self.target_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear'))
+        self.target_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear',
+                                                  kernel_constraint=tf.keras.constraints.NonNeg()))
         self.target_net.build()
 
         self.target_net.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
@@ -92,8 +90,8 @@ class DQNAgent(Policy, BaseModelMixin):
         self.main_net = tf.keras.Sequential()
         self.main_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
         for i, layer_size in enumerate(self.layers):
-            self.main_net.add(tf.keras.layers.Dense(layer_size, activation='relu',
-                                                    kernel_constraint=tf.keras.constraints.non_neg()))
+            self.main_net.add(tf.keras.layers.Dense(layer_size, activation='relu')),
+                                                   # kernel_constraint=tf.keras.constraints.non_neg()))
             if self.config.batch_normalization:
                 self.main_net.add(tf.keras.layers.BatchNormalization())
         self.main_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear'))
@@ -223,6 +221,7 @@ class DQNAgent(Policy, BaseModelMixin):
                       (self.optimizer._decayed_lr(tf.float32).numpy() * 1000))
 
             if i % self.config.plot_every_episode == 0 and self.config.plot_progression_flag:
+                print('Plotting policy')
                 self.plot_policy(i)
 
         plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
@@ -255,7 +254,7 @@ class DQNAgent(Policy, BaseModelMixin):
         self.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
         self.action_bins = np.load(os.path.join(model_path, 'action_bins.npy'))
 
-    def plot_policy(self, i):
+    def plot_policy(self, step_i):
         w_points = 60
         l_points = 60
         l = np.linspace(self.env.observation_space.low[0], self.env.observation_space.high[0], l_points)
@@ -265,10 +264,9 @@ class DQNAgent(Policy, BaseModelMixin):
         p = np.zeros_like(ww)
         for i, xp in enumerate(w):
             for j, yp in enumerate(l):
-                fixed_obs = np.array([yp, xp])
-                z[j, i] = np.amax(self.main_net.predict_on_batch(self.env.observation(fixed_obs[None, :])))
-                p[j, i] = environment.action(np.argmax(self.env.observation(
-                    self.main_net.predict_on_batch(fixed_obs[None, :]))))
+                fixed_obs = self.env.observation(np.array([yp, xp]))
+                z[j, i] = np.amax(self.main_net.predict_on_batch(fixed_obs[None, :]))
+                p[j, i] = environment.action(np.argmax(self.main_net.predict_on_batch(fixed_obs[None, :])))
 
         fig, ax = plt.subplots(nrows=1, ncols=2)
         im = ax[0].pcolor(ww, ll, p)
@@ -288,7 +286,7 @@ class DQNAgent(Policy, BaseModelMixin):
 
         with self.writer.as_default():
             with tf.name_scope('Learning progress'):
-                tf.summary.image("Learned policy", plot_to_image(fig), step=i)
+                tf.summary.image("Learned policy", plot_to_image(fig), step=step_i)
         return fig
 
 if __name__ == '__main__':
@@ -299,5 +297,5 @@ if __name__ == '__main__':
     environment = DiscretizedActionWrapper(c_env, actions_bins)
     environment = StateNormalization(environment)
 
-    dqn = DQNAgent(environment, 'DDQNPER', training=True, config=DefaultConfig())
+    dqn = DQNAgent(environment, 'DDQNMono', training=True, config=DefaultConfig())
     dqn.run()
