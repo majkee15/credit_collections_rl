@@ -18,7 +18,7 @@ from learning.utils.annealing_schedule import AnnealingSchedule
 from learning.utils.construct_lattice import construct_lattice
 
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
@@ -57,13 +57,19 @@ class DefaultConfig(TrainConfig):
     plot_progression_flag = True
     plot_every_episode = target_update_every_step
 
+    # env setting
+    normalize_states = False
+
 
 class DQNAgentLattice(Policy, BaseModelMixin):
 
-    def __init__(self, env, name, config=None, training=True):
+    def __init__(self, env, name, config=None, training=True, initialize=False):
 
         Policy.__init__(self, env, name, training=training)
         BaseModelMixin.__init__(self, name)
+
+        if config.normalize_states:
+            self.env = StateNormalization(env)
 
         self.config = config
         self.batch_size = self.config.batch_size
@@ -74,9 +80,12 @@ class DQNAgentLattice(Policy, BaseModelMixin):
 
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)#, clipnorm=5)
 
-        self.main_net = construct_lattice(self.env)
+        self.target_net = construct_lattice(self.env, config, initialize=initialize)
 
-        self.target_net = construct_lattice(self.env)
+        self.main_net = tf.keras.models.clone_model(self.target_net)
+        self.main_net.build(input_shape=(1, 2))
+        self.main_net.set_weights(self.target_net.get_weights())
+
         self.global_step = 0
 
     def get_action(self, state, epsilon):

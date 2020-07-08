@@ -71,8 +71,8 @@ class CollectionsEnv(gym.Env):
 
     def reset(self):
         if self.randomize_start:
-            draw_lambda = np.random.uniform(self.params.lambda0, 5)
-            draw_w = np.random.uniform(10, MAX_ACCOUNT_BALANCE)
+            draw_lambda = np.random.uniform(self.params.lambda0, self.MAX_LAMBDA)
+            draw_w = np.random.uniform(MIN_ACCOUNT_BALANCE, MAX_ACCOUNT_BALANCE)
             self.current_state = np.array([draw_lambda, draw_w])
         else:
             self.current_state = self.starting_state.copy()
@@ -85,6 +85,9 @@ class CollectionsEnv(gym.Env):
         self._draw = np.random.exponential(1)
         # self.logger.info(f'State reset {self.starting_state}')
         return self.current_state
+
+    def observation(self, state):
+        return state
 
     def intensity_integral(self, t, lambda0):
         # Computes the integral of the intensity function
@@ -122,6 +125,9 @@ class CollectionsEnv(gym.Env):
 
         if self.current_state[1] < self.MIN_ACCOUNT_BALANCE:
             self.done = True
+
+        if self.current_state[0] > self.MAX_LAMBDA:
+            self.current_state[0] = self.MAX_LAMBDA
 
         return self.current_state, reward, self.done, None
 

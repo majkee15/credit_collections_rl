@@ -17,7 +17,7 @@ from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
@@ -33,7 +33,7 @@ class DefaultConfig(TrainConfig):
     #                                                               end_learning_rate=end_learning_rate, power=1.0)
     learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, n_episodes)
     gamma = 1.0
-    epsilon = 0.05
+    epsilon = 1
     epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
     target_update_every_step = 50
@@ -56,11 +56,17 @@ class DefaultConfig(TrainConfig):
     plot_progression_flag = True
     plot_every_episode = target_update_every_step
 
+    # env setting
+    normalize_states = True
+
 class DQNAgent(Policy, BaseModelMixin):
 
-    def __init__(self, env, name, config=None, training=True, layers=(128, 128, 128)):
+    def __init__(self, env, name, config=None, training=True, layers=(128, 128, 128), initialize=True):
 
-        Policy.__init__(self, env, name, training=training)
+        if config.normalize_states:
+            self.env = StateNormalization(env)
+
+        Policy.__init__(self, self.env, name, training=training)
         BaseModelMixin.__init__(self, name)
 
         self.config = config
@@ -75,7 +81,7 @@ class DQNAgent(Policy, BaseModelMixin):
         self.global_lr = tf.Variable(self.config.learning_rate_schedule.current_p, trainable=False)
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.global_lr)#, clipnorm=5)
 
-        self.target_net = construct_nn(env, self.layers, self.config, initialize=True)
+        self.target_net = construct_nn(self.env, self.layers, self.config, initialize=initialize)
         self.main_net = tf.keras.models.clone_model(self.target_net)
         self.main_net.set_weights(self.target_net.get_weights())
         # number of training epochs = global - step
@@ -202,6 +208,7 @@ class DQNAgent(Policy, BaseModelMixin):
             if i % self.config.plot_every_episode == 0 and self.config.plot_progression_flag:
                 print('Plotting policy')
                 self.plot_policy(i)
+                self.plot_visit_map(i)
 
         plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
         self.save()
@@ -268,13 +275,38 @@ class DQNAgent(Policy, BaseModelMixin):
                 tf.summary.image("Learned policy", plot_to_image(fig), step=step_i)
         return fig
 
+    def plot_visit_map(self, step_i):
+        visits = [trans.s for trans in self.memory.buffer]
+        visits_w = np.array([vis[1] for vis in visits])
+        visits_l = np.array([vis[0] for vis in visits])
+
+        # Generate some test data
+        mask = visits_w >= 0
+
+        x = visits_w[mask]
+        y = visits_l[mask]
+
+        # fig,ax = plt.subplots(figsize=(10,10))
+
+        heatmap, xedges, yedges = np.histogram2d(x, y, bins=(30, 20))
+        extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+        fig, ax = plt.subplots()
+        mappable = ax.imshow(heatmap.T, extent=extent, origin='lower', interpolation='nearest', aspect='auto')
+        ax.set_title('Visit heatmap')
+        fig.colorbar(mappable)
+
+        with self.writer.as_default():
+            with tf.name_scope('Learning progress'):
+                tf.summary.image("Visit heatmap", plot_to_image(fig), step=step_i)
+        return fig
+
+
 if __name__ == '__main__':
     actions_bins = np.array([0, 1.0])
     layers_shape = (64, 64, 64)
     n_actions = len(actions_bins)
-    c_env = CollectionsEnv(continuous_reward=True, randomize_start=False, max_lambda=5.0)
+    c_env = CollectionsEnv(continuous_reward=True, randomize_start=True, max_lambda=None)
     environment = DiscretizedActionWrapper(c_env, actions_bins)
-    environment = StateNormalization(environment)
 
-    dqn = DQNAgent(environment, 'DDQNMono', training=True, config=DefaultConfig())
+    dqn = DQNAgent(environment, 'DDQNMono', training=True, config=DefaultConfig(), initialize=False)
     dqn.run()

@@ -19,17 +19,25 @@ def construct_nn(env, layers, config, initialize=False):
     if initialize:
         # works only for one discrete action
         aav = AAV(env.params)
-        ws = np.linspace(0, env.w0, 100)
-        ls = np.linspace(0, env.MAX_LAMBDA, 100)
+        if config.normalize_states:
+            lowbounds = env.observation(np.array([env.params.lambda0, env.MIN_ACCOUNT_BALANCE]))
+            highbounds = env.observation(np.array([env.MAX_LAMBDA, env.w0]))
+            ws = np.linspace(lowbounds[1], highbounds[1], 100)
+            ls = np.linspace(lowbounds[0], highbounds[0], 100)
+        else:
+            ws = np.linspace(0, env.w0, 100)
+            ls = np.linspace(0, env.MAX_LAMBDA, 100)
+        wt = np.linspace(0, env.w0, 100)
+        lt = np.linspace(0, env.MAX_LAMBDA, 100)
         ww, ll = np.meshgrid(ws, ls)
         z = np.zeros_like(ww)
         zt = np.zeros_like(ww)
         features = []
         for i, wx in enumerate(ws):
             for j, ly in enumerate(ls):
-                z[j, i] = -aav.u(ly, wx)
-                zt[j, i] = -aav.u(ly + env.action(1), wx) - env.action(1) * env.params.c
-                features.append([ly, wx, z[j, i], zt[j, i]])
+                z[j, i] = -aav.u(lt[j], wt[i])
+                zt[j, i] = -aav.u(lt[j] + env.action(1), wt[i]) - env.action(1) * env.params.c
+                features.append([ls[j], ws[i], z[j, i], zt[j, i]])
 
         dataset = pd.DataFrame(features, columns=['l', 'w', 'target', 'target2'])
         train_dataset = dataset.sample(frac=0.8, random_state=0)
@@ -40,13 +48,14 @@ def construct_nn(env, layers, config, initialize=False):
         test_dataset = test_dataset.drop(labels=['target', 'target2'], axis=1)
 
         callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=5)
-        target_net.fit(train_dataset.to_numpy(), train_labels.to_numpy(), epochs=1000, validation_split=0.1, shuffle=False, verbose=True, callbacks=[callback])
+        target_net.fit(train_dataset.to_numpy(), train_labels.to_numpy(), epochs=1000, validation_split=0.1,
+                       shuffle=False, verbose=True, callbacks=[callback])
 
         lattice_pred = np.zeros_like(ww)
         lattice_pred2 = np.zeros_like(ww)
         for i, wx in enumerate(ws):
             for j, ly in enumerate(ls):
-                obs = np.array([ly, wx])
+                obs = np.array([ls[j], ws[i]])
                 pred = target_net.predict_on_batch(obs[None, :]).numpy()
                 lattice_pred[j, i] = pred[0][0]
                 lattice_pred2[j, i] = pred[0][1]
@@ -69,7 +78,7 @@ def construct_nn(env, layers, config, initialize=False):
         p = np.zeros_like(ww)
         for i, xp in enumerate(w):
             for j, yp in enumerate(l):
-                fixed_obs = np.array([yp, xp])
+                fixed_obs = np.array([ls[j], ws[i]])
                 z[j, i] = np.argmax(target_net.predict_on_batch(fixed_obs[None, :]).numpy().flatten())
 
         fig, ax = plt.subplots(nrows=1, ncols=2)
