@@ -15,14 +15,14 @@ from learning.collections_env.collections_env import CollectionsEnv
 
 
 class MotherSimulator():
-    def __init__(self, dt, params):
+    def __init__(self, dt, params, continuous_reward=False):
         self.dt = dt
         self.params = params
         self.name = 'Abstract'
         self.logger = logging.getLogger('MotherSimulator logger')
         self.logger.setLevel(os.getenv('LOG_LEVEL', 'INFO'))
+        self.env = CollectionsEnv(reward_shaping=continuous_reward, params=params)
 
-        self.env = CollectionsEnv()
 
     def kernel(self, t, r):
         # Return Kernel evaluation at time t
@@ -151,16 +151,17 @@ class StepSizeEffect:
         ax.plot(self.dts, pvals, marker='x')
         label = self.simulator.name
         ax.set_title(label)
-        ax.set_ylim([0,1])
+        ax.set_ylim([0, 1])
         fig.show()
 
 
 
 if __name__ == '__main__':
-    w0 = 100
+    w0 = 200
     dt = 0.05
     params = Parameters()
-    ms = MotherSimulator(dt, params)
-    print(ms.plot_value_dist(w0, n=1000))
+    params.rho = 0.000001
+    ms = MotherSimulator(dt, params, continuous_reward='continuous')
+    print(np.mean(ms.plot_value_dist(w0, n=1000)))
 
 

@@ -1,5 +1,6 @@
 import tensorflow_lattice as tfl
 import tensorflow as tf
+from tensorflow import keras
 import numpy as np
 import pandas as pd
 
@@ -7,6 +8,7 @@ import matplotlib as m
 import matplotlib.pyplot as plt
 
 from dcc import AAV, Parameters
+
 
 def construct_lattice(env, config, initialize=False):
     '''
@@ -18,110 +20,113 @@ def construct_lattice(env, config, initialize=False):
     min_w, min_l = (env.MIN_ACCOUNT_BALANCE, env.params.lambdainf)
     max_w, max_l = (env.w0, env.MAX_LAMBDA)
 
-    lattice_units_layer = [3, 3, 3, 2]
+    ## Calibrators Block
 
-    n_lattice_points = [3, 3, 3, 3]
+    combined_calibratorsl = []
+    combined_calibratorsr = []
 
-    lattice1 = tfl.layers.Lattice(units=lattice_units_layer[0], lattice_sizes=[n_lattice_points[0]] * 2,
-                                  monotonicities=2 * ['increasing'], output_min=0, output_max=1)
-
-    lattice2 = tfl.layers.Lattice(
-        units=lattice_units_layer[1],
-        lattice_sizes=[n_lattice_points[1]] * lattice_units_layer[0],
-        monotonicities=['increasing'] * lattice_units_layer[0], output_min=0, output_max=1)
-
-    lattice3 = tfl.layers.Lattice(
-        units=lattice_units_layer[2],
-        lattice_sizes=[n_lattice_points[2]] * lattice_units_layer[1],
-        # You can specify monotonicity constraints.
-        monotonicities=['increasing'] * lattice_units_layer[1], output_min=0, output_max=1)
-
-    lattice4 = tfl.layers.Lattice(
-        units=lattice_units_layer[3],
-        lattice_sizes=[n_lattice_points[3]] * lattice_units_layer[2],
-        # You can specify monotonicity constraints.
-        monotonicities=['increasing'] * lattice_units_layer[2], output_min=0, output_max=1)
-
-    combined_calibrators = []
+    lattice_units_layer = [5, 5, 1]
+    n_lattice_points = [5, 5, 5]
 
     for i in range(lattice_units_layer[0]):
-        calibration_layer_l = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_l, num=100),
-                                                        dtype=tf.float32, output_min=0.0,
-                                                        output_max=n_lattice_points[0] - 1.0,
-                                                        monotonicity='increasing', convexity='concave')
-        calibration_layer_w = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_w, num=100),
-                                                        dtype=tf.float32, output_min=0.0,
-                                                        output_max=n_lattice_points[0] - 1.0,
-                                                        monotonicity='increasing', convexity='convex')
-        combined_calibrators.append(calibration_layer_l)
-        combined_calibrators.append(calibration_layer_w)
+        calibration_layer_l_l = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_l, num=200),
+                                                          dtype=tf.float32, output_min=0.0,
+                                                          output_max=n_lattice_points[0] - 1.0,
+                                                          monotonicity='increasing')#, convexity='concave')
+        calibration_layer_w_l = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_w, num=200),
+                                                          dtype=tf.float32, output_min=0.0,
+                                                          output_max=n_lattice_points[0] - 1.0,
+                                                          monotonicity='increasing')#, convexity='convex')
+        calibration_layer_l_r = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_l, num=200),
+                                                          dtype=tf.float32, output_min=0.0,
+                                                          output_max=n_lattice_points[0] - 1.0,
+                                                          monotonicity='increasing')#, convexity='concave')
+        calibration_layer_w_r = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_w, num=200),
+                                                          dtype=tf.float32, output_min=0.0,
+                                                          output_max=n_lattice_points[0] - 1.0,
+                                                          monotonicity='increasing')#, convexity='convex')
 
-    input_callibrators = tfl.layers.ParallelCombination(combined_calibrators, single_output=True)
+        combined_calibratorsl.append(calibration_layer_l_l)
+        combined_calibratorsl.append(calibration_layer_w_l)
 
-    calibrator2 = tfl.layers.PWLCalibration(
-        input_keypoints=np.linspace(0, 1, num=50),
-        units=lattice_units_layer[0] * lattice_units_layer[1],
-        dtype=tf.float32,
-        output_min=0.0,
-        output_max=n_lattice_points[1] - 1.0,
-        monotonicity='increasing')
+        combined_calibratorsr.append(calibration_layer_l_r)
+        combined_calibratorsr.append(calibration_layer_w_r)
 
-    calibrator3 = tfl.layers.PWLCalibration(
-        input_keypoints=np.linspace(0, 1, num=50),
-        units=lattice_units_layer[1] * lattice_units_layer[2],
-        dtype=tf.float32,
-        output_min=0.0,
-        output_max=n_lattice_points[2] - 1.0,
-        monotonicity='increasing')
+    input_callibratorsl = tfl.layers.ParallelCombination(combined_calibratorsl, single_output=True)
+    input_callibratorsr = tfl.layers.ParallelCombination(combined_calibratorsr, single_output=True)
 
-    calibrator4 = tfl.layers.PWLCalibration(
-        input_keypoints=np.linspace(0, 1, num=50),
-        units=lattice_units_layer[2] * lattice_units_layer[3],
-        dtype=tf.float32,
-        output_min=0.0,
-        output_max=n_lattice_points[3] - 1.0,
-        monotonicity='increasing')
+    # API FUNCTIONAL MODEL
+    inputs = keras.Input(shape=(2,))
+    repeated_input = keras.layers.RepeatVector(lattice_units_layer[0])(inputs)
+    repeated_input = keras.layers.Flatten()(repeated_input)
+    # left tree
+    calibrator1l = input_callibratorsl(repeated_input)
+    calibrator1l = keras.layers.Reshape((lattice_units_layer[0], 2))(calibrator1l)
+    lattice1l = tfl.layers.Lattice(units=lattice_units_layer[0], lattice_sizes=[n_lattice_points[0]] * 2,
+                                   monotonicities=2 * ['increasing'], output_min=0, output_max=1)(calibrator1l)
+    lattice1l = keras.layers.RepeatVector(lattice_units_layer[1])(lattice1l)
+    lattice1l = keras.layers.Flatten()(lattice1l)
+    calibrator2l = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, 1, num=100),
+                                             units=lattice_units_layer[0] * lattice_units_layer[1], dtype=tf.float32,
+                                             output_min=0.0, output_max=n_lattice_points[1] - 1.0,
+                                             monotonicity='increasing')(lattice1l)
+    calibrator2l = keras.layers.Reshape((lattice_units_layer[1], lattice_units_layer[0]))(calibrator2l)
 
-    calibratorf = tfl.layers.PWLCalibration(
-        # Every PWLCalibration layer must have keypoints of piecewise linear
-        # function specified. Easiest way to specify them is to uniformly cover
-        # entire input range by using numpy.linspace().
-        input_keypoints=np.linspace(0, 1, num=100),
-        units=2,
-        # You need to ensure that input keypoints have same dtype as layer input.
-        # You can do it by setting dtype here or by providing keypoints in such
-        # format which will be converted to deisred tf.dtype by default.
-        dtype=tf.float32,
-        # Output range must correspond to expected lattice input range.
-        output_min=0.0,
-        #output_max=max_w * 4,
-        monotonicity='increasing')
+    lattice2l = tfl.layers.Lattice(units=lattice_units_layer[1],
+                                   lattice_sizes=[n_lattice_points[1]] * lattice_units_layer[0],
+                                   monotonicities=['increasing'] * lattice_units_layer[0], output_min=0, output_max=1)(
+        calibrator2l)
 
-    callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=4)
-    model = tf.keras.models.Sequential()
-    model.add(tf.keras.layers.RepeatVector(lattice_units_layer[0]))
-    model.add(tf.keras.layers.Flatten())
-    model.add(input_callibrators)
-    model.add(tf.keras.layers.Reshape((lattice_units_layer[0], 2)))
-    model.add(lattice1)
-    model.add(tf.keras.layers.RepeatVector(lattice_units_layer[1]))
-    model.add(tf.keras.layers.Flatten())
-    model.add(calibrator2)
-    model.add(tf.keras.layers.Reshape((lattice_units_layer[1], lattice_units_layer[0])))
-    model.add(lattice2)
-    model.add(tf.keras.layers.RepeatVector(lattice_units_layer[2]))
-    model.add(tf.keras.layers.Flatten())
-    model.add(calibrator3)
-    model.add(tf.keras.layers.Reshape((lattice_units_layer[2], lattice_units_layer[1])))
-    model.add(lattice3)
-    model.add(tf.keras.layers.RepeatVector(lattice_units_layer[3]))
-    model.add(tf.keras.layers.Flatten())
-    model.add(calibrator4)
-    model.add(tf.keras.layers.Reshape((lattice_units_layer[3], lattice_units_layer[2])))
-    model.add(lattice4)
-    model.add(calibratorf)
-    model.compile(loss=tf.keras.losses.mean_squared_error, optimizer=tf.keras.optimizers.Adam())
-    model.build(input_shape=(1, 2))
+    calibrator3l = tfl.layers.PWLCalibration(units=lattice_units_layer[1] * lattice_units_layer[2],
+                                             input_keypoints=np.linspace(0, 1, 100),
+                                             dtype=tf.float32, monotonicity='increasing', output_min=0, output_max=n_lattice_points[2] - 1.0)(
+        lattice2l)
+
+    lattice3l = tfl.layers.Lattice(units=lattice_units_layer[2],
+                                   lattice_sizes=[n_lattice_points[2]] * lattice_units_layer[1],
+                                   monotonicities=['increasing'] * lattice_units_layer[0], output_min=0, output_max=1)(
+        calibrator3l)
+
+    calibratorfl = tfl.layers.PWLCalibration(units=lattice_units_layer[2], input_keypoints=np.linspace(0, 1, 100),
+                                             dtype=tf.float32, monotonicity='increasing')(lattice3l)
+
+    # right tree
+    calibrator1r = input_callibratorsr(repeated_input)
+    calibrator1r = keras.layers.Reshape((lattice_units_layer[0], 2))(calibrator1r)
+    lattice1r = tfl.layers.Lattice(units=lattice_units_layer[0], lattice_sizes=[n_lattice_points[0]] * 2,
+                                   monotonicities=2 * ['increasing'], output_min=0, output_max=1)(calibrator1r)
+    lattice1r = keras.layers.RepeatVector(lattice_units_layer[1])(lattice1r)
+    lattice1r = keras.layers.Flatten()(lattice1l)
+    calibrator2r = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, 1, num=100),
+                                             units=lattice_units_layer[0] * lattice_units_layer[1], dtype=tf.float32,
+                                             output_min=0.0, output_max=n_lattice_points[1] - 1.0,
+                                             monotonicity='increasing')(lattice1r)
+    calibrator2r = keras.layers.Reshape((lattice_units_layer[1], lattice_units_layer[0]))(calibrator2r)
+
+    lattice2r = tfl.layers.Lattice(units=lattice_units_layer[1],
+                                   lattice_sizes=[n_lattice_points[1]] * lattice_units_layer[0],
+                                   monotonicities=['increasing'] * lattice_units_layer[0], output_min=0, output_max=1)(
+        calibrator2r)
+
+    calibrator3r = tfl.layers.PWLCalibration(units=lattice_units_layer[1] * lattice_units_layer[2],
+                                             input_keypoints=np.linspace(0, 1, 100),
+                                             dtype=tf.float32, monotonicity='increasing', output_min=0, output_max=n_lattice_points[2] - 1.0)(
+        lattice2r)
+
+    lattice3r = tfl.layers.Lattice(units=lattice_units_layer[2],
+                                   lattice_sizes=[n_lattice_points[2]] * lattice_units_layer[1],
+                                   monotonicities=['increasing'] * lattice_units_layer[0], output_min=0, output_max=1)(
+        calibrator3r)
+
+    calibratorfr = tfl.layers.PWLCalibration(units=lattice_units_layer[2], input_keypoints=np.linspace(0, 1, 100),
+                                             dtype=tf.float32, monotonicity='increasing')(lattice3r)
+
+    # Combine
+    final = keras.layers.Concatenate()([calibratorfl, calibratorfr])
+
+    model = keras.Model(inputs=inputs, outputs=final, name="combined")
+    model.compile(loss=tf.keras.losses.mean_squared_error, optimizer='adam', metrics=['mean_absolute_percentage_error'])
+
 
     if initialize:
         # works only for one discrete action
@@ -156,7 +161,7 @@ def construct_lattice(env, config, initialize=False):
 
         callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=5)
         model.fit(train_dataset.to_numpy(), train_labels.to_numpy(), epochs=50, validation_split=0.1,
-                       shuffle=False, verbose=True, callbacks=[callback])
+                  shuffle=False, verbose=True, callbacks=[callback])
 
         lattice_pred = np.zeros_like(ww)
         lattice_pred2 = np.zeros_like(ww)

@@ -13,14 +13,14 @@ MAX_ACTION = 1.0
 class CollectionsEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, continuous_reward=True, randomize_start=False,
+    def __init__(self, w0=MAX_ACCOUNT_BALANCE, params=Parameters(), reward_shaping='discrete', randomize_start=False,
                  starting_state=None, max_lambda=None):
         super(CollectionsEnv, self).__init__()
 
         # Environment specific
-        self.params = Parameters()
+        self.params = params
         self.dt = 0.05
-        self.w0 = MAX_ACCOUNT_BALANCE
+        self.w0 = w0
         self.lambda0 = self.params.lambda0
         if starting_state is None:
             self.starting_state = np.array([self.lambda0, self.w0], dtype=np.float32)
@@ -32,13 +32,13 @@ class CollectionsEnv(gym.Env):
         self.MIN_ACCOUNT_BALANCE = MIN_ACCOUNT_BALANCE
         self.MAX_ACTION = MAX_ACTION
         if max_lambda is None:
-            self.MAX_LAMBDA = utils.lambda_bound(MAX_ACCOUNT_BALANCE, MIN_ACCOUNT_BALANCE, self.params)
+            self.MAX_LAMBDA = utils.lambda_bound(self.w0, MIN_ACCOUNT_BALANCE, self.params)
         else:
             self.MAX_LAMBDA = max_lambda
         self.observation_space = spaces.Box(low=np.array([self.params.lambdainf, self.MIN_ACCOUNT_BALANCE]),
-                                            high=np.array([self.MAX_LAMBDA, MAX_ACCOUNT_BALANCE]),
+                                            high=np.array([self.MAX_LAMBDA, self.w0]),
                                             dtype=np.float16)
-        self.reward_range = (0, MAX_ACCOUNT_BALANCE)
+        self.reward_range = (0, self.w0)
 
         # step dependent
         self.current_step = 0
@@ -51,7 +51,7 @@ class CollectionsEnv(gym.Env):
         self.repayments = []
 
         # Continuous reward
-        self.continuous_reward = continuous_reward
+        self.reward_shaping = reward_shaping
 
         # randomize starts
         self.randomize_start = randomize_start
@@ -114,18 +114,28 @@ class CollectionsEnv(gym.Env):
             r = 0
 
         # reward formulation
-        if self.continuous_reward:
+        if self.reward_shaping == 'continuous':
             reward = self.current_state[1] * discount_factor * self.params.rmean * self.current_state[0] * self.dt \
                      - discount_factor * action * self.params.c
-        else:
+        elif self.reward_shaping == 'discrete':
             # sparse reward formulation
             reward = (r * self.current_state[1] - action * self.params.c) * discount_factor
+        elif self.reward_shaping == 'expected':
+            prob_of_arrival = 1 - np.exp(-(self.params.lambdainf * self.dt +
+                                         ((self.current_state[0] - self.params.lambdainf)/self.params.kappa) *
+                                         (np.exp(-self.params.kappa * (self.current_time + self.dt)) -
+                                          np.exp(-self.params.kappa * self.current_time))
+                                         ))
+            reward = (self.current_state[1] * self.params.rmean * prob_of_arrival - self.params.c * action) * discount_factor
+        else:
+            raise NotImplementedError('Not implemented rewards.')
 
-        self.current_state[1] = self.current_state[1] * (1 - r) # - action * self.params.c
+        self.current_state[1] = self.current_state[1] * (1 - r)
 
         if self.current_state[1] < self.MIN_ACCOUNT_BALANCE:
             self.done = True
 
+        # snap back to the highest allowed point
         if self.current_state[0] > self.MAX_LAMBDA:
             self.current_state[0] = self.MAX_LAMBDA
 

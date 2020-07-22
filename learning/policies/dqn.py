@@ -17,12 +17,12 @@ from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+#os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
-    n_episodes = 5000
-    warmup_episodes = 3000
+    n_episodes = 10000
+    warmup_episodes = 5000
 
     # fixed learning rate
     learning_rate = 0.001
@@ -32,7 +32,7 @@ class DefaultConfig(TrainConfig):
     #                                                               decay_steps=warmup_episodes,
     #                                                               end_learning_rate=end_learning_rate, power=1.0)
     learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, n_episodes)
-    gamma = 1.0
+    gamma = 0.99
     epsilon = 1
     epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
@@ -175,7 +175,7 @@ class DQNAgent(Policy, BaseModelMixin):
                 self.memory.add(Transition(state, action, reward, next_state, done))
                 score += reward
 
-                state = next_state
+                state = next_state.copy()
 
                 if self.memory.size > self.batch_size:
                     loss = self.train()
@@ -305,8 +305,8 @@ if __name__ == '__main__':
     actions_bins = np.array([0, 1.0])
     layers_shape = (64, 64, 64)
     n_actions = len(actions_bins)
-    c_env = CollectionsEnv(continuous_reward=True, randomize_start=True, max_lambda=None)
+    c_env = CollectionsEnv(reward_shaping=True, randomize_start=True, max_lambda=5.0, starting_state=np.array([3, 200], dtype=np.float32))
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, 'DDQNMono', training=True, config=DefaultConfig(), initialize=False)
+    dqn = DQNAgent(environment, 'DDQNFix', training=True, config=DefaultConfig(), initialize=False)
     dqn.run()

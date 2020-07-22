@@ -6,7 +6,7 @@ from copy import deepcopy
 
 action_bins = np.array([0, 1.0])
 
-environment = CollectionsEnv(continuous_reward=False)
+environment = CollectionsEnv(reward_shaping=False)
 environment = DiscretizedActionWrapper(environment, action_bins)
 # environment = StateNormalization(environment)
 

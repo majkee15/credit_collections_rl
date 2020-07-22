@@ -19,14 +19,18 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="construct lattice function added - fix">
+    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="enforce max lambda bound">
+      <change afterPath="$PROJECT_DIR$/learning/policies/dqn_lattice_mono.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dcc/aav.py" beforeDir="false" afterPath="$PROJECT_DIR$/dcc/aav.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/collections_env/collections_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/collections_env/collections_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/notebooks/explore_learned_policies.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/learning/notebooks/explore_learned_policies.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/policies/dqn.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/policies/dqn_lattice.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn_lattice.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/tests/testing_continuous_reward.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/tests/testing_continuous_reward.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/tests/testing_environment_distributional_properties.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/tests/testing_environment_distributional_properties.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/tests/testing_policy_evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/tests/testing_policy_evaluation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/utils/construct_lattice.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/construct_lattice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/utils/construct_nn.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/construct_nn.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,51 +107,7 @@
       <recent name="$PROJECT_DIR$/optimal_sustain_level" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.dqn">
-    <configuration name="collections_env" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="credit_collections_RL" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="C:\Users\majke\anaconda3\envs\tf2-gpu\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/collections_env" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/collections_env/collections_env.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="construct_lattice" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="credit_collections_RL" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="C:\Users\majke\anaconda3\envs\tf2-gpu\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/utils" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/utils/construct_lattice.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.testing_environment_distributional_properties">
     <configuration name="dqn" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -192,6 +152,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="dqn_lattice_mono" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="credit_collections_RL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\majke\anaconda3\envs\tf2-gpu\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/policies" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/policies/dqn_lattice_mono.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="testing_continuous_reward" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -206,6 +188,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/tests/testing_continuous_reward.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="testing_environment_distributional_properties" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="credit_collections_RL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\majke\anaconda3\envs\tf2-gpu\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/tests" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/tests/testing_environment_distributional_properties.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -239,18 +243,18 @@
     <list>
       <item itemvalue="Python.testing_policy_evaluation" />
       <item itemvalue="Python.dqn" />
-      <item itemvalue="Python.testing_continuous_reward" />
-      <item itemvalue="Python.collections_env" />
       <item itemvalue="Python.dqn_lattice" />
-      <item itemvalue="Python.construct_lattice" />
+      <item itemvalue="Python.dqn_lattice_mono" />
+      <item itemvalue="Python.testing_continuous_reward" />
+      <item itemvalue="Python.testing_environment_distributional_properties" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.dqn" />
-        <item itemvalue="Python.dqn_lattice" />
-        <item itemvalue="Python.construct_lattice" />
-        <item itemvalue="Python.collections_env" />
+        <item itemvalue="Python.testing_environment_distributional_properties" />
         <item itemvalue="Python.testing_continuous_reward" />
+        <item itemvalue="Python.dqn_lattice" />
+        <item itemvalue="Python.dqn" />
+        <item itemvalue="Python.dqn_lattice_mono" />
       </list>
     </recent_temporary>
   </component>
@@ -315,7 +319,10 @@
       <workItem from="1593425473471" duration="1491000" />
       <workItem from="1593530890200" duration="19937000" />
       <workItem from="1593768702934" duration="4962000" />
-      <workItem from="1593943870824" duration="34401000" />
+      <workItem from="1593943870824" duration="44101000" />
+      <workItem from="1594277679025" duration="10130000" />
+      <workItem from="1594648165125" duration="2212000" />
+      <workItem from="1595188265521" duration="13169000" />
     </task>
     <task id="LOCAL-00001" summary="first_commit">
       <created>1574424688615</created>
@@ -562,7 +569,14 @@
       <option name="project" value="LOCAL" />
       <updated>1594060484019</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="enforce max lambda bound">
+      <created>1594216084298</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1594216084298</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -581,7 +595,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="working CHP class" />
     <MESSAGE value="adding a value precision condition for simulation to lighten the computational load" />
     <MESSAGE value="adding a value precision condition for simulation to lighten the computational load&#10;BruteForce sim parameters" />
     <MESSAGE value="cython implementation of the valuation engine" />
@@ -606,53 +619,54 @@
     <MESSAGE value="positive weights constraint" />
     <MESSAGE value="construct lattice function added" />
     <MESSAGE value="construct lattice function added - fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="construct lattice function added - fix" />
+    <MESSAGE value="enforce max lambda bound" />
+    <option name="LAST_COMMIT_MESSAGE" value="enforce max lambda bound" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593956441558">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595351389371">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1593956441558" />
-    <state x="871" y="422" width="677" height="594" key="#xdebugger.evaluate" timestamp="1594215533749">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595351389371" />
+    <state x="1102" y="437" width="677" height="594" key="#xdebugger.evaluate" timestamp="1594280979801">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="871" y="422" width="677" height="594" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1594215533749" />
+    <state x="1102" y="437" width="677" height="594" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1594280979801" />
     <state x="740" y="260" key="FileChooserDialogImpl" timestamp="1591876925265">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1591876925265" />
-    <state width="1860" height="241" key="GridCell.Tab.0.bottom" timestamp="1594215759447">
+    <state width="1860" height="218" key="GridCell.Tab.0.bottom" timestamp="1595424548374">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="241" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1594215759447" />
-    <state width="1860" height="241" key="GridCell.Tab.0.center" timestamp="1594215759447">
+    <state width="1860" height="218" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1595424548374" />
+    <state width="1860" height="218" key="GridCell.Tab.0.center" timestamp="1595424548374">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="241" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1594215759447" />
-    <state width="1860" height="241" key="GridCell.Tab.0.left" timestamp="1594215759447">
+    <state width="1860" height="218" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1595424548374" />
+    <state width="1860" height="218" key="GridCell.Tab.0.left" timestamp="1595424548374">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="241" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1594215759447" />
-    <state width="1860" height="241" key="GridCell.Tab.0.right" timestamp="1594215759447">
+    <state width="1860" height="218" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1595424548374" />
+    <state width="1860" height="218" key="GridCell.Tab.0.right" timestamp="1595424548374">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="241" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1594215759447" />
-    <state width="1860" height="245" key="GridCell.Tab.1.bottom" timestamp="1594215643559">
+    <state width="1860" height="218" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1595424548374" />
+    <state width="1860" height="245" key="GridCell.Tab.1.bottom" timestamp="1595419742916">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="245" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1594215643559" />
-    <state width="1860" height="245" key="GridCell.Tab.1.center" timestamp="1594215643559">
+    <state width="1860" height="245" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1595419742916" />
+    <state width="1860" height="245" key="GridCell.Tab.1.center" timestamp="1595419742916">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="245" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1594215643559" />
-    <state width="1860" height="245" key="GridCell.Tab.1.left" timestamp="1594215643559">
+    <state width="1860" height="245" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1595419742916" />
+    <state width="1860" height="245" key="GridCell.Tab.1.left" timestamp="1595419742916">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="245" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1594215643559" />
-    <state width="1860" height="245" key="GridCell.Tab.1.right" timestamp="1594215643559">
+    <state width="1860" height="245" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1595419742916" />
+    <state width="1860" height="245" key="GridCell.Tab.1.right" timestamp="1595419742916">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="245" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1594215643559" />
+    <state width="1860" height="245" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1595419742916" />
     <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1593707429613">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -690,29 +704,24 @@
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/learning/policies/dqn_lattice.py</url>
-          <line>82</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/learning/policies/dqn_lattice.py</url>
-          <line>80</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/learning/policies/dqn.py</url>
           <line>278</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/learning/collections_env/collections_env.py</url>
-          <line>75</line>
-          <option name="timeStamp" value="25" />
+          <url>file://$PROJECT_DIR$/learning/policies/dqn.py</url>
+          <line>177</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/learning/policies/dqn.py</url>
-          <line>167</line>
-          <option name="timeStamp" value="26" />
+          <url>file://$PROJECT_DIR$/learning/policies/dqn_lattice.py</url>
+          <line>169</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/learning/collections_env/collections_env.py</url>
+          <line>128</line>
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -737,7 +746,8 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihpv2.coverage" NAME="sustained_ihpv2 Coverage Results" MODIFIED="1585661933149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$oav.coverage" NAME="oav Coverage Results" MODIFIED="1589459479443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$misc.coverage" NAME="misc Coverage Results" MODIFIED="1589405528224" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice.coverage" NAME="dqn_lattice Coverage Results" MODIFIED="1594113371910" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice.coverage" NAME="dqn_lattice Coverage Results" MODIFIED="1595189504183" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_environment_distributional_properties.coverage" NAME="testing_environment_distributional_properties Coverage Results" MODIFIED="1595424606052" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp_c_pyx.coverage" NAME="sustained_ihp_c.pyx Coverage Results" MODIFIED="1585828504788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$q_table.coverage" NAME="q_table Coverage Results" MODIFIED="1587490783197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$gymcollectionsenv.coverage" NAME="gymcollectionsenv Coverage Results" MODIFIED="1589408992471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
@@ -747,7 +757,7 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$chp__2_.coverage" NAME="chp (2) Coverage Results" MODIFIED="1585808180016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$testing_policy_evaluation.coverage" NAME="testing_policy_evaluation Coverage Results" MODIFIED="1592585417210" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties.coverage" NAME="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties Coverage Results" MODIFIED="1590053429260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1594215759442" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1595189413694" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$qlearning.coverage" NAME="qlearning Coverage Results" MODIFIED="1589452041189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$construct_lattice.coverage" NAME="construct_lattice Coverage Results" MODIFIED="1593957640235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
     <SUITE FILE_PATH="coverage/credit_collections_RL$environment_engine__1_.coverage" NAME="environment_engine Coverage Results" MODIFIED="1574267108724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -759,8 +769,9 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$testing_environment.coverage" NAME="testing_environment Coverage Results" MODIFIED="1587642361733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$pricer.coverage" NAME="pricer Coverage Results" MODIFIED="1589450672665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$hp_sim.coverage" NAME="hp_sim Coverage Results" MODIFIED="1589270028200" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_continuous_reward.coverage" NAME="testing_continuous_reward Coverage Results" MODIFIED="1591876810258" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_continuous_reward.coverage" NAME="testing_continuous_reward Coverage Results" MODIFIED="1595419935591" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp__1_.coverage" NAME="sustained_ihp (1) Coverage Results" MODIFIED="1586363442240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mc_osl" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice_mono.coverage" NAME="dqn_lattice_mono Coverage Results" MODIFIED="1595188335092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$collections_env.coverage" NAME="collections_env Coverage Results" MODIFIED="1593075237452" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$bruteforce_search.coverage" NAME="bruteforce_search Coverage Results" MODIFIED="1575480207008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp.coverage" NAME="sustained_ihp Coverage Results" MODIFIED="1585828522904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />

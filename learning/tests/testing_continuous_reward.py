@@ -3,7 +3,8 @@ from learning.collections_env.collections_env import CollectionsEnv
 import numpy as np
 import matplotlib.pyplot as plt
 
-env = CollectionsEnv()
+np.random.seed(seed=1)
+env = CollectionsEnv(reward_shaping='continuous')
 
 done = False
 state = env.reset()
