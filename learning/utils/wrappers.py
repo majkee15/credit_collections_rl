@@ -1,7 +1,7 @@
 import gym
 import numpy as np
 from gym.spaces import Box, Discrete
-
+import pickle
 
 # class DiscretizedObservationWrapper(gym.ObservationWrapper):
 #     def __init__(self, env, n_bins=10, low=None, high=None):
@@ -58,6 +58,16 @@ class DiscretizedActionWrapper(gym.ActionWrapper):
     def action(self, action):
         return self.action_bins[action]
 
+    def save(self, filename):
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, 'rb') as f:
+            return pickle.load(f)
+
+
 
 class StateNormalization(gym.ObservationWrapper):
     # squishes the statespace in [0, 1]
@@ -71,6 +81,16 @@ class StateNormalization(gym.ObservationWrapper):
 
     def convert_back(self, normalized_observation):
         return (normalized_observation * self.high) + self.low
+
+    def save(self, filename):
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, 'rb') as f:
+            return pickle.load(f)
+
 
 
 if __name__ == '__main__':

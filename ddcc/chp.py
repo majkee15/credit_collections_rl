@@ -2,8 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from base import Base
-from dcc import Parameters
-
+from dcc import Parameters, AAV
+import seaborn as sns
 
 class CHP(Base):
     """
@@ -115,10 +115,6 @@ class CHP(Base):
                 self.balances = np.append(self.balances, potential_balance)
                 flag_finished = True
                 return
-        # if n == 0 and self.starting_jump>0:
-        #     t_to_sustain = 0
-        #     sustain_drift_time = s
-        # else:
 
     def simulate(self):
         # self.next_arrival()
@@ -161,11 +157,16 @@ class CHP(Base):
             self.logger.info(f'Revenues: {dc_revenue} \n Costs: {self.total_cost}')
         return dc_revenue + self.total_cost
 
-    def calculate_value(self, mc_iteration=10000):
-        running_sum = 0
+    def calculate_value(self, mc_iteration=10000, returntype='mean'):
+        vals = np.zeros(mc_iteration)
         for i in range(mc_iteration):
-            running_sum += self.calculate_value_single()
-        return running_sum / mc_iteration
+            vals[i] = self.calculate_value_single()
+        if returntype == 'array':
+            return vals
+        elif returntype == 'mean':
+            return np.mean(vals)
+        else:
+            raise NotImplementedError('Only array or mean is implemented.')
 
     # PLOT FUNCTIONS
 
@@ -283,10 +284,12 @@ if __name__ == '__main__':
         else:
             raise ValueError('Stupid error in w.')
 
-    #
+    l0 = 1
+    w0 = 100
+
     params = Parameters()
-    chp = CHP(starting_balance=75, starting_intensity=1, params=params,
-              collection_horizon=100, value_precision_thershold=1e-3, control_function=None)
+    chp = CHP(starting_balance=w0, starting_intensity=l0, params=params,
+              collection_horizon=1000, value_precision_thershold=1e-3, control_function=None)
     print(chp.calculate_value_single())
     chp.plot_statespace()
     chp.plot_intensity()
@@ -294,47 +297,13 @@ if __name__ == '__main__':
     chp.plot_balance()
     chp.test_increments()
 
-    print(chp.calculate_value(100000))
-    # w_grid = np.arange(0, 100, 10)
-    # v = np.zeros_like(w_grid)
-    # for i, w in enumerate(w_grid):
-    #     chp = CHP(starting_balance=w, starting_intensity=1, marginal_cost=1,
-    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
-    #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
-    #     v[i] = chp.calculate_value(mc_iteration=1000)
-    #
-    # plt.plot(w_grid, v, marker='o')
-    # plt.xlim([0,max(w_grid)])
-    # plt.xlabel('w')
-    # plt.ylabel('v')
-    # plt.show()
-    #
-    # lamdba_grid = np.arange(0.1, 5, 1)
-    # v = np.zeros_like(lamdba_grid)
-    # for i, lam in enumerate(lamdba_grid):
-    #     chp = CHP(starting_balance=75, starting_intensity=lam, marginal_cost=1,
-    #               collection_horizon=100, lambda_infty=0.1, kappa=0.7, value_precision_thershold=0.001,
-    #               delta10=0.02, delta11=0.5, control_function=None, rho=0.06)
-    #     v[i] = chp.calculate_value(mc_iteration=10000)
-    # print(v)
-    # plt.plot(lamdba_grid, v, marker='o')
-    # plt.xlim([0, max(lamdba_grid)])
-    # plt.xlabel('lambda')
-    # plt.ylabel('v')
-    # plt.show()
+    mc_vals = chp.calculate_value(10000, returntype='array')
+    print(np.mean(mc_vals))
+    aav = AAV(params)
+    print(aav.u(l0, w0))
 
-
-
-
-
-
-
-
-
-
-
-
-
+    sns.distplot(mc_vals)
+    plt.show()
 
 
 

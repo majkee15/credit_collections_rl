@@ -305,9 +305,9 @@ class DQNAgentLattice(Policy, BaseModelMixin):
 if __name__ == '__main__':
     actions_bins = np.array([0, 1.0])
     n_actions = len(actions_bins)
-    c_env = CollectionsEnv(reward_shaping=True, randomize_start=True, max_lambda=5.0)
+    c_env = CollectionsEnv(reward_shaping='continuous', randomize_start=True, max_lambda=None)
     environment = DiscretizedActionWrapper(c_env, actions_bins)
    #  environment = StateNormalization(environment)
 
-    dqn = DQNAgentLattice(environment, 'DQNLattice', training=True, config=DefaultConfig(), initialize=True)
+    dqn = DQNAgentLattice(environment, 'DDQNLattice', training=True, config=DefaultConfig(), initialize=False)
     dqn.run()

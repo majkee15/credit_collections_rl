@@ -15,10 +15,10 @@ from learning.collections_env.collections_env import CollectionsEnv
 
 
 class MotherSimulator():
-    def __init__(self, dt, params, continuous_reward=False):
+    def __init__(self, dt, params, continuous_reward=False, name='Noname'):
         self.dt = dt
         self.params = params
-        self.name = 'Abstract'
+        self.name = name
         self.logger = logging.getLogger('MotherSimulator logger')
         self.logger.setLevel(os.getenv('LOG_LEVEL', 'INFO'))
         self.env = CollectionsEnv(reward_shaping=continuous_reward, params=params)
@@ -66,34 +66,36 @@ class MotherSimulator():
         # deterministic draft between jumps
         return self.params.lambdainf + (lambda_start - self.params.lambdainf) * np.exp(-self.params.kappa * s)
 
-    def getpath(self, horizon):
-        state = self.env.reset()
+    def getpath(self, start_state, horizon=None):
+        state = self.env.reset(tostate=start_state)
         rew_path = []
         state_path = []
         t = 0
         done = False
         while not done:
             t += self.env.dt
-            state, reward, done, _ = self.env.step(0)
+            state, reward, done, _ = self.env.step(0.0)
             rew_path.append(reward)
-            state_path.append(state[0])
+            state_path.append(state.copy())
 
-        return np.sum(np.array(rew_path))
+        return np.sum(np.array(rew_path)), state_path
 
-    def value_acc(self, w0, n=5000):
+    def value_acc(self, l0, w0, n=5000):
+        start_state = np.array([l0, w0], dtype=np.float64)
         vals = []
+        # horizon represents the time until the balance becomes negligible by discounting
         horizon = -np.log(10e-16) / self.params.kappa
         for i in range(n):
-            val = self.getpath(horizon)
+            val, state_path = self.getpath(start_state, horizon)
             # res = np.cumprod(1 - repayments) * w0
             # vals.append(np.sum(- np.diff(np.insert(res, 0, w0)) * np.exp(-self.params.rho * arrivals)))
             vals.append(val)
         return vals
 
-    def plot_value_dist(self, w0, n):
+    def plot_value_dist(self, l0, w0, n):
         aav = AAV(self.params)
-        u = -aav.u(self.params.lambda0, w0)
-        mc = self.value_acc(w0, n)
+        u = -aav.u(l0, w0)
+        mc = self.value_acc(l0, w0, n)
         fig, ax = plt.subplots()
         sns.distplot(mc, ax=ax)
         ax.axvline(np.mean(mc), color='red', linestyle='--')
@@ -103,6 +105,29 @@ class MotherSimulator():
         fig.show()
         return mc
 
+    def plot_path(self, l0, w0, n):
+        start_state = np.array([l0, w0])
+        val, statepath = self.getpath(start_state)
+        lams = [point[0] for point in statepath]
+        ws = [point[1] for point in statepath]
+        fig, ax = plt.subplots()
+        ax.plot(lams)
+        ax.set_xlabel('Time step')
+        ax.set_ylabel('Lambda')
+        fig.show()
+
+        fig, ax = plt.subplots()
+        ax.plot(ws, lams)
+        ax.set_xlabel('W')
+        ax.set_ylabel('Lambda')
+        fig.show()
+
+        fig, ax = plt.subplots()
+        ax.plot(ws)
+        ax.set_xlabel('Time step')
+        ax.set_ylabel('W')
+        fig.show()
+
 
 class StepSizeEffect:
 
@@ -110,16 +135,16 @@ class StepSizeEffect:
         self.dts = dts
         self.simulator = simulator
 
-    def sim_value(self, w, n=5000):
+    def sim_value(self, l, w, n=5000):
         means = np.zeros_like(self.dts)
         stds = np.zeros_like(self.dts)
 
         for i, dt in enumerate(self.dts):
-            vals = self.simulator.value_acc(w, n)
+            vals = self.simulator.value_acc(l, w, n)
             means[i] = np.mean(vals)
             stds[i] = np.std(vals)
 
-        aav = AAV(p)
+        aav = AAV(self.simulator.env.params)
         u = -aav.u(self.simulator.params.lambda0, w)
         fig, ax = plt.subplots()
         ax.plot(self.dts, means, marker='x')
@@ -127,10 +152,10 @@ class StepSizeEffect:
         ax.plot(self.dts, np.ones_like(self.dts) * u)
         fig.show()
 
-    def sim_distributions(self, w, n):
+    def sim_distributions(self, l0, w, n):
         for i, dt in enumerate(self.dts):
             self.simulator.dt = dt
-            self.simulator.plot_value_dist(w, n)
+            self.simulator.plot_value_dist(l0, w, n)
 
     def sim_pvalue(self, parallel_flag=False):
         pvals = np.zeros_like(self.dts)
@@ -157,11 +182,16 @@ class StepSizeEffect:
 
 
 if __name__ == '__main__':
-    w0 = 200
+    balance0 = 75
+    lam0 = 1.0
     dt = 0.05
     params = Parameters()
-    params.rho = 0.000001
-    ms = MotherSimulator(dt, params, continuous_reward='continuous')
-    print(np.mean(ms.plot_value_dist(w0, n=1000)))
+    params.rho = 0.07
+    ms = MotherSimulator(dt, params, continuous_reward='discrete')
+    ms.plot_path(lam0, balance0, 1)
+    # print(np.mean(ms.plot_value_dist(lam0, balance0, n=1000)))
+    psim = StepSizeEffect(ms, np.array([0.01, 0.05]))
+    # print(psim.sim_value(lam0, balance0, n=1000))
+    print(psim.sim_distributions(lam0, balance0, n=1000))
 
 

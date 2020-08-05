@@ -5,6 +5,7 @@ import os
 import pandas as pd
 import io
 import tensorflow as tf
+import pickle
 
 from gym.wrappers.monitor import load_results
 from copy import deepcopy
@@ -66,8 +67,16 @@ class Config:
     def __repr__(self):
         return super().__repr__() + "\n" # + self.dumps()
 
-    def save(self):
-        pass
+    def save(self, filename):
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, 'rb') as f:
+            return pickle.load(f)
+
+
 
 
 def plot_learning_curve(filename, value_dict, xlabel='step'):

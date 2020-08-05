@@ -162,7 +162,7 @@ class Parameters:
         self.delta11 = 0.5
         self.delta2 = 1
         self.rho = 0.06
-        self.c = 20
+        self.c = 10
         self.r_ = 0.1
         self.chat = self.c / self.delta2
         self._rmean = self.rmean

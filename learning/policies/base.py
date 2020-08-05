@@ -76,6 +76,9 @@ class Policy:
         pass
 
     def evaluate(self, n_episodes):
+        # TODO: evaluate uses default setting of the environment, i.g., random start
+        # this should be done in parallel
+
         reward_history = []
 
         for i in range(n_episodes):

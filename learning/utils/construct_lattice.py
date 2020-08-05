@@ -25,26 +25,26 @@ def construct_lattice(env, config, initialize=False):
     combined_calibratorsl = []
     combined_calibratorsr = []
 
-    lattice_units_layer = [5, 5, 1]
-    n_lattice_points = [5, 5, 5]
+    lattice_units_layer = [3, 3, 1]
+    n_lattice_points = [3, 3, 3]
 
     for i in range(lattice_units_layer[0]):
-        calibration_layer_l_l = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_l, num=200),
+        calibration_layer_l_l = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_l, num=100),
                                                           dtype=tf.float32, output_min=0.0,
                                                           output_max=n_lattice_points[0] - 1.0,
-                                                          monotonicity='increasing')#, convexity='concave')
-        calibration_layer_w_l = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_w, num=200),
+                                                          monotonicity='increasing', convexity='concave')
+        calibration_layer_w_l = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_w, num=100),
                                                           dtype=tf.float32, output_min=0.0,
                                                           output_max=n_lattice_points[0] - 1.0,
-                                                          monotonicity='increasing')#, convexity='convex')
-        calibration_layer_l_r = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_l, num=200),
+                                                          monotonicity='increasing', convexity='convex')
+        calibration_layer_l_r = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_l, num=100),
                                                           dtype=tf.float32, output_min=0.0,
                                                           output_max=n_lattice_points[0] - 1.0,
-                                                          monotonicity='increasing')#, convexity='concave')
-        calibration_layer_w_r = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_w, num=200),
+                                                          monotonicity='increasing', convexity='concave')
+        calibration_layer_w_r = tfl.layers.PWLCalibration(input_keypoints=np.linspace(0, max_w, num=100),
                                                           dtype=tf.float32, output_min=0.0,
                                                           output_max=n_lattice_points[0] - 1.0,
-                                                          monotonicity='increasing')#, convexity='convex')
+                                                          monotonicity='increasing', convexity='convex')
 
         combined_calibratorsl.append(calibration_layer_l_l)
         combined_calibratorsl.append(calibration_layer_w_l)

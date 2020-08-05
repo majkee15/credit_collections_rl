@@ -1,5 +1,6 @@
 import gym
 from gym import spaces
+import pickle
 import numpy as np
 from dcc import Parameters
 import copy
@@ -23,7 +24,7 @@ class CollectionsEnv(gym.Env):
         self.w0 = w0
         self.lambda0 = self.params.lambda0
         if starting_state is None:
-            self.starting_state = np.array([self.lambda0, self.w0], dtype=np.float32)
+            self.starting_state = np.array([self.lambda0 + 0.01, self.w0], dtype=np.float32)
         else:
             self.starting_state = starting_state
 
@@ -65,15 +66,19 @@ class CollectionsEnv(gym.Env):
         if isinstance(starting_state, np.ndarray):
             if starting_state.shape[0] == 2:
                 self.__starting_state = starting_state
-            print('Setting')
+            # print('Setting')
         else:
             raise TypeError(f"Cannot assign {starting_state} int starting state.")
 
-    def reset(self):
+    def reset(self, tostate=None):
         if self.randomize_start:
             draw_lambda = np.random.uniform(self.params.lambda0, self.MAX_LAMBDA)
             draw_w = np.random.uniform(MIN_ACCOUNT_BALANCE, MAX_ACCOUNT_BALANCE)
             self.current_state = np.array([draw_lambda, draw_w])
+
+        elif tostate is not None:
+            self.current_state = tostate.copy()
+
         else:
             self.current_state = self.starting_state.copy()
         self.done = False
@@ -117,9 +122,11 @@ class CollectionsEnv(gym.Env):
         if self.reward_shaping == 'continuous':
             reward = self.current_state[1] * discount_factor * self.params.rmean * self.current_state[0] * self.dt \
                      - discount_factor * action * self.params.c
+            self.current_state[1] = self.current_state[1] - self.current_state[1] * self.params.rmean * self.current_state[0] * self.dt
         elif self.reward_shaping == 'discrete':
             # sparse reward formulation
             reward = (r * self.current_state[1] - action * self.params.c) * discount_factor
+            self.current_state[1] = self.current_state[1] * (1 - r)
         elif self.reward_shaping == 'expected':
             prob_of_arrival = 1 - np.exp(-(self.params.lambdainf * self.dt +
                                          ((self.current_state[0] - self.params.lambdainf)/self.params.kappa) *
@@ -127,10 +134,10 @@ class CollectionsEnv(gym.Env):
                                           np.exp(-self.params.kappa * self.current_time))
                                          ))
             reward = (self.current_state[1] * self.params.rmean * prob_of_arrival - self.params.c * action) * discount_factor
+            self.current_state[1] = self.current_state[1] - self.current_state[1] * self.params.rmean * prob_of_arrival
         else:
             raise NotImplementedError('Not implemented rewards.')
 
-        self.current_state[1] = self.current_state[1] * (1 - r)
 
         if self.current_state[1] < self.MIN_ACCOUNT_BALANCE:
             self.done = True
@@ -154,6 +161,15 @@ class CollectionsEnv(gym.Env):
 
     def reward(self, r, action, dc):
         (r * self.current_state[1] - action * self.params.c) * dc
+
+    def save(self, filename):
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, 'rb') as f:
+            return pickle.load(f)
 
 
 if __name__ == '__main__':

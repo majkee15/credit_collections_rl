@@ -3,6 +3,8 @@ import os
 import numpy as np
 import tensorflow as tf
 import datetime
+import pickle
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import matplotlib as m
@@ -17,12 +19,12 @@ from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-#os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
-    n_episodes = 10000
-    warmup_episodes = 5000
+    n_episodes = 20000
+    warmup_episodes = 12000
 
     # fixed learning rate
     learning_rate = 0.001
@@ -42,7 +44,7 @@ class DefaultConfig(TrainConfig):
     # Memory setting
     batch_normalization = True
     batch_size = 512
-    memory_size = 100000
+    memory_size = 1000000
     # PER setting
 
     prioritized_memory_replay = True
@@ -61,7 +63,7 @@ class DefaultConfig(TrainConfig):
 
 class DQNAgent(Policy, BaseModelMixin):
 
-    def __init__(self, env, name, config=None, training=True, layers=(128, 128, 128), initialize=True):
+    def __init__(self, env, name, config=None, training=True, layers=(128, 128, 128), initialize=False):
 
         if config.normalize_states:
             self.env = StateNormalization(env)
@@ -70,7 +72,6 @@ class DQNAgent(Policy, BaseModelMixin):
         BaseModelMixin.__init__(self, name)
 
         self.config = config
-        self.batch_size = self.config.batch_size
         if config.prioritized_memory_replay:
             self.memory = PrioritizedReplayMemory(alpha=config.replay_alpha, capacity=config.memory_size)
         else:
@@ -91,6 +92,7 @@ class DQNAgent(Policy, BaseModelMixin):
 
     def get_action(self, state, epsilon):
         q_value = self.main_net.predict_on_batch(state[None, :])
+        # q_value = self.main_net(state[None, :], training=False)
         if np.random.rand() <= epsilon:
             # print('Taking random')
             action = np.random.choice(self.act_size)
@@ -102,7 +104,7 @@ class DQNAgent(Policy, BaseModelMixin):
         self.target_net.set_weights(self.main_net.get_weights())
 
     def train(self):
-        batch = self.memory.sample(self.batch_size)
+        batch = self.memory.sample(self.config.batch_size)
         states = batch['s']
         actions = batch['a']
         rewards = batch['r']
@@ -177,7 +179,7 @@ class DQNAgent(Policy, BaseModelMixin):
 
                 state = next_state.copy()
 
-                if self.memory.size > self.batch_size:
+                if self.memory.size > self.config.batch_size:
                     loss = self.train()
                     if i % self.config.target_update_every_step == 0:
                         self.update_target()
@@ -187,7 +189,7 @@ class DQNAgent(Policy, BaseModelMixin):
 
             self.config.epsilon_schedule.anneal()
             self.config.beta_schedule.anneal()
-            self.global_lr = self.config.learning_rate_schedule.anneal()
+            self.global_lr.assign(self.config.learning_rate_schedule.anneal())
 
             with self.writer.as_default():
                 with tf.name_scope('Performance'):
@@ -201,12 +203,13 @@ class DQNAgent(Policy, BaseModelMixin):
                         tf.summary.scalar('Learning rate', self.optimizer._decayed_lr(tf.float32).numpy(), step=i)
 
             if i % self.config.log_every_episode == 0:
-                print("episode:", i, "/", self.config.n_episodes, "episode reward:", score,"avg reward (last 100):",
+                print("episode:", i, "/", self.config.n_episodes, "episode reward:", score, "avg reward (last 100):",
                       avg_rewards, "eps:", self.config.epsilon_schedule.current_p, "Learning rate (10e3):",
                       (self.optimizer._decayed_lr(tf.float32).numpy() * 1000))
 
             if i % self.config.plot_every_episode == 0 and self.config.plot_progression_flag:
-                print('Plotting policy')
+                now = datetime.now().time()
+                print(f'{now}, Plotting policy')
                 self.plot_policy(i)
                 self.plot_visit_map(i)
 
@@ -228,17 +231,32 @@ class DQNAgent(Policy, BaseModelMixin):
        #current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         path_model = os.path.join(self.model_dir, 'main_net.h5')
         path_actions = os.path.join(self.model_dir, 'action_bins.npy')
+        env_path = os.path.join(self.model_dir, 'env.pkl')
         path_memory_buffer = os.path.join(self.model_dir, 'buffer.pkl')
+        config_path = os.path.join(self.model_dir, 'train_config.pkl')
 
+        self.config.save(config_path)
         self.main_net.save(path_model)
         self.memory.save(path_memory_buffer)
-        np.save(path_actions, self.env.action_bins)
+        self.env.save(env_path)
+        # np.save(path_actions, self.env.action_bins)
 
-    def load(self, model_path):
+    @classmethod
+    def load(cls, model_path):
+        loaded_config = TrainConfig.load(os.path.join(model_path, 'train_config.pkl'))
+        loaded_env = CollectionsEnv.load(os.path.join(model_path, 'env.pkl'))
+        loaded_instance = DQNAgent(loaded_env, model_path, loaded_config, initialize=False, training=False)
+        loaded_instance.main_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
+        loaded_instance.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
+        try:
+            buffer_path = os.path.join(model_path, 'buffer.pkl')
+            with open(buffer_path, 'rb') as f:
+                buffer = pickle.load(f)
+                loaded_instance.memory.buffer = buffer
+        except (FileNotFoundError, IOError):
+            print('No buffer found.')
 
-        self.main_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
-        self.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
-        self.action_bins = np.load(os.path.join(model_path, 'action_bins.npy'))
+        return loaded_instance
 
     def plot_policy(self, step_i):
         w_points = 60
@@ -302,11 +320,17 @@ class DQNAgent(Policy, BaseModelMixin):
 
 
 if __name__ == '__main__':
-    actions_bins = np.array([0, 1.0])
+    from dcc import Parameters
+    params = Parameters()
+    params.kappa = 1.4
+
+    actions_bins = np.array([0, 0.5, 1.0])
     layers_shape = (64, 64, 64)
     n_actions = len(actions_bins)
-    c_env = CollectionsEnv(reward_shaping=True, randomize_start=True, max_lambda=5.0, starting_state=np.array([3, 200], dtype=np.float32))
+    c_env = CollectionsEnv(params=params, reward_shaping='continuous', randomize_start=True, max_lambda=None,
+                           starting_state=np.array([3, 200], dtype=np.float32)
+                           )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, 'DDQNFix', training=True, config=DefaultConfig(), initialize=False)
+    dqn = DQNAgent(environment, 'DDQN_10K', training=True, config=DefaultConfig(), initialize=False)
     dqn.run()
