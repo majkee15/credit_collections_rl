@@ -19,25 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="EXPECTED REWARD">
-      <change afterPath="$PROJECT_DIR$/learning/policies/discrete_optimal_policy.py" afterDir="false" />
+    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="add possibility to reset to a specific state &amp; implement discrete_optimal_policy.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Untitled.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Untitled.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis_stepsize_environment.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dcc/aav.py" beforeDir="false" afterPath="$PROJECT_DIR$/dcc/aav.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ddcc/chp.py" beforeDir="false" afterPath="$PROJECT_DIR$/ddcc/chp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/collections_env/collections_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/collections_env/collections_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/notebooks/explore_learned_policies.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/learning/notebooks/explore_learned_policies.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/policies/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/policies/discrete_optimal_policy.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/discrete_optimal_policy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/policies/dqn.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/policies/dqn_lattice.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn_lattice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/policies/qlearning.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/tests/testing_environment_distributional_properties.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/tests/testing_environment_distributional_properties.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/utils/construct_lattice.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/construct_lattice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/utils/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/misc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/utils/wrappers.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/wrappers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/osl/exact/analysis_of_closed_forms.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/osl/exact/analysis_of_closed_forms.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +100,7 @@
       <recent name="$PROJECT_DIR$/optimal_sustain_level" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.chp">
+  <component name="RunManager" selected="Python.dqn">
     <configuration name="chp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -257,10 +243,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.dqn" />
         <item itemvalue="Python.chp" />
         <item itemvalue="Python.testing_environment_distributional_properties" />
         <item itemvalue="Python.collections_env" />
-        <item itemvalue="Python.dqn" />
         <item itemvalue="Python.dqn_lattice" />
       </list>
     </recent_temporary>
@@ -331,7 +317,7 @@
       <workItem from="1594648165125" duration="2212000" />
       <workItem from="1595188265521" duration="54784000" />
       <workItem from="1596436250132" duration="1229000" />
-      <workItem from="1596532232508" duration="16036000" />
+      <workItem from="1596532232508" duration="21461000" />
     </task>
     <task id="LOCAL-00001" summary="first_commit">
       <created>1574424688615</created>
@@ -592,7 +578,14 @@
       <option name="project" value="LOCAL" />
       <updated>1595424737797</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="add possibility to reset to a specific state &amp; implement discrete_optimal_policy.py">
+      <created>1596666756051</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1596666756051</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -611,7 +604,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="adding a value precision condition for simulation to lighten the computational load&#10;BruteForce sim parameters" />
     <MESSAGE value="cython implementation of the valuation engine" />
     <MESSAGE value="oop design of the aav class" />
     <MESSAGE value="class wrapper for the cython code base" />
@@ -636,7 +628,8 @@
     <MESSAGE value="construct lattice function added - fix" />
     <MESSAGE value="enforce max lambda bound" />
     <MESSAGE value="EXPECTED REWARD" />
-    <option name="LAST_COMMIT_MESSAGE" value="EXPECTED REWARD" />
+    <MESSAGE value="add possibility to reset to a specific state &amp; implement discrete_optimal_policy.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="add possibility to reset to a specific state &amp; implement discrete_optimal_policy.py" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595520907947">
@@ -651,22 +644,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1595849867586" />
-    <state width="1860" height="139" key="GridCell.Tab.0.bottom" timestamp="1596658240196">
+    <state width="1860" height="139" key="GridCell.Tab.0.bottom" timestamp="1597065203922">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="139" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1596658240196" />
-    <state width="1860" height="139" key="GridCell.Tab.0.center" timestamp="1596658240196">
+    <state width="1860" height="139" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597065203921" />
+    <state width="1860" height="139" key="GridCell.Tab.0.center" timestamp="1597065203921">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="139" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1596658240196" />
-    <state width="1860" height="139" key="GridCell.Tab.0.left" timestamp="1596658240195">
+    <state width="1860" height="139" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597065203921" />
+    <state width="1860" height="139" key="GridCell.Tab.0.left" timestamp="1597065203921">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="139" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1596658240195" />
-    <state width="1860" height="139" key="GridCell.Tab.0.right" timestamp="1596658240196">
+    <state width="1860" height="139" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597065203921" />
+    <state width="1860" height="139" key="GridCell.Tab.0.right" timestamp="1597065203921">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="139" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1596658240196" />
+    <state width="1860" height="139" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597065203921" />
     <state width="1860" height="127" key="GridCell.Tab.1.bottom" timestamp="1596645412156">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -788,7 +781,7 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$chp__2_.coverage" NAME="chp (2) Coverage Results" MODIFIED="1585808180016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$testing_policy_evaluation.coverage" NAME="testing_policy_evaluation Coverage Results" MODIFIED="1596646402922" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties.coverage" NAME="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties Coverage Results" MODIFIED="1590053429260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1596619007697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1597065203889" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$qlearning.coverage" NAME="qlearning Coverage Results" MODIFIED="1589452041189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$construct_lattice.coverage" NAME="construct_lattice Coverage Results" MODIFIED="1593957640235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
     <SUITE FILE_PATH="coverage/credit_collections_RL$environment_engine__1_.coverage" NAME="environment_engine Coverage Results" MODIFIED="1574267108724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -28,7 +28,7 @@ class DefaultConfig(TrainConfig):
 
     # fixed learning rate
     learning_rate = 0.001
-    end_learning_rate = 0.0001
+    end_learning_rate = 0.00001
     # decaying learning rate
     # learning_rate = tf.keras.optimizers.schedules.PolynomialDecay(initial_learning_rate=learning_rate,
     #                                                               decay_steps=warmup_episodes,
@@ -322,9 +322,9 @@ class DQNAgent(Policy, BaseModelMixin):
 if __name__ == '__main__':
     from dcc import Parameters
     params = Parameters()
-    params.kappa = 1.4
+    params.rho = 0.15
 
-    actions_bins = np.array([0, 0.5, 1.0])
+    actions_bins = np.array([0, 1.0])
     layers_shape = (64, 64, 64)
     n_actions = len(actions_bins)
     c_env = CollectionsEnv(params=params, reward_shaping='continuous', randomize_start=True, max_lambda=None,
@@ -332,5 +332,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, 'DDQN_10K', training=True, config=DefaultConfig(), initialize=False)
+    dqn = DQNAgent(environment, 'DDQN_20K', training=True, config=DefaultConfig(), initialize=False)
     dqn.run()

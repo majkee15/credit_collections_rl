@@ -4,12 +4,12 @@ import numpy as np
 
 class DiscretePolicyConstructor:
 
-    def __init__(self, env, mc_n):
+    def __init__(self, env, mc_n, pts=(50, 200)):
         self.env = env
         self.n_actions = env.action_space.n
         self.mc_n = mc_n
-        n_pts_w = int(200)
-        n_pts_l = int(50)
+        n_pts_w = pts[1]
+        n_pts_l = pts[0]
         MAX_L = 7.0
         self.w_grid = np.linspace(0, self.env.w0, n_pts_w)
         self.l_grid = np.linspace(self.env.params.lambdainf, MAX_L, n_pts_l)
@@ -43,11 +43,12 @@ class DiscretePolicyConstructor:
         res = joblib.Parallel(n_jobs=6)(joblib.delayed(self.evaluate)(state, first_ac) for i in range(mc))
         return np.mean(res)
 
-    def run(self):
+    def run(self, verbose=False):
         action_estimates = np.zeros(self.n_actions)
         i = 0
         for j, w in enumerate(self.w_grid):
-            print(f'Balance: {w}')
+            if verbose:
+                print(f'Balance: {w}')
             flag_searching = True
             while flag_searching:
                 l = self.l_grid[i]
@@ -62,4 +63,5 @@ class DiscretePolicyConstructor:
                 else:
                     self.policy[i, j:] = best_action
                     i += 1
-                    print(i)
+                    if verbose:
+                        print(i)
