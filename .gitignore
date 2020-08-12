@@ -128,3 +128,7 @@ dmypy.json
 
 /requirements.in
 /search_comp_results/
+
+# nets
+.h5
+.pkl
