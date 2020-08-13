@@ -19,10 +19,15 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="add possibility to reset to a specific state &amp; implement discrete_optimal_policy.py">
+    <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="added ipynb files and gitignore">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/analysis_snipetz/statespace_dynamics_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_snipetz/statespace_dynamics_figures.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/learning/notebooks/explore_learned_policies.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/learning/notebooks/explore_learned_policies.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/tests/testing_continuous_reward.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/tests/testing_continuous_reward.py" afterDir="false" />
+>>>>>>> 99ab9d2debc93b64243165ab87e239487598869a
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -214,6 +219,7 @@
       <recent name="$PROJECT_DIR$/optimal_sustain_level" />
     </key>
   </component>
+<<<<<<< HEAD
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -227,6 +233,9 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.statespace_dynamics_figures">
+=======
+  <component name="RunManager" selected="Python.testing_continuous_reward">
+>>>>>>> 99ab9d2debc93b64243165ab87e239487598869a
     <configuration name="chp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -293,13 +302,18 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+<<<<<<< HEAD
     <configuration name="statespace_dynamics_figures" type="PythonConfigurationType" factoryName="Python" temporary="true">
+=======
+    <configuration name="testing_continuous_reward" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+>>>>>>> 99ab9d2debc93b64243165ab87e239487598869a
       <module name="credit_collections_RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
+<<<<<<< HEAD
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/analysis_snipetz" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -307,6 +321,15 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/analysis_snipetz/statespace_dynamics_figures.py" />
+=======
+      <option name="SDK_HOME" value="C:\Users\majke\anaconda3\envs\tf2-gpu\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/tests" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/tests/testing_continuous_reward.py" />
+>>>>>>> 99ab9d2debc93b64243165ab87e239487598869a
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -365,6 +388,7 @@
       <item itemvalue="Python.testing_environment_distributional_properties" />
       <item itemvalue="Python.collections_env" />
       <item itemvalue="Python.chp" />
+<<<<<<< HEAD
       <item itemvalue="Python.statespace_dynamics_figures" />
     </list>
     <recent_temporary>
@@ -374,6 +398,17 @@
         <item itemvalue="Python.dqn" />
         <item itemvalue="Python.chp" />
         <item itemvalue="Python.collections_env" />
+=======
+      <item itemvalue="Python.testing_continuous_reward" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.testing_continuous_reward" />
+        <item itemvalue="Python.collections_env" />
+        <item itemvalue="Python.dqn" />
+        <item itemvalue="Python.chp" />
+        <item itemvalue="Python.testing_environment_distributional_properties" />
+>>>>>>> 99ab9d2debc93b64243165ab87e239487598869a
       </list>
     </recent_temporary>
   </component>
@@ -443,11 +478,16 @@
       <workItem from="1594648165125" duration="2212000" />
       <workItem from="1595188265521" duration="54784000" />
       <workItem from="1596436250132" duration="1229000" />
+<<<<<<< HEAD
       <workItem from="1596532232508" duration="21461000" />
       <workItem from="1597065382018" duration="4900000" />
       <workItem from="1597074804125" duration="526000" />
       <workItem from="1597218835875" duration="2167000" />
       <workItem from="1597315996734" duration="1330000" />
+=======
+      <workItem from="1596532232508" duration="24769000" />
+      <workItem from="1597314785851" duration="3138000" />
+>>>>>>> 99ab9d2debc93b64243165ab87e239487598869a
     </task>
     <task id="LOCAL-00001" summary="first_commit">
       <created>1574424688615</created>
@@ -715,7 +755,21 @@
       <option name="project" value="LOCAL" />
       <updated>1596666756051</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="add possibility to reset to a specific state &amp; implement discrete_optimal_policy.py">
+      <created>1597065223486</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1597065223486</updated>
+    </task>
+    <task id="LOCAL-00040" summary="added ipynb files and gitignore">
+      <created>1597232971829</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1597232971829</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -785,7 +839,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="cython implementation of the valuation engine" />
     <MESSAGE value="oop design of the aav class" />
     <MESSAGE value="class wrapper for the cython code base" />
     <MESSAGE value="implementation of Weber &amp; Chehrazi 2016 Optimal method" />
@@ -810,13 +863,14 @@
     <MESSAGE value="enforce max lambda bound" />
     <MESSAGE value="EXPECTED REWARD" />
     <MESSAGE value="add possibility to reset to a specific state &amp; implement discrete_optimal_policy.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="add possibility to reset to a specific state &amp; implement discrete_optimal_policy.py" />
+    <MESSAGE value="added ipynb files and gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="added ipynb files and gitignore" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595520907947">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597316028250">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595520907947" />
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1597316028250" />
     <state x="1102" y="437" width="677" height="594" key="#xdebugger.evaluate" timestamp="1596645283084">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -825,22 +879,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="260" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1595849867586" />
-    <state width="1860" height="139" key="GridCell.Tab.0.bottom" timestamp="1597065203922">
+    <state width="1860" height="139" key="GridCell.Tab.0.bottom" timestamp="1597321054007">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="139" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597065203921" />
-    <state width="1860" height="139" key="GridCell.Tab.0.center" timestamp="1597065203921">
+    <state width="1860" height="139" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1597321054007" />
+    <state width="1860" height="139" key="GridCell.Tab.0.center" timestamp="1597321054007">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="139" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597065203921" />
-    <state width="1860" height="139" key="GridCell.Tab.0.left" timestamp="1597065203921">
+    <state width="1860" height="139" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1597321054007" />
+    <state width="1860" height="139" key="GridCell.Tab.0.left" timestamp="1597321054007">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="139" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597065203921" />
-    <state width="1860" height="139" key="GridCell.Tab.0.right" timestamp="1597065203921">
+    <state width="1860" height="139" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1597321054007" />
+    <state width="1860" height="139" key="GridCell.Tab.0.right" timestamp="1597321054007">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1860" height="139" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597065203921" />
+    <state width="1860" height="139" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1597321054007" />
     <state width="1860" height="127" key="GridCell.Tab.1.bottom" timestamp="1596645412156">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -857,10 +911,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1860" height="127" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1596645412156" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1593707429613">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1597065231873">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1593707429613" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1597065231873" />
     <state x="509" y="249" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1592481913788">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -960,8 +1014,17 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment.coverage" NAME="pytest for test_environment.TestContinuousEnvironment Coverage Results" MODIFIED="1589403167747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$statespace_dynamics_figures.coverage" NAME="statespace_dynamics_figures Coverage Results" MODIFIED="1597319729641" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
     <SUITE FILE_PATH="coverage/credit_collections_RL$CHP.coverage" NAME="CHP Coverage Results" MODIFIED="1574428081832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/credit_collections_rl$chp.coverage" NAME="chp Coverage Results" MODIFIED="1596658240190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ddcc" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$demo_contours.coverage" NAME="demo_contours Coverage Results" MODIFIED="1575288849134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+=======
+    <SUITE FILE_PATH="coverage/credit_collections_rl$step_algo_comparison.coverage" NAME="step_algo_comparison Coverage Results" MODIFIED="1590046706686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$chp__2_.coverage" NAME="chp (2) Coverage Results" MODIFIED="1585808180016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_policy_evaluation.coverage" NAME="testing_policy_evaluation Coverage Results" MODIFIED="1596646402922" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties.coverage" NAME="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties Coverage Results" MODIFIED="1590053429260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1597232777362" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$qlearning.coverage" NAME="qlearning Coverage Results" MODIFIED="1589452041189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+>>>>>>> 99ab9d2debc93b64243165ab87e239487598869a
     <SUITE FILE_PATH="coverage/credit_collections_rl$construct_lattice.coverage" NAME="construct_lattice Coverage Results" MODIFIED="1593957640235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_in_testing_environment_py.coverage" NAME="pytest in testing_environment.py Coverage Results" MODIFIED="1587642043871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_in_test_environment_py.coverage" NAME="pytest in test_environment.py Coverage Results" MODIFIED="1589404087104" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
@@ -991,10 +1054,18 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$exact_thinning.coverage" NAME="exact_thinning Coverage Results" MODIFIED="1589277356259" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice.coverage" NAME="dqn_lattice Coverage Results" MODIFIED="1595495920855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$hp_sim.coverage" NAME="hp_sim Coverage Results" MODIFIED="1589270028200" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/credit_collections_rl$oav.coverage" NAME="oav Coverage Results" MODIFIED="1589459479443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$pricer.coverage" NAME="pricer Coverage Results" MODIFIED="1589450672665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$gil_nogil_timing.coverage" NAME="gil_nogil_timing Coverage Results" MODIFIED="1585650500747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice_mono.coverage" NAME="dqn_lattice_mono Coverage Results" MODIFIED="1595188335092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+=======
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_continuous_reward.coverage" NAME="testing_continuous_reward Coverage Results" MODIFIED="1597321053998" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp__1_.coverage" NAME="sustained_ihp (1) Coverage Results" MODIFIED="1586363442240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mc_osl" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice_mono.coverage" NAME="dqn_lattice_mono Coverage Results" MODIFIED="1595188335092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$collections_env.coverage" NAME="collections_env Coverage Results" MODIFIED="1597315994544" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$bruteforce_search.coverage" NAME="bruteforce_search Coverage Results" MODIFIED="1575480207008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+>>>>>>> 99ab9d2debc93b64243165ab87e239487598869a
     <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp.coverage" NAME="sustained_ihp Coverage Results" MODIFIED="1585828522904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
   </component>
   <component name="debuggerHistoryManager">
