@@ -58,6 +58,13 @@ ax.set_title('Balance')
 ax.set_xlabel('Step')
 fig.show()
 
+fig, ax = plt.subplots()
+ax.plot(ws, ls)
+ax.set_title('Lambda')
+ax.set_xlabel('Balance')
+fig.show()
+
+
 print(f'Accumulated reward continuous: {np.sum(rew_path)}')
 print(f'Accumulated reward sparse: {np.sum(discrete_rew)}')
 
