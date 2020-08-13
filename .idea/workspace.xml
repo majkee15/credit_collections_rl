@@ -21,10 +21,10 @@
   <component name="ChangeListManager">
     <list default="true" id="f5511edd-ae92-4284-b4c4-e62ed737ceda" name="Default Changelist" comment="add possibility to reset to a specific state &amp; implement discrete_optimal_policy.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/notebooks/explore_learned_policies.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/learning/notebooks/explore_learned_policies.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/policies/discrete_optimal_policy.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/discrete_optimal_policy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/policies/dqn.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis_snipetz/statespace_dynamics_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_snipetz/statespace_dynamics_figures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,6 +44,79 @@
     <expand />
     <select />
   </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/learning/tests/test_collections_environment.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#67#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/learning/tests/testing_environment_distributional_properties.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="22" column="60" selection-start-line="22" selection-start-column="60" selection-end-line="22" selection-end-column="60" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/analysis_snipetz/statespace_dynamics_figures.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="524">
+              <caret line="96" column="42" selection-start-line="96" selection-start-column="42" selection-end-line="96" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="15" column="36" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/learning/tests/testing_continuous_reward.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#67#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/learning/tests/testing_policy_evaluation.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#51#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -54,23 +127,64 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="JupyterTrust" id="b85efb03-835e-49d6-b092-6c6a6234a115" />
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-        <option value="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+        <option value="$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py" />
+        <option value="$PROJECT_DIR$/analysis_snipetz/statespace_dynamics_figures.py" />
       </list>
     </option>
   </component>
+  <component name="JupyterTrust" id="b85efb03-835e-49d6-b092-6c6a6234a115" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1680" />
+    <option name="height" value="958" />
+  </component>
   <component name="ProjectId" id="1d9AWHkEq8UeHaweQzSDsVc3pSP" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="credit_collections_rl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="credit_collections_rl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="credit_collections_rl" type="462c0819:PsiDirectoryNode" />
+              <item name="analysis_snipetz" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="credit_collections_rl" type="462c0819:PsiDirectoryNode" />
+              <item name="figs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="credit_collections_rl" type="b2602c69:ProjectViewProjectNode" />
+              <item name="credit_collections_rl" type="462c0819:PsiDirectoryNode" />
+              <item name="figs" type="462c0819:PsiDirectoryNode" />
+              <item name="sample_path" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="ignore_missing_gitignore" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/learning/utils" />
@@ -100,7 +214,19 @@
       <recent name="$PROJECT_DIR$/optimal_sustain_level" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.dqn">
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.statespace_dynamics_figures">
     <configuration name="chp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -167,20 +293,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="dqn_lattice" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="statespace_dynamics_figures" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="credit_collections_RL" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\majke\anaconda3\envs\tf2-gpu\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/policies" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/analysis_snipetz" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/policies/dqn_lattice.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/analysis_snipetz/statespace_dynamics_figures.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -196,7 +322,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\majke\anaconda3\envs\tf2-gpu\python.exe" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/tests" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -236,18 +362,18 @@
     <list>
       <item itemvalue="Python.testing_policy_evaluation" />
       <item itemvalue="Python.dqn" />
-      <item itemvalue="Python.dqn_lattice" />
       <item itemvalue="Python.testing_environment_distributional_properties" />
       <item itemvalue="Python.collections_env" />
       <item itemvalue="Python.chp" />
+      <item itemvalue="Python.statespace_dynamics_figures" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.statespace_dynamics_figures" />
+        <item itemvalue="Python.testing_environment_distributional_properties" />
         <item itemvalue="Python.dqn" />
         <item itemvalue="Python.chp" />
-        <item itemvalue="Python.testing_environment_distributional_properties" />
         <item itemvalue="Python.collections_env" />
-        <item itemvalue="Python.dqn_lattice" />
       </list>
     </recent_temporary>
   </component>
@@ -318,6 +444,10 @@
       <workItem from="1595188265521" duration="54784000" />
       <workItem from="1596436250132" duration="1229000" />
       <workItem from="1596532232508" duration="21461000" />
+      <workItem from="1597065382018" duration="4900000" />
+      <workItem from="1597074804125" duration="526000" />
+      <workItem from="1597218835875" duration="2167000" />
+      <workItem from="1597315996734" duration="1330000" />
     </task>
     <task id="LOCAL-00001" summary="first_commit">
       <created>1574424688615</created>
@@ -588,20 +718,71 @@
     <option name="localTasksCounter" value="39" />
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="8923000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1680" height="958" extended-state="0" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25885227" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="DB Browser" order="2" weight="0.32967034" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.19399539" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39930555" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="DB Execution Console" order="9" />
+      <window_info anchor="bottom" id="Database Changes" order="10" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="13" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.2875458" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout>
+  </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="cython implementation of the valuation engine" />
@@ -709,7 +890,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/learning/utils/wrappers.py</url>
-          <line>78</line>
+          <line>127</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -763,56 +944,189 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/credit_collections_rl$chp__1_.coverage" NAME="chp (1) Coverage Results" MODIFIED="1589405769572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_in_test_environment_py.coverage" NAME="pytest in test_environment.py Coverage Results" MODIFIED="1589404087104" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_RL$environment_engine.coverage" NAME="environment_engine Coverage Results" MODIFIED="1574257431757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$aav.coverage" NAME="aav Coverage Results" MODIFIED="1586434846195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihpv2.coverage" NAME="sustained_ihpv2 Coverage Results" MODIFIED="1585661933149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$oav.coverage" NAME="oav Coverage Results" MODIFIED="1589459479443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$misc.coverage" NAME="misc Coverage Results" MODIFIED="1589405528224" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice.coverage" NAME="dqn_lattice Coverage Results" MODIFIED="1595495920855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_environment_distributional_properties.coverage" NAME="testing_environment_distributional_properties Coverage Results" MODIFIED="1596650235549" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp_c_pyx.coverage" NAME="sustained_ihp_c.pyx Coverage Results" MODIFIED="1585828504788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$q_table.coverage" NAME="q_table Coverage Results" MODIFIED="1587490783197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$gymcollectionsenv.coverage" NAME="gymcollectionsenv Coverage Results" MODIFIED="1589408992471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment.coverage" NAME="pytest for test_environment.TestContinuousEnvironment Coverage Results" MODIFIED="1589403167747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_RL$CHP.coverage" NAME="CHP Coverage Results" MODIFIED="1574428081832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$step_algo_comparison.coverage" NAME="step_algo_comparison Coverage Results" MODIFIED="1590046706686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$chp__2_.coverage" NAME="chp (2) Coverage Results" MODIFIED="1585808180016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_policy_evaluation.coverage" NAME="testing_policy_evaluation Coverage Results" MODIFIED="1596646402922" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties.coverage" NAME="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties Coverage Results" MODIFIED="1590053429260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1597065203889" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$qlearning.coverage" NAME="qlearning Coverage Results" MODIFIED="1589452041189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$construct_lattice.coverage" NAME="construct_lattice Coverage Results" MODIFIED="1593957640235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
-    <SUITE FILE_PATH="coverage/credit_collections_RL$environment_engine__1_.coverage" NAME="environment_engine Coverage Results" MODIFIED="1574267108724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$bandits_implementation.coverage" NAME="bandits_implementation Coverage Results" MODIFIED="1576681377509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$setup.coverage" NAME="setup Coverage Results" MODIFIED="1591863213081" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/osl/mc" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$collectionsenv.coverage" NAME="collectionsenv Coverage Results" MODIFIED="1589383516842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$exact_thinning.coverage" NAME="exact_thinning Coverage Results" MODIFIED="1589277356259" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$osl_engine.coverage" NAME="osl_engine Coverage Results" MODIFIED="1586961861910" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/osl" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_environment.coverage" NAME="testing_environment Coverage Results" MODIFIED="1587642361733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$pricer.coverage" NAME="pricer Coverage Results" MODIFIED="1589450672665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$hp_sim.coverage" NAME="hp_sim Coverage Results" MODIFIED="1589270028200" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_continuous_reward.coverage" NAME="testing_continuous_reward Coverage Results" MODIFIED="1595424941762" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp__1_.coverage" NAME="sustained_ihp (1) Coverage Results" MODIFIED="1586363442240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mc_osl" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice_mono.coverage" NAME="dqn_lattice_mono Coverage Results" MODIFIED="1595188335092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$collections_env.coverage" NAME="collections_env Coverage Results" MODIFIED="1596643626028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$bruteforce_search.coverage" NAME="bruteforce_search Coverage Results" MODIFIED="1575480207008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp.coverage" NAME="sustained_ihp Coverage Results" MODIFIED="1585828522904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1589411172930" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$gil_nogil_timing.coverage" NAME="gil_nogil_timing Coverage Results" MODIFIED="1585650500747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$chp.coverage" NAME="chp Coverage Results" MODIFIED="1596658240190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ddcc" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_in_testing_environment_py.coverage" NAME="pytest in testing_environment.py Coverage Results" MODIFIED="1587642043871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_RL$plot_account.coverage" NAME="plot_account Coverage Results" MODIFIED="1574352613049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$base.coverage" NAME="base Coverage Results" MODIFIED="1589406308575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$discwrapper.coverage" NAME="discwrapper Coverage Results" MODIFIED="1587632668652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$demo_contours.coverage" NAME="demo_contours Coverage Results" MODIFIED="1575288849134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$step_algo_comparison__1_.coverage" NAME="step_algo_comparison (1) Coverage Results" MODIFIED="1589412265517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$oav__1_.coverage" NAME="oav (1) Coverage Results" MODIFIED="1585229636107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$wrappers.coverage" NAME="wrappers Coverage Results" MODIFIED="1589445857501" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
-    <SUITE FILE_PATH="coverage/credit_collections_RL$exp_chp.coverage" NAME="exp_chp Coverage Results" MODIFIED="1574416424865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$aut_mc.coverage" NAME="aut_mc Coverage Results" MODIFIED="1585753241841" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_environment.coverage" NAME="testing_environment Coverage Results" MODIFIED="1587642361733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_RL$environment_engine__1_.coverage" NAME="environment_engine Coverage Results" MODIFIED="1574267108724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$testing_cython_extension.coverage" NAME="testing_cython_extension Coverage Results" MODIFIED="1583153084651" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$misc.coverage" NAME="misc Coverage Results" MODIFIED="1589405528224" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_policy_evaluation.coverage" NAME="testing_policy_evaluation Coverage Results" MODIFIED="1596646402922" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$gymcollectionsenv.coverage" NAME="gymcollectionsenv Coverage Results" MODIFIED="1589408992471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_RL$environment_engine.coverage" NAME="environment_engine Coverage Results" MODIFIED="1574257431757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp__1_.coverage" NAME="sustained_ihp (1) Coverage Results" MODIFIED="1586363442240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mc_osl" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$chp__1_.coverage" NAME="chp (1) Coverage Results" MODIFIED="1589405769572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_environment_distributional_properties.coverage" NAME="testing_environment_distributional_properties Coverage Results" MODIFIED="1597065864509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$q_table.coverage" NAME="q_table Coverage Results" MODIFIED="1587490783197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment.coverage" NAME="pytest for test_environment.TestContinuousEnvironment Coverage Results" MODIFIED="1589403167747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$statespace_dynamics_figures.coverage" NAME="statespace_dynamics_figures Coverage Results" MODIFIED="1597319729641" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
+    <SUITE FILE_PATH="coverage/credit_collections_RL$CHP.coverage" NAME="CHP Coverage Results" MODIFIED="1574428081832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$chp.coverage" NAME="chp Coverage Results" MODIFIED="1596658240190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ddcc" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$demo_contours.coverage" NAME="demo_contours Coverage Results" MODIFIED="1575288849134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$construct_lattice.coverage" NAME="construct_lattice Coverage Results" MODIFIED="1593957640235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_in_testing_environment_py.coverage" NAME="pytest in testing_environment.py Coverage Results" MODIFIED="1587642043871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_in_test_environment_py.coverage" NAME="pytest in test_environment.py Coverage Results" MODIFIED="1589404087104" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp_c_pyx.coverage" NAME="sustained_ihp_c.pyx Coverage Results" MODIFIED="1585828504788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$step_algo_comparison__1_.coverage" NAME="step_algo_comparison (1) Coverage Results" MODIFIED="1589412265517" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_continuous_reward.coverage" NAME="testing_continuous_reward Coverage Results" MODIFIED="1595424941762" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$discwrapper.coverage" NAME="discwrapper Coverage Results" MODIFIED="1587632668652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$aut_mc.coverage" NAME="aut_mc Coverage Results" MODIFIED="1585753241841" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$setup.coverage" NAME="setup Coverage Results" MODIFIED="1591863213081" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/osl/mc" />
+    <SUITE FILE_PATH="coverage/credit_collections_RL$plot_account.coverage" NAME="plot_account Coverage Results" MODIFIED="1574352613049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$chp__2_.coverage" NAME="chp (2) Coverage Results" MODIFIED="1585808180016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/chp" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$base.coverage" NAME="base Coverage Results" MODIFIED="1589406308575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$oav__1_.coverage" NAME="oav (1) Coverage Results" MODIFIED="1585229636107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$qlearning.coverage" NAME="qlearning Coverage Results" MODIFIED="1589452041189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihpv2.coverage" NAME="sustained_ihpv2 Coverage Results" MODIFIED="1585661933149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$osl_engine.coverage" NAME="osl_engine Coverage Results" MODIFIED="1586961861910" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/osl" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$hawkesstep.coverage" NAME="hawkesstep Coverage Results" MODIFIED="1589271990866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1597065203889" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1589411172930" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$aav.coverage" NAME="aav Coverage Results" MODIFIED="1586434846195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$bruteforce_search.coverage" NAME="bruteforce_search Coverage Results" MODIFIED="1575480207008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_RL$exp_chp.coverage" NAME="exp_chp Coverage Results" MODIFIED="1574416424865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$collectionsenv.coverage" NAME="collectionsenv Coverage Results" MODIFIED="1589383516842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$wrappers.coverage" NAME="wrappers Coverage Results" MODIFIED="1589445857501" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pytest_for_test_environment_TestContinuousEnvironment_test_distribution_properties.coverage" NAME="pytest for test_environment.TestContinuousEnvironment.test_distribution_properties Coverage Results" MODIFIED="1590053429260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/collections_env" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$step_algo_comparison.coverage" NAME="step_algo_comparison Coverage Results" MODIFIED="1590046706686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/analysis_snipetz" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$exact_thinning.coverage" NAME="exact_thinning Coverage Results" MODIFIED="1589277356259" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice.coverage" NAME="dqn_lattice Coverage Results" MODIFIED="1595495920855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$hp_sim.coverage" NAME="hp_sim Coverage Results" MODIFIED="1589270028200" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/hp_sim" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$oav.coverage" NAME="oav Coverage Results" MODIFIED="1589459479443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/dcc" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$pricer.coverage" NAME="pricer Coverage Results" MODIFIED="1589450672665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$gil_nogil_timing.coverage" NAME="gil_nogil_timing Coverage Results" MODIFIED="1585650500747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_lattice_mono.coverage" NAME="dqn_lattice_mono Coverage Results" MODIFIED="1595188335092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$sustained_ihp.coverage" NAME="sustained_ihp Coverage Results" MODIFIED="1585828522904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/optimal_sustain_level" />
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>np.exp(- self.params.kappa * (t - self.action_times[self.action_sizes&lt;t])) *
+                         self.action_sizes</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.sum(np.exp(- self.params.kappa * (t - self.action_times[self.action_times &lt; t])) *
+                         self.action_sizes)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>self.action_sizes</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.exp(- self.params.kappa * (t - self.action_times[self.action_sizes&lt;t])) * self.action_sizes</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.exp(- self.params.kappa * (t - self.action_times[self.action_sizes&lt;t]))</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.exp(- self.params.kappa * self.action_times[self.action_sizes&lt;t])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.exp(self.action_times[self.action_sizes&lt;t])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.action_times[self.action_sizes&lt;t]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.action_times</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>(t - self.action_times[self.action_times &lt; t])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.exp(- self.params.kappa * (t - self.action_times[self.action_times &lt; t]))</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file:///usr/local/lib/python3.7/site-packages/matplotlib/axes/_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="3610" selection-start-line="3610" selection-end-line="3610" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/figs/sample_path/time-intensity.eps">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/tests/test_collections_environment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#67#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/tests/testing_environment_distributional_properties.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="22" column="60" selection-start-line="22" selection-start-column="60" selection-end-line="22" selection-end-column="60" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis_snipetz/step_algo_comparison.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="15" column="36" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/tests/testing_continuous_reward.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#67#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learning/tests/testing_policy_evaluation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analysis_snipetz/statespace_dynamics_figures.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="524">
+          <caret line="96" column="42" selection-start-line="96" selection-start-column="42" selection-end-line="96" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

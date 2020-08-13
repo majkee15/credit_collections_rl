@@ -13,7 +13,7 @@ from joblib import Parallel, delayed
 from multiprocessing import cpu_count
 
 # Tests the performance of step algorithms
-# Step algorithm performance on value of the account
+# Step algorithm performance on v   alue of the account
 
 
 class MotherSimulator(ABC):
