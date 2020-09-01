@@ -129,6 +129,8 @@ dmypy.json
 /requirements.in
 /search_comp_results/
 
-# nets
+# nets and arrays
 .h5
 .pkl
+.npy
+.v2
