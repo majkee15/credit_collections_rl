@@ -23,7 +23,6 @@ class MotherSimulator():
         self.logger.setLevel(os.getenv('LOG_LEVEL', 'INFO'))
         self.env = CollectionsEnv(reward_shaping=continuous_reward, params=params)
 
-
     def kernel(self, t, r):
         # Return Kernel evaluation at time t
         return np.sum(np.multiply(self.params.delta10 + self.params.delta11 * r,

@@ -5,10 +5,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as m
 
-def construct_nn(env, layers, config, initialize=False):
+
+def construct_nn(env, config, initialize=False):
     target_net = tf.keras.Sequential()
     target_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
-    for i, layer_size in enumerate(layers):
+    for i, layer_size in enumerate(config.layers):
         target_net.add(tf.keras.layers.Dense(layer_size, activation='relu'))
         if config.batch_normalization:
             target_net.add(tf.keras.layers.BatchNormalization())

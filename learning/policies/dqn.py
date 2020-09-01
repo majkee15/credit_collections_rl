@@ -19,34 +19,34 @@ from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
+    # Training config specifies the hyperparameters of an agend
     n_episodes = 20000
     warmup_episodes = 12000
 
-    # fixed learning rate
     learning_rate = 0.001
     end_learning_rate = 0.00001
     # decaying learning rate
-    # learning_rate = tf.keras.optimizers.schedules.PolynomialDecay(initial_learning_rate=learning_rate,
-    #                                                               decay_steps=warmup_episodes,
-    #                                                               end_learning_rate=end_learning_rate, power=1.0)
     learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, n_episodes)
-    gamma = 0.99
+    # gamma (discount factor) is set as exp(-rho * dt) in the body of the learning program
+    gamma = np.NaN
     epsilon = 1
     epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
     target_update_every_step = 50
     log_every_episode = 10
 
-    # Memory setting
+    # Net setting
+    layers = (128, 128, 128)
     batch_normalization = True
+    # Memory setting
     batch_size = 512
     memory_size = 1000000
-    # PER setting
 
+    # PER setting
     prioritized_memory_replay = True
     replay_alpha = 0.2
     replay_beta = 0.4
@@ -61,9 +61,10 @@ class DefaultConfig(TrainConfig):
     # env setting
     normalize_states = True
 
+
 class DQNAgent(Policy, BaseModelMixin):
 
-    def __init__(self, env, name, config=None, training=True, layers=(128, 128, 128), initialize=False):
+    def __init__(self, env, name, config=None, training=True, initialize=False):
 
         if config.normalize_states:
             self.env = StateNormalization(env)
@@ -72,17 +73,17 @@ class DQNAgent(Policy, BaseModelMixin):
         BaseModelMixin.__init__(self, name)
 
         self.config = config
+        self.config.gamma = np.exp(-env.params.rho * env.dt)
         if config.prioritized_memory_replay:
             self.memory = PrioritizedReplayMemory(alpha=config.replay_alpha, capacity=config.memory_size)
         else:
             self.memory = ReplayMemory(capacity=self.config.memory_size)
-        self.layers = layers
 
         # Optimizer
         self.global_lr = tf.Variable(self.config.learning_rate_schedule.current_p, trainable=False)
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.global_lr)#, clipnorm=5)
 
-        self.target_net = construct_nn(self.env, self.layers, self.config, initialize=initialize)
+        self.target_net = construct_nn(self.env, self.config, initialize=initialize)
         self.main_net = tf.keras.models.clone_model(self.target_net)
         self.main_net.set_weights(self.target_net.get_weights())
         # number of training epochs = global - step
@@ -217,18 +218,18 @@ class DQNAgent(Policy, BaseModelMixin):
         self.save()
 
     # Summary writing routines
-
-    def write_summaries(self):
-        with tf.name_scope('Layer 1'):
-            with tf.name_scope('W'):
-                mean = tf.reduce_mean(W)
-                tf.summary.scalar('mean', mean)
-            stddev = tf.sqrt(tf.reduce_mean(tf.square(W - mean)))
-            tf.summary.scalar('stddev', stddev)
-            tf.summary.histogram('histogram', var)
+    #
+    # def write_summaries(self):
+    #     with tf.name_scope('Layer 1'):
+    #         with tf.name_scope('W'):
+    #             mean = tf.reduce_mean(W)
+    #             tf.summary.scalar('mean', mean)
+    #         stddev = tf.sqrt(tf.reduce_mean(tf.square(W - mean)))
+    #         tf.summary.scalar('stddev', stddev)
+    #         tf.summary.histogram('histogram', var)
 
     def save(self):
-       #current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        # Saves training procedure
         path_model = os.path.join(self.model_dir, 'main_net.h5')
         path_actions = os.path.join(self.model_dir, 'action_bins.npy')
         env_path = os.path.join(self.model_dir, 'env.pkl')
@@ -243,6 +244,7 @@ class DQNAgent(Policy, BaseModelMixin):
 
     @classmethod
     def load(cls, model_path):
+        # loads trained model
         loaded_config = TrainConfig.load(os.path.join(model_path, 'train_config.pkl'))
         loaded_env = CollectionsEnv.load(os.path.join(model_path, 'env.pkl'))
         loaded_instance = DQNAgent(loaded_env, model_path, loaded_config, initialize=False, training=False)
@@ -259,6 +261,7 @@ class DQNAgent(Policy, BaseModelMixin):
         return loaded_instance
 
     def plot_policy(self, step_i):
+        # plots policy in w and lambda space
         w_points = 60
         l_points = 60
         l = np.linspace(self.env.observation_space.low[0], self.env.observation_space.high[0], l_points)
@@ -332,5 +335,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, 'DDQN_20K', training=True, config=DefaultConfig(), initialize=False)
+    dqn = DQNAgent(environment, 'testing', training=True, config=DefaultConfig(), initialize=False)
     dqn.run()

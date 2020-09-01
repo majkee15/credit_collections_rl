@@ -103,7 +103,6 @@ class CollectionsEnv(gym.Env):
         self.current_step += 1
         self.current_time += self.dt
         self.current_state[0] += action * self.params.delta2
-        discount_factor = np.exp(-self.params.rho * self.current_time)
         self.accumulated_under_intensity += self.intensity_integral(self.dt, self.current_state[0])
         if self.accumulated_under_intensity >= self._draw:
             r = self.params.sample_repayment()[0]
@@ -120,12 +119,12 @@ class CollectionsEnv(gym.Env):
 
         # reward formulation
         if self.reward_shaping == 'continuous':
-            reward = self.current_state[1] * discount_factor * self.params.rmean * self.current_state[0] * self.dt \
-                     - discount_factor * action * self.params.c
+            reward = self.current_state[1] * self.params.rmean * self.current_state[0] * self.dt \
+                     - action * self.params.c
             self.current_state[1] = self.current_state[1] - self.current_state[1] * self.params.rmean * self.current_state[0] * self.dt
         elif self.reward_shaping == 'discrete':
             # sparse reward formulation
-            reward = (r * self.current_state[1] - action * self.params.c) * discount_factor
+            reward = (r * self.current_state[1] - action * self.params.c)
             self.current_state[1] = self.current_state[1] * (1 - r)
         elif self.reward_shaping == 'expected':
             prob_of_arrival = 1 - np.exp(-(self.params.lambdainf * self.dt +
@@ -133,7 +132,7 @@ class CollectionsEnv(gym.Env):
                                          (np.exp(-self.params.kappa * (self.current_time + self.dt)) -
                                           np.exp(-self.params.kappa * self.current_time))
                                          ))
-            reward = (self.current_state[1] * self.params.rmean * prob_of_arrival - self.params.c * action) * discount_factor
+            reward = (self.current_state[1] * self.params.rmean * prob_of_arrival - self.params.c * action)
             self.current_state[1] = self.current_state[1] - self.current_state[1] * self.params.rmean * prob_of_arrival
         else:
             raise NotImplementedError('Not implemented rewards.')
