@@ -1,1 +1,2 @@
 from learning.collections_env.collections_env import CollectionsEnv
+from learning.collections_env.repayment_distribution import BetaRepayment, UniformRepayment

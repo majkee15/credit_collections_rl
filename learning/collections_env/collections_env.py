@@ -5,6 +5,7 @@ import numpy as np
 from dcc import Parameters
 import copy
 from learning.collections_env import utils
+from learning.collections_env.repayment_distribution import UniformRepayment, BetaRepayment
 
 MAX_ACCOUNT_BALANCE = 200.0
 MIN_ACCOUNT_BALANCE = 1
@@ -14,7 +15,8 @@ MAX_ACTION = 1.0
 class CollectionsEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, w0=MAX_ACCOUNT_BALANCE, params=Parameters(), reward_shaping='discrete', randomize_start=False,
+    def __init__(self, w0=MAX_ACCOUNT_BALANCE, params=Parameters(), repayment_dist=None, reward_shaping='discrete',
+                 randomize_start=False,
                  starting_state=None, max_lambda=None):
         super(CollectionsEnv, self).__init__()
 
@@ -56,6 +58,11 @@ class CollectionsEnv(gym.Env):
 
         # randomize starts
         self.randomize_start = randomize_start
+
+        if repayment_dist is None:
+            self.repayment_dist = UniformRepayment(self.params)
+        else:
+            self.repayment_dist = repayment_dist
 
     @property
     def starting_state(self):
@@ -105,7 +112,7 @@ class CollectionsEnv(gym.Env):
         self.current_state[0] += action * self.params.delta2
         self.accumulated_under_intensity += self.intensity_integral(self.dt, self.current_state[0])
         if self.accumulated_under_intensity >= self._draw:
-            r = self.params.sample_repayment()[0]
+            r = self.repayment_dist.draw(self.current_state[1])
             self.current_state[0] += self.params.delta10 + self.params.delta11 * r
             self._draw = np.random.exponential(1)
             self.accumulated_under_intensity = 0
@@ -119,24 +126,27 @@ class CollectionsEnv(gym.Env):
 
         # reward formulation
         if self.reward_shaping == 'continuous':
-            reward = self.current_state[1] * self.params.rmean * self.current_state[0] * self.dt \
+            reward = self.current_state[1] * self.repayment_dist.mean(self.current_state[1]) * self.current_state[
+                0] * self.dt \
                      - action * self.params.c
-            self.current_state[1] = self.current_state[1] - self.current_state[1] * self.params.rmean * self.current_state[0] * self.dt
+            self.current_state[1] = self.current_state[1] - self.current_state[1] * \
+                                    self.repayment_dist.mean(self.current_state[1]) * self.current_state[0] * self.dt
         elif self.reward_shaping == 'discrete':
             # sparse reward formulation
             reward = (r * self.current_state[1] - action * self.params.c)
             self.current_state[1] = self.current_state[1] * (1 - r)
         elif self.reward_shaping == 'expected':
             prob_of_arrival = 1 - np.exp(-(self.params.lambdainf * self.dt +
-                                         ((self.current_state[0] - self.params.lambdainf)/self.params.kappa) *
-                                         (np.exp(-self.params.kappa * (self.current_time + self.dt)) -
-                                          np.exp(-self.params.kappa * self.current_time))
-                                         ))
-            reward = (self.current_state[1] * self.params.rmean * prob_of_arrival - self.params.c * action)
-            self.current_state[1] = self.current_state[1] - self.current_state[1] * self.params.rmean * prob_of_arrival
+                                           ((self.current_state[0] - self.params.lambdainf) / self.params.kappa) *
+                                           (np.exp(-self.params.kappa * (self.current_time + self.dt)) -
+                                            np.exp(-self.params.kappa * self.current_time))
+                                           ))
+            reward = (self.current_state[1] * self.repayment_dist.mean(
+                self.current_state[1]) * prob_of_arrival - self.params.c * action)
+            self.current_state[1] = self.current_state[1] - self.current_state[1] * self.repayment_dist.mean(
+                self.current_state[1]) * prob_of_arrival
         else:
             raise NotImplementedError('Not implemented rewards.')
-
 
         if self.current_state[1] < self.MIN_ACCOUNT_BALANCE:
             self.done = True
@@ -174,6 +184,7 @@ class CollectionsEnv(gym.Env):
 if __name__ == '__main__':
 
     import matplotlib.pyplot as plt
+
     env = CollectionsEnv(randomize_start=True)
     env.dt = 0.1
     nsteps = 30000

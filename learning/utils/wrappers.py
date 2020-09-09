@@ -68,7 +68,6 @@ class DiscretizedActionWrapper(gym.ActionWrapper):
             return pickle.load(f)
 
 
-
 class StateNormalization(gym.ObservationWrapper):
     # squishes the statespace in [0, 1]
     def __init__(self, environment):

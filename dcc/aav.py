@@ -181,6 +181,7 @@ class Parameters:
 
     def sample_repayment(self, n=1):
         return np.random.uniform(self.r_, 1, n)
+
     @property
     def rmean(self):
         return integrate.quad(self.integrand_mean, self.r_, 1)[0]

@@ -1,4 +1,3 @@
-# dqn policy
 import os
 import numpy as np
 import tensorflow as tf
@@ -9,7 +8,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import matplotlib as m
 
-from learning.collections_env import CollectionsEnv
+from learning.collections_env import CollectionsEnv, BetaRepayment, UniformRepayment
 from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization
 
 from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplayMemory
@@ -19,7 +18,7 @@ from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
@@ -60,6 +59,9 @@ class DefaultConfig(TrainConfig):
 
     # env setting
     normalize_states = True
+
+    # repayment distribution:
+
 
 
 class DQNAgent(Policy, BaseModelMixin):
@@ -324,16 +326,22 @@ class DQNAgent(Policy, BaseModelMixin):
 
 if __name__ == '__main__':
     from dcc import Parameters
+    MAX_ACCOUNT_BALANCE = 200.0
+
     params = Parameters()
     params.rho = 0.15
 
     actions_bins = np.array([0, 1.0])
     layers_shape = (64, 64, 64)
     n_actions = len(actions_bins)
-    c_env = CollectionsEnv(params=params, reward_shaping='continuous', randomize_start=True, max_lambda=None,
+
+    rep_dist = BetaRepayment(params, 0.9, 0.5, 10, MAX_ACCOUNT_BALANCE)
+    # rep_dist = UniformRepayment(params)
+
+    c_env = CollectionsEnv(params=params, repayment_dist=rep_dist, reward_shaping='continuous', randomize_start=True, max_lambda=None,
                            starting_state=np.array([3, 200], dtype=np.float32)
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, 'testing', training=True, config=DefaultConfig(), initialize=False)
+    dqn = DQNAgent(environment, 'Beta20K', training=True, config=DefaultConfig(), initialize=False)
     dqn.run()
