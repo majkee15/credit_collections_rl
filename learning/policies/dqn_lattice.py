@@ -1,4 +1,5 @@
-# dqn policy
+# dqn lattice with monotonicity constraints
+# this never worked well...
 import os
 import numpy as np
 import tensorflow as tf

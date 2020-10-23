@@ -22,9 +22,9 @@ from learning.utils.annealing_schedule import AnnealingSchedule
 
 
 class DefaultConfig(TrainConfig):
-    # Training config specifies the hyperparameters of an agend
-    n_episodes = 20000
-    warmup_episodes = 12000
+    # Training config specifies the hyperparameters of agent and learning
+    n_episodes = 100000
+    warmup_episodes = 80000
 
     learning_rate = 0.001
     end_learning_rate = 0.00001
@@ -331,17 +331,16 @@ if __name__ == '__main__':
     params = Parameters()
     params.rho = 0.15
 
-    actions_bins = np.array([0, 1.0])
-    layers_shape = (64, 64, 64)
+    actions_bins = np.array([0, 0.2, 0.5, 1.0])
     n_actions = len(actions_bins)
 
-    rep_dist = BetaRepayment(params, 0.9, 0.5, 10, MAX_ACCOUNT_BALANCE)
-    # rep_dist = UniformRepayment(params)
+    # rep_dist = BetaRepayment(params, 0.9, 0.5, 10, MAX_ACCOUNT_BALANCE)
+    rep_dist = UniformRepayment(params)
 
     c_env = CollectionsEnv(params=params, repayment_dist=rep_dist, reward_shaping='continuous', randomize_start=True, max_lambda=None,
                            starting_state=np.array([3, 200], dtype=np.float32)
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, 'Beta20K', training=True, config=DefaultConfig(), initialize=False)
+    dqn = DQNAgent(environment, '4Actions100K', training=True, config=DefaultConfig(), initialize=False)
     dqn.run()

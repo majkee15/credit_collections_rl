@@ -11,11 +11,11 @@ from dcc import AAV, Parameters
 
 
 def construct_lattice(env, config, initialize=False):
-    '''
+    """
     Constructs deep lattice network with 832 parameters
     Returns:
-
-    '''
+            lattice model instance
+    """
 
     min_w, min_l = (env.MIN_ACCOUNT_BALANCE, env.params.lambdainf)
     max_w, max_l = (env.w0, env.MAX_LAMBDA)
