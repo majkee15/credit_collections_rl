@@ -4,6 +4,9 @@ import tensorflow as tf
 import datetime
 import pickle
 from datetime import datetime
+from itertools import product
+from multiprocessing import cpu_count
+import joblib
 
 import matplotlib.pyplot as plt
 import matplotlib as m
@@ -63,8 +66,7 @@ class DefaultConfig(TrainConfig):
     # repayment distribution:
 
 
-
-class DQNAgent(Policy, BaseModelMixin):
+class DQNAgent(BaseModelMixin, Policy):
 
     def __init__(self, env, name, config=None, training=True, initialize=False):
 
@@ -83,17 +85,26 @@ class DQNAgent(Policy, BaseModelMixin):
 
         # Optimizer
         self.global_lr = tf.Variable(self.config.learning_rate_schedule.current_p, trainable=False)
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.global_lr)#, clipnorm=5)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.global_lr)  # , clipnorm=5)
 
-        self.target_net = construct_nn(self.env, self.config, initialize=initialize)
-        self.main_net = tf.keras.models.clone_model(self.target_net)
-        self.main_net.set_weights(self.target_net.get_weights())
-        # number of training epochs = global - step
+        self.target_net = None
+        self.main_net = None
+        self.build(initialize)
         self.global_step = 0
-    # def append_sample(self, state, action, reward, next_state, done):
-    #     self.memory.append((state, action, reward, next_state, done))
 
-    def get_action(self, state, epsilon):
+        # Inter-learning plotting parameters
+        self._w_points = 60
+        self._l_points = 60
+        self._l_grid_plot = np.linspace(self.env.observation_space.low[0], self.env.observation_space.high[0],
+                                        self._l_points)
+        self._w_grid_plot = np.linspace(self.env.observation_space.low[1], self.env.observation_space.high[1],
+                                        self._w_points)
+        self._n_cpu = cpu_count() - 2
+        self._ww, self._ll = np.meshgrid(self._w_grid_plot, self._l_grid_plot)
+        self._space_iterator = product(self._l_grid_plot, self._w_grid_plot)
+        self._space_product = np.array([[i, j] for i, j in self._space_iterator])
+
+    def get_action(self, state, epsilon=0.0):
         q_value = self.main_net.predict_on_batch(state[None, :])
         # q_value = self.main_net(state[None, :], training=False)
         if np.random.rand() <= epsilon:
@@ -113,9 +124,6 @@ class DQNAgent(Policy, BaseModelMixin):
         rewards = batch['r']
         next_states = batch['s_next']
         dones = batch['done']
-        if self.config.prioritized_memory_replay:
-            idx = batch['indices']
-            weights = batch['weights']
 
         dqn_variable = self.main_net.trainable_variables
         with tf.GradientTape() as tape:
@@ -139,18 +147,23 @@ class DQNAgent(Policy, BaseModelMixin):
             element_wise_loss = tf.square(td_error) * 0.5
 
             if self.config.prioritized_memory_replay:
+                idx = batch['indices']
+                weights = batch['weights']
                 error = tf.reduce_mean(element_wise_loss * weights)
+                self.memory.update_priorities(idx, np.abs(td_error.numpy()) + self.config.prior_eps)
             else:
                 error = tf.reduce_mean(element_wise_loss)
 
-
-        if self.config.prioritized_memory_replay:
-            self.memory.update_priorities(idx, np.abs(td_error.numpy()) + self.config.prior_eps)
         # loss = self.main_net.train_on_batch(states, target_value)
         dqn_grads = tape.gradient(error, dqn_variable)
         self.optimizer.apply_gradients(zip(dqn_grads, dqn_variable))
-        # Logging
+        # Augment training step
         self.global_step += 1
+        # log into tensorboard
+        self.log_tensorboard(dqn_grads, main_value, target_value, td_error, element_wise_loss)
+        return tf.reduce_mean(element_wise_loss)
+
+    def log_tensorboard(self, dqn_grads, main_value, target_value, td_error, element_wise_loss):
         with self.writer.as_default():
             with tf.name_scope('Network'):
                 tf.summary.histogram('Weights', self.main_net.weights[0], step=self.global_step)
@@ -160,13 +173,11 @@ class DQNAgent(Policy, BaseModelMixin):
                 tf.summary.histogram('TD error', td_error, step=self.global_step)
                 tf.summary.histogram('Elementwise Loss', element_wise_loss, step=self.global_step)
                 tf.summary.scalar('Loss', tf.reduce_mean(element_wise_loss), step=self.global_step)
-        return tf.reduce_mean(element_wise_loss)
 
     def run(self):
 
         n_episodes = self.config.n_episodes
         loss = None
-
         total_rewards = np.empty(n_episodes)
 
         for i in range(n_episodes):
@@ -206,29 +217,26 @@ class DQNAgent(Policy, BaseModelMixin):
                         tf.summary.scalar('Learning rate', self.optimizer._decayed_lr(tf.float32).numpy(), step=i)
 
             if i % self.config.log_every_episode == 0:
-                print("episode:", i, "/", self.config.n_episodes, "episode reward:", score, "avg reward (last 100):",
-                      avg_rewards, "eps:", self.config.epsilon_schedule.current_p, "Learning rate (10e3):",
-                      (self.optimizer._decayed_lr(tf.float32).numpy() * 1000))
+                # print("episode:", i, "/", self.config.n_episodes, "episode reward:", score, "avg reward (last 100):",
+                #       avg_rewards, "eps:", self.config.epsilon_schedule.current_p, "Learning rate (10e3):",
+                #       (self.optimizer._decayed_lr(tf.float32).numpy() * 1000))
+                self.logger.info(f"episode:{i}/{self.config.n_episodes} episode reward: {score} avg reward (last 100): "
+                                 f"{avg_rewards} eps: {self.config.epsilon_schedule.current_p} Learning rate (10e3): "
+                                 f"{self.optimizer._decayed_lr(tf.float32).numpy() * 1000}")
 
             if i % self.config.plot_every_episode == 0 and self.config.plot_progression_flag:
                 now = datetime.now().time()
-                print(f'{now}, Plotting policy')
+                self.logger.info(f'{now}, Plotting policy')
                 self.plot_policy(i)
                 self.plot_visit_map(i)
 
         plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
         self.save()
 
-    # Summary writing routines
-    #
-    # def write_summaries(self):
-    #     with tf.name_scope('Layer 1'):
-    #         with tf.name_scope('W'):
-    #             mean = tf.reduce_mean(W)
-    #             tf.summary.scalar('mean', mean)
-    #         stddev = tf.sqrt(tf.reduce_mean(tf.square(W - mean)))
-    #         tf.summary.scalar('stddev', stddev)
-    #         tf.summary.histogram('histogram', var)
+    def build(self, initialize=False):
+        self.target_net = construct_nn(self.env, self.config, initialize=initialize)
+        self.main_net = tf.keras.models.clone_model(self.target_net)
+        self.main_net.set_weights(self.target_net.get_weights())
 
     def save(self):
         # Saves training procedure
@@ -259,37 +267,46 @@ class DQNAgent(Policy, BaseModelMixin):
                 loaded_instance.memory.buffer = buffer
         except (FileNotFoundError, IOError):
             print('No buffer found.')
-
         return loaded_instance
 
     def plot_policy(self, step_i):
         # plots policy in w and lambda space
-        w_points = 60
-        l_points = 60
-        l = np.linspace(self.env.observation_space.low[0], self.env.observation_space.high[0], l_points)
-        w = np.linspace(self.env.observation_space.low[1], self.env.observation_space.high[1], w_points)
-        ww, ll = np.meshgrid(w, l)
-        z = np.zeros_like(ww)
-        p = np.zeros_like(ww)
-        for i, xp in enumerate(w):
-            for j, yp in enumerate(l):
-                fixed_obs = self.env.observation(np.array([yp, xp]))
-                z[j, i] = np.amax(self.main_net.predict_on_batch(fixed_obs[None, :]))
-                p[j, i] = environment.action(np.argmax(self.main_net.predict_on_batch(fixed_obs[None, :])))
+        predictions = self.main_net.predict_on_batch(self._space_product)
+        z = np.amax(predictions, axis=1).reshape(self._l_points, self._w_points)
+        p = np.argmax(predictions, axis=1).reshape(self._l_points, self._w_points)
+
+        # This was ineffictient
+        # z = result[:, 0].reshape(self._l_points, self._w_points)
+        # p = result[:, 1].reshape(self._l_points, self._w_points)
+
+        # z = np.zeros_like(self._ww)
+        # p = np.zeros_like(self._ww)
+        # for i, xp in enumerate(self._w_grid_plot):
+        #     for j, yp in enumerate(self._l_grid_plot):
+        #         fixed_obs = self.env.observation(np.array([yp, xp]))
+        #         z[j, i] = np.amax(self.main_net.predict_on_batch(fixed_obs[None, :]))
+        #         p[j, i] = environment.action(np.argmax(self.main_net.predict_on_batch(fixed_obs[None, :])))
+
+
 
         fig, ax = plt.subplots(nrows=1, ncols=2)
-        im = ax[0].pcolor(ww, ll, p)
-        cdict = {
-            'red': ((0.0, 0.25, .25), (0.02, .59, .59), (1., 1., 1.)),
-            'green': ((0.0, 0.0, 0.0), (0.02, .45, .45), (1., .97, .97)),
-            'blue': ((0.0, 1.0, 1.0), (0.02, .75, .75), (1., 0.45, 0.45))
-        }
-
-        cm = m.colors.LinearSegmentedColormap('my_colormap', cdict, 1024)
-        im = ax[0].pcolor(ww, ll, p, cmap=cm)
+        cmap = m.cm.get_cmap('YlOrBr', self.act_size)
+        boundaries = np.linspace(0, self.act_size, self.act_size + 1)
+        norm = m.colors.BoundaryNorm(boundaries, cmap.N, clip=True)
+        im = ax[0].pcolormesh(self._ww, self._ll, p, cmap=cmap, norm=norm, shading='auto')
         fig.colorbar(im)
+        # cdict = {
+        #     'red': ((0.0, 0.25, .25), (0.02, .59, .59), (1., 1., 1.)),
+        #     'green': ((0.0, 0.0, 0.0), (0.02, .45, .45), (1., .97, .97)),
+        #     'blue': ((0.0, 1.0, 1.0), (0.02, .75, .75), (1., 0.45, 0.45))
+        # }
 
-        CS = ax[1].contour(ww, ll, z)
+        #cm = m.colors.LinearSegmentedColormap('my_colormap', cdict, 1024)
+
+        # im = ax[0].pcolor(self._ww, self._ll, p, cmap=cm)
+        # fig.colorbar(im)
+        #
+        CS = ax[1].contour(self._ww, self._ll, z)
         ax[1].clabel(CS, inline=1, fontsize=10)
         ax[1].set_title('Value function')
 
@@ -326,18 +343,20 @@ class DQNAgent(Policy, BaseModelMixin):
 
 if __name__ == '__main__':
     from dcc import Parameters
+
     MAX_ACCOUNT_BALANCE = 200.0
 
     params = Parameters()
     params.rho = 0.15
 
-    actions_bins = np.array([0, 0.2, 0.5, 1.0])
+    actions_bins = np.array([0, 0.2, 1.0])
     n_actions = len(actions_bins)
 
     # rep_dist = BetaRepayment(params, 0.9, 0.5, 10, MAX_ACCOUNT_BALANCE)
     rep_dist = UniformRepayment(params)
 
-    c_env = CollectionsEnv(params=params, repayment_dist=rep_dist, reward_shaping='continuous', randomize_start=True, max_lambda=None,
+    c_env = CollectionsEnv(params=params, repayment_dist=rep_dist, reward_shaping='continuous', randomize_start=True,
+                           max_lambda=None,
                            starting_state=np.array([3, 200], dtype=np.float32)
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)

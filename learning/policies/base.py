@@ -12,6 +12,8 @@ from gym.utils import colorize
 from learning.utils.misc import Config
 from learning.utils.misc import REPO_ROOT, RESOURCE_ROOT
 
+from abc import ABC, abstractmethod
+
 
 
 class TrainConfig(Config):
@@ -25,22 +27,21 @@ class TrainConfig(Config):
     done_reward = None
 
 
-class Policy:
+class Policy(ABC):
 
     def __init__(self, env, name, training=True, deterministic=False):
         self.env = env
 
         self.training = training
-        self.name = name
+        self.name = self.__class__.__name__ + '--' + name
 
         if deterministic:
             np.random.seed(1)
 
-        # # Logger:
-        # print('Getting logger')
-        # self.logger = logging.getLogger(name)
-        # self.logger.setLevel(os.getenv('LOG_LEVEL', 'INFO'))
-        # self.logger.warning('Instantiated class ' + self.__class__.__name__)
+        # Logger
+        self.logger = logging.getLogger(name)
+        self.logger.setLevel(os.getenv('LOG_LEVEL', 'INFO'))
+        self.logger.info('Instantiated class ' + self.__class__.__name__)
 
     @property
     def act_size(self):
@@ -63,22 +64,26 @@ class Policy:
         # dimension of a state.
         return list(self.env.observation_space.shape)
 
+    @staticmethod
     def obs_to_inputs(self, ob):
         return ob.flatten()
 
-    def act(self, state, **kwargs):
+    @abstractmethod
+    def get_action(self, state, **kwargs):
         pass
 
+    @abstractmethod
     def build(self):
         pass
 
+    @abstractmethod
     def train(self, *args, **kwargs):
         pass
 
     def evaluate(self, n_episodes):
         # TODO: evaluate uses default setting of the environment, i.g., random start
         # this should be done in parallel
-
+        # and it should be depending on a starting state!
         reward_history = []
 
         for i in range(n_episodes):
@@ -94,11 +99,12 @@ class Policy:
 
             reward_history.append(reward)
 
-        print("Avg. reward over {} episodes: {:.4f}".format(n_episodes, np.mean(reward_history)))
+        #print("Avg. reward over {} episodes: {:.4f}".format(n_episodes, np.mean(reward_history)))
+        self.logger.info("Avg. reward over {} episodes: {:.4f}".format(n_episodes, np.mean(reward_history)))
         return reward_history
 
 
-class BaseModelMixin:
+class BaseModelMixin(ABC):
 
     def __init__(self, model_name):
         self._saver = None
@@ -108,7 +114,6 @@ class BaseModelMixin:
 
     def _get_dir(self, dir_name):
         path = os.path.join(RESOURCE_ROOT, dir_name, self.model_name, self.current_time)
-
         os.makedirs(path, exist_ok=True)
         return path
 
