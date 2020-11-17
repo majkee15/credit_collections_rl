@@ -21,13 +21,13 @@ from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
     # Training config specifies the hyperparameters of agent and learning
-    n_episodes = 100000
-    warmup_episodes = 80000
+    n_episodes = 10000
+    warmup_episodes = n_episodes * 0.8
 
     learning_rate = 0.001
     end_learning_rate = 0.00001
@@ -89,7 +89,7 @@ class DQNAgent(BaseModelMixin, Policy):
 
         self.target_net = None
         self.main_net = None
-        self.build(initialize)
+        self._initialize = initialize
         self.global_step = 0
 
         # Inter-learning plotting parameters
@@ -102,7 +102,7 @@ class DQNAgent(BaseModelMixin, Policy):
         self._n_cpu = cpu_count() - 2
         self._ww, self._ll = np.meshgrid(self._w_grid_plot, self._l_grid_plot)
         self._space_iterator = product(self._l_grid_plot, self._w_grid_plot)
-        self._space_product = np.array([[i, j] for i, j in self._space_iterator])
+        self._space_product = self.env.observation(np.array([[i, j] for i, j in self._space_iterator]))
 
     def get_action(self, state, epsilon=0.0):
         q_value = self.main_net.predict_on_batch(state[None, :])
@@ -174,8 +174,8 @@ class DQNAgent(BaseModelMixin, Policy):
                 tf.summary.histogram('Elementwise Loss', element_wise_loss, step=self.global_step)
                 tf.summary.scalar('Loss', tf.reduce_mean(element_wise_loss), step=self.global_step)
 
-    def run(self):
-
+    def run_training(self):
+        self.build(self._initialize)
         n_episodes = self.config.n_episodes
         loss = None
         total_rewards = np.empty(n_episodes)
@@ -225,8 +225,7 @@ class DQNAgent(BaseModelMixin, Policy):
                                  f"{self.optimizer._decayed_lr(tf.float32).numpy() * 1000}")
 
             if i % self.config.plot_every_episode == 0 and self.config.plot_progression_flag:
-                now = datetime.now().time()
-                self.logger.info(f'{now}, Plotting policy')
+                self.logger.info(f"episode:{i}/{self.config.n_episodes} Plotting policy")
                 self.plot_policy(i)
                 self.plot_visit_map(i)
 
@@ -271,7 +270,7 @@ class DQNAgent(BaseModelMixin, Policy):
 
     def plot_policy(self, step_i):
         # plots policy in w and lambda space
-        predictions = self.main_net.predict_on_batch(self._space_product)
+        predictions = self.main_net.predict_on_batch(self._space_product).numpy()
         z = np.amax(predictions, axis=1).reshape(self._l_points, self._w_points)
         p = np.argmax(predictions, axis=1).reshape(self._l_points, self._w_points)
 
@@ -295,17 +294,19 @@ class DQNAgent(BaseModelMixin, Policy):
         norm = m.colors.BoundaryNorm(boundaries, cmap.N, clip=True)
         im = ax[0].pcolormesh(self._ww, self._ll, p, cmap=cmap, norm=norm, shading='auto')
         fig.colorbar(im)
+
+        # old plotting that worked
         # cdict = {
         #     'red': ((0.0, 0.25, .25), (0.02, .59, .59), (1., 1., 1.)),
         #     'green': ((0.0, 0.0, 0.0), (0.02, .45, .45), (1., .97, .97)),
         #     'blue': ((0.0, 1.0, 1.0), (0.02, .75, .75), (1., 0.45, 0.45))
         # }
-
-        #cm = m.colors.LinearSegmentedColormap('my_colormap', cdict, 1024)
-
+        #
+        # cm = m.colors.LinearSegmentedColormap('my_colormap', cdict, 1024)
+        #
         # im = ax[0].pcolor(self._ww, self._ll, p, cmap=cm)
         # fig.colorbar(im)
-        #
+        # #
         CS = ax[1].contour(self._ww, self._ll, z)
         ax[1].clabel(CS, inline=1, fontsize=10)
         ax[1].set_title('Value function')
@@ -362,4 +363,4 @@ if __name__ == '__main__':
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
     dqn = DQNAgent(environment, '4Actions100K', training=True, config=DefaultConfig(), initialize=False)
-    dqn.run()
+    dqn.run_training()
