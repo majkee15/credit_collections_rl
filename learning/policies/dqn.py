@@ -72,6 +72,8 @@ class DQNAgent(BaseModelMixin, Policy):
 
         if config.normalize_states:
             self.env = StateNormalization(env)
+        else:
+            self.env = env
 
         Policy.__init__(self, self.env, name, training=training)
         BaseModelMixin.__init__(self, name)
@@ -321,19 +323,22 @@ class DQNAgent(BaseModelMixin, Policy):
         return fig
 
     def plot_visit_map(self, step_i):
-        visits = [trans.s for trans in self.memory.buffer]
-        visits_w = np.array([vis[1] for vis in visits])
-        visits_l = np.array([vis[0] for vis in visits])
+        visits = self.env.convert_back(np.array([trans.s for trans in self.memory.buffer]))
+        visits_w = visits[:, 1]
+        visits_l = visits[:, 0]
+            #np.array([vis[1] for vis in visits])
+        #visits_l = np.array([vis[0] for vis in visits])
 
         # Generate some test data
-        mask = visits_w >= 0
+        # mask = visits_w >= 0
 
-        x = visits_w[mask]
-        y = visits_l[mask]
+        x = visits_w # [mask]
+        y = visits_l # [mask]
 
         # fig,ax = plt.subplots(figsize=(10,10))
 
-        heatmap, xedges, yedges = np.histogram2d(x, y, bins=(30, 20))
+        heatmap, xedges, yedges = np.histogram2d(x, y, bins=(30, 20), range=[[0, self.env.w0],
+                                                                             [0, self.env.MAX_LAMBDA]])
         extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
         fig, ax = plt.subplots()
         mappable = ax.imshow(heatmap.T, extent=extent, origin='lower', interpolation='nearest', aspect='auto')

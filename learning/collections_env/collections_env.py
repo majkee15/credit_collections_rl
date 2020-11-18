@@ -9,7 +9,7 @@ from learning.collections_env.repayment_distribution import UniformRepayment, Be
 
 MAX_ACCOUNT_BALANCE = 200.0
 MIN_ACCOUNT_BALANCE = 1
-MAX_ACTION = 1.0
+MAX_ACTION = 5.0
 
 
 class CollectionsEnv(gym.Env):
@@ -99,6 +99,11 @@ class CollectionsEnv(gym.Env):
         return self.current_state
 
     def observation(self, state):
+        # only for inheritance purposes and compatibility with wrappers
+        return state
+
+    def convert_back(self, state):
+        # only for inheritance purposes and compatibility with wrappers
         return state
 
     def intensity_integral(self, t, lambda0):

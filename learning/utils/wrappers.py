@@ -111,7 +111,11 @@ class PolynomialObservationWrapper(gym.ObservationWrapper):
             return self.poly.fit_transform(observation)
 
     def convert_back(self, transformed_observation):
-        raise NotImplemented('Convert Back not implemented for polynomials.')
+        # untransformed observations are at position 1 and 2
+        if transformed_observation.ndim == 1:
+            return transformed_observation[:, 1:3]
+        else:
+            return transformed_observation[:, 1:3]
 
     def save(self, filename):
         with open(filename, 'wb') as f:

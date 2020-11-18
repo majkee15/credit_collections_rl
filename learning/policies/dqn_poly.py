@@ -29,8 +29,8 @@ class DefaultConfig(TrainConfig):
     n_episodes = 20000
     warmup_episodes = 10000
 
-    learning_rate = 0.001
-    end_learning_rate = 0.00001
+    learning_rate = 0.01
+    end_learning_rate = 0.001
     # decaying learning rate
     learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, n_episodes)
     # gamma (discount factor) is set as exp(-rho * dt) in the body of the learning program
@@ -38,7 +38,7 @@ class DefaultConfig(TrainConfig):
     epsilon = 1
     epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
-    target_update_every_step = 200
+    target_update_every_step = 100
     log_every_episode = 10
 
     # Memory setting
@@ -58,7 +58,7 @@ class DefaultConfig(TrainConfig):
     plot_every_episode = target_update_every_step
 
     # env setting
-    normalize_states = True
+    normalize_states = False
 
     # Approximator setting
     # Poly features dim
