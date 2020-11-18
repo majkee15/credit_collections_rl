@@ -78,6 +78,7 @@ class DQNAgent(BaseModelMixin, Policy):
 
         self.config = config
         self.config.gamma = np.exp(-env.params.rho * env.dt)
+
         if config.prioritized_memory_replay:
             self.memory = PrioritizedReplayMemory(alpha=config.replay_alpha, capacity=config.memory_size)
         else:
@@ -102,7 +103,8 @@ class DQNAgent(BaseModelMixin, Policy):
         self._n_cpu = cpu_count() - 2
         self._ww, self._ll = np.meshgrid(self._w_grid_plot, self._l_grid_plot)
         self._space_iterator = product(self._l_grid_plot, self._w_grid_plot)
-        self._space_product = self.env.observation(np.array([[i, j] for i, j in self._space_iterator]))
+        # We initialize this at bild() to comply with inheritance
+        self._space_product = None
 
     def get_action(self, state, epsilon=0.0):
         q_value = self.main_net.predict_on_batch(state[None, :])
@@ -236,6 +238,8 @@ class DQNAgent(BaseModelMixin, Policy):
         self.target_net = construct_nn(self.env, self.config, initialize=initialize)
         self.main_net = tf.keras.models.clone_model(self.target_net)
         self.main_net.set_weights(self.target_net.get_weights())
+
+        self._space_product = self.env.observation(np.array([[i, j] for i, j in self._space_iterator]))
 
     def save(self):
         # Saves training procedure

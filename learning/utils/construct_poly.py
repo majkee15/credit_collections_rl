@@ -45,6 +45,4 @@ def calculate_penalization(l, w, theta,  degree: int = 3):
     second_d_w = np.array([0, 0, 0, 0, 0, 2, 0, 0, 2*l, 6*w])
 
     # theta is expected as 2 x 10 matrix
-
-
     return None

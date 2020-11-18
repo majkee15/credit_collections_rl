@@ -2,7 +2,9 @@ import gym
 import numpy as np
 from gym.spaces import Box, Discrete
 import pickle
+from sklearn.preprocessing import PolynomialFeatures
 
+# This is Legacy
 # class DiscretizedObservationWrapper(gym.ObservationWrapper):
 #     def __init__(self, env, n_bins=10, low=None, high=None):
 #         super().__init__(env)
@@ -62,6 +64,10 @@ class DiscretizedActionWrapper(gym.ActionWrapper):
         with open(filename, 'wb') as f:
             pickle.dump(self, f)
 
+    def reverse_action(self, action):
+        raise NotImplemented('Reverse action not implemented.')
+        pass
+
     @classmethod
     def load(cls, filename):
         with open(filename, 'rb') as f:
@@ -89,6 +95,33 @@ class StateNormalization(gym.ObservationWrapper):
     def load(cls, filename):
         with open(filename, 'rb') as f:
             return pickle.load(f)
+
+
+class PolynomialObservationWrapper(gym.ObservationWrapper):
+    # converts statespace n = 3 to polynomial features
+    def __init__(self, environment, poly_order):
+        super().__init__(environment)
+        self.poly_order = poly_order
+        self.poly = PolynomialFeatures(3)
+
+    def observation(self, observation):
+        if observation.ndim == 1:
+            return self.poly.fit_transform(observation[None, :]).flatten()
+        else:
+            return self.poly.fit_transform(observation)
+
+    def convert_back(self, transformed_observation):
+        raise NotImplemented('Convert Back not implemented for polynomials.')
+
+    def save(self, filename):
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, 'rb') as f:
+            return pickle.load(f)
+
 
 
 
