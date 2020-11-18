@@ -34,6 +34,14 @@ def construct_poly_approx(env, poly_order):
     return model
 
 
+def construct_spline_approx(env, total_features):
+    inputs = tf.keras.Input(shape=(total_features + 2,))
+    first_layer = tf.keras.layers.Dense(env.action_space.n, activation='linear', use_bias=False)(inputs[:, 2:])
+    model = tf.keras.Model(inputs=inputs, outputs=first_layer, name="combined")
+    model.compile(loss=tf.keras.losses.mean_squared_error, optimizer='adam')
+    return model
+
+
 def calculate_penalization(l, w, theta,  degree: int = 3):
     if degree != 3:
         raise NotImplementedError("Implemented only for polnomials of dim=3.")

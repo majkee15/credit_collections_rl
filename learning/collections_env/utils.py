@@ -12,7 +12,7 @@ def lambda_bound(wstart, wtarget, p):
 def iw(wstart, wtarget, p):
     numerator = np.log(wtarget / wstart)
     denominator = np.log(1 - p.r_)
-    return np.ceil(np.divide(numerator, denominator))
+    return np.ceil(np.divide(numerator, denominator), dtype='float32')
 
 
 def kernel(t, r, params):

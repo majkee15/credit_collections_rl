@@ -31,7 +31,7 @@ class CollectionsEnv(gym.Env):
             self.starting_state = starting_state
 
         # GYM specific attributes
-        self.action_space = spaces.Box(low=np.array([0]), high=np.array([MAX_ACTION]), dtype=np.float16)
+        self.action_space = spaces.Box(low=np.array([0]), high=np.array([MAX_ACTION]), dtype=np.float32)
         self.MIN_ACCOUNT_BALANCE = MIN_ACCOUNT_BALANCE
         self.MAX_ACTION = MAX_ACTION
         if max_lambda is None:
@@ -40,7 +40,7 @@ class CollectionsEnv(gym.Env):
             self.MAX_LAMBDA = max_lambda
         self.observation_space = spaces.Box(low=np.array([self.params.lambdainf, self.MIN_ACCOUNT_BALANCE]),
                                             high=np.array([self.MAX_LAMBDA, self.w0]),
-                                            dtype=np.float16)
+                                            dtype=np.float32)
         self.reward_range = (0, self.w0)
 
         # step dependent

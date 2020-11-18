@@ -181,11 +181,19 @@ class DQNAgent(BaseModelMixin, Policy):
     def run_training(self):
         self.build(self._initialize)
         n_episodes = self.config.n_episodes
-        loss = None
         total_rewards = np.empty(n_episodes)
 
         for i in range(n_episodes):
             state = self.env.reset()
+            if state[0] > self.env.observation_space.high[0]:
+                print("Houston we have a problem.")
+
+            if state[1] > self.env.observation_space.high[1]:
+                print("Houston we have a problem.")
+
+            assert state[0] < self.env.observation_space.high[0]
+            assert state[1] < self.env.observation_space.high[1]
+
             done = False
 
             score = 0
@@ -336,9 +344,12 @@ class DQNAgent(BaseModelMixin, Policy):
         y = visits_l # [mask]
 
         # fig,ax = plt.subplots(figsize=(10,10))
+        if self.config.normalize_states:
+            rangespace= [[0, 1], [0, 1]]
+        else:
+            rangespace = [[0, self.env.w0], [0, self.env.MAX_LAMBDA]]
 
-        heatmap, xedges, yedges = np.histogram2d(x, y, bins=(30, 20), range=[[0, self.env.w0],
-                                                                             [0, self.env.MAX_LAMBDA]])
+        heatmap, xedges, yedges = np.histogram2d(x, y, bins=(30, 20), range=rangespace)
         extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
         fig, ax = plt.subplots()
         mappable = ax.imshow(heatmap.T, extent=extent, origin='lower', interpolation='nearest', aspect='auto')
@@ -353,8 +364,6 @@ class DQNAgent(BaseModelMixin, Policy):
 
 if __name__ == '__main__':
     from dcc import Parameters
-
-    MAX_ACCOUNT_BALANCE = 200.0
 
     params = Parameters()
     params.rho = 0.15

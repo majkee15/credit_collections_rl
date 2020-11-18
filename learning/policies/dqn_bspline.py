@@ -9,28 +9,28 @@ import matplotlib.pyplot as plt
 import matplotlib as m
 
 from learning.collections_env import CollectionsEnv, BetaRepayment, UniformRepayment
-from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization, PolynomialObservationWrapper
+from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization, SplineObservationWrapper
 
 from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplayMemory
 from learning.policies.base import Policy, BaseModelMixin, TrainConfig
 from learning.utils.misc import plot_learning_curve, plot_to_image
-from learning.utils.construct_poly import construct_poly_approx, calculate_penalization
+from learning.utils.construct_poly import construct_spline_approx
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 from sklearn.preprocessing import PolynomialFeatures
 
 from learning.policies.dqn import DQNAgent
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
     # Training config specifies the hyperparameters of agent and learning
-    n_episodes = 20000
+    n_episodes = 50000
     warmup_episodes = n_episodes * 0.8
 
     learning_rate = 0.01
-    end_learning_rate = 0.001
+    end_learning_rate = 0.0001
     # decaying learning rate
     learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, n_episodes)
     # gamma (discount factor) is set as exp(-rho * dt) in the body of the learning program
@@ -42,7 +42,7 @@ class DefaultConfig(TrainConfig):
     log_every_episode = 10
 
     # Memory setting
-    batch_size = 512
+    batch_size = 1000
     memory_size = 1000000
 
     # PER setting
@@ -58,7 +58,7 @@ class DefaultConfig(TrainConfig):
     plot_every_episode = target_update_every_step
 
     # env setting
-    normalize_states = True
+    normalize_states = False
 
     # Approximator setting
     # Poly features dim
@@ -73,7 +73,7 @@ class DQNAgentPoly(DQNAgent):
     def __init__(self, env, name, config=None, training=True):
 
         DQNAgent.__init__(self, env, name, config, training)
-        self.env = PolynomialObservationWrapper(self.env, self.config.poly_order)
+        self.env = SplineObservationWrapper(self.env, n_l_knots=6, n_w_knots=6, normalized=config.normalize_states)
 
     def train(self):
         batch = self.memory.sample(self.config.batch_size)
@@ -105,18 +105,17 @@ class DQNAgentPoly(DQNAgent):
             main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
 
             td_error = target_value - main_value
-
             element_wise_loss = tf.square(td_error) * 0.5
 
-            if self.config.constrained:
-                penalization = calculate_penalization(0, 0, 0)
-            else:
-                penalization = 0
+            # if self.config.constrained:
+            #     penalization = calculate_penalization(0, 0, 0)
+            # else:
+            #     penalization = 0
 
             if self.config.prioritized_memory_replay:
-                error = tf.reduce_mean(element_wise_loss * weights) + penalization
+                error = tf.reduce_mean(element_wise_loss * weights)
             else:
-                error = tf.reduce_mean(element_wise_loss) + penalization
+                error = tf.reduce_mean(element_wise_loss)
 
         if self.config.prioritized_memory_replay:
             self.memory.update_priorities(idx, np.abs(td_error.numpy()) + self.config.prior_eps)
@@ -130,7 +129,7 @@ class DQNAgentPoly(DQNAgent):
         return tf.reduce_mean(element_wise_loss)
 
     def build(self, initialize=False):
-        self.target_net = construct_poly_approx(self.env, self.config.poly_order)
+        self.target_net = construct_spline_approx(self.env, self.env.total_features)
         self.main_net = tf.keras.models.clone_model(self.target_net)
         self.main_net.set_weights(self.target_net.get_weights())
         self._space_product = self.env.observation(np.array([[i, j] for i, j in self._space_iterator]))
@@ -153,5 +152,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgentPoly(environment, '2ActionsPoly20K', training=True, config=DefaultConfig())
+    dqn = DQNAgentPoly(environment, '2ActionsSplines', training=True, config=DefaultConfig())
     dqn.run_training()

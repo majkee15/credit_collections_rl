@@ -3,6 +3,9 @@ import numpy as np
 from gym.spaces import Box, Discrete
 import pickle
 from sklearn.preprocessing import PolynomialFeatures
+from scipy.interpolate import BSpline
+from itertools import product
+
 
 # This is Legacy
 # class DiscretizedObservationWrapper(gym.ObservationWrapper):
@@ -99,6 +102,7 @@ class StateNormalization(gym.ObservationWrapper):
 
 class PolynomialObservationWrapper(gym.ObservationWrapper):
     # converts statespace n = 3 to polynomial features
+    # TODO: normalization probably does not work
     def __init__(self, environment, poly_order):
         super().__init__(environment)
         self.poly_order = poly_order
@@ -127,10 +131,87 @@ class PolynomialObservationWrapper(gym.ObservationWrapper):
             return pickle.load(f)
 
 
+class SplineObservationWrapper(gym.ObservationWrapper):
+    # converts statespace to cubic spline basis features
+    # n_knots + order - 1 basis functions
+    # TODO: Normalization does not work
+    def __init__(self, environment, n_l_knots, n_w_knots, normalized):
+        super().__init__(environment)
+        self.n_l_knots = n_l_knots
+        self.n_w_knots = n_w_knots
+        if normalized:
+            high = [1, 1]
+            low = [0, 0]
+        else:
+            high = self.observation_space.high
+            low = self.observation_space.low
+        self.w_knots = np.linspace(0, high[1], n_w_knots)
+        self.l_knots = np.linspace(low[0]*0.95, high[0]*1.01, n_l_knots)
+        self.total_features = (n_w_knots + 2) * (n_l_knots + 2)
+        self.w_np_knots = np.concatenate((3 * [0], self.w_knots, 3 * [high[1]]))
+        self.l_np_knots = np.concatenate((3 * [low[0]*0.95], self.l_knots, 3 * [high[0]*1.01]))
+
+    def transform_1d_w(self, eval_point):
+        # the first element of the transform is the original eval_point
+        # hence +1 on the next line
+        y_py = np.zeros((eval_point.shape[0], self.n_w_knots + 2 + 1))
+        y_py[:, 0] = eval_point
+        for i in range(self.n_w_knots + 2):
+            y_py[:, i + 1] = BSpline.construct_fast(self.w_np_knots,
+                                                    (np.arange(len(self.w_knots) + 2) == i).astype(float),
+                                                    3,
+                                                    extrapolate=False)(eval_point)
+        return y_py
+
+    def transform_1d_l(self, eval_point):
+        y_py = np.zeros((eval_point.shape[0], self.n_l_knots + 2 + 1))
+        y_py[:, 0] = eval_point
+        for i in range(self.n_l_knots + 2):
+            y_py[:, i + 1] = BSpline.construct_fast(self.l_np_knots,
+                                                    (np.arange(len(self.l_knots) + 2) == i).astype(float),
+                                                    3,
+                                                    extrapolate=False)(eval_point)
+        return y_py
+
+    def transform_2d(self, xy_inp):
+        w_features = self.transform_1d_w(xy_inp[:, 1])
+        l_features = self.transform_1d_l(xy_inp[:, 0])
+        final = np.zeros((len(xy_inp), self.total_features + 2))
+        final[:, 0] = l_features[:, 0]
+        final[:, 1] = w_features[:, 1]
+
+        for i, row in enumerate(w_features):
+            final[i, 2:] = [i * j for i, j in product(row[1:], l_features[i, 1:])]
+        if np.isnan(final).any():
+            print("NAN")
+        return final
+
+    def observation(self, observation):
+        if observation.ndim == 1:
+            return self.transform_2d(observation[None, :]).flatten()
+        else:
+            return self.transform_2d(observation)
+
+    def convert_back(self, transformed_observation):
+        # untransformed observations are at position 1 and 2 -- position 0 is intercept
+        if transformed_observation.ndim == 1:
+            return transformed_observation[:, 0:2]
+        else:
+            return transformed_observation[:, 0:2]
+
+    def save(self, filename):
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, 'rb') as f:
+            return pickle.load(f)
 
 
 if __name__ == '__main__':
     from learning.collections_env.collections_env import CollectionsEnv
+
     env = CollectionsEnv()
 
     print("3 actions initialized from integer")
@@ -174,4 +255,3 @@ if __name__ == '__main__':
     print(f'State [0.11, 0] is squished into:{enva.observation(np.array([0.11, 0]))}')
     print(f'State [5, 100] is squished into:{enva.observation(np.array([5, 100]))}')
     print(f'State [2, 50] is squished into:{enva.observation(np.array([2, 50]))}')
-
