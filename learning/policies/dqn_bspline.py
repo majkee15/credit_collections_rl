@@ -141,7 +141,7 @@ if __name__ == '__main__':
     params = Parameters()
     params.rho = 0.15
 
-    actions_bins = np.array([0, 0.5])
+    actions_bins = np.array([0, 0.2, 0.5, 1.0])
     n_actions = len(actions_bins)
 
     rep_dist = UniformRepayment(params)
@@ -152,5 +152,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgentPoly(environment, '2ActionsSplines', training=True, config=DefaultConfig())
+    dqn = DQNAgentPoly(environment, '4ActionsSplines50K', training=True, config=DefaultConfig())
     dqn.run_training()
