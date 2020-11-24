@@ -42,7 +42,7 @@ def construct_spline_approx(env, total_features):
     return model
 
 
-def calculate_penalization(l, w, theta,  degree: int = 3):
+def calculate_penalization_poly(l, w, theta,  degree: int = 3):
     if degree != 3:
         raise NotImplementedError("Implemented only for polnomials of dim=3.")
     # these are hardcoded derivatives corresponding to parameters for degree 3
@@ -54,3 +54,7 @@ def calculate_penalization(l, w, theta,  degree: int = 3):
 
     # theta is expected as 2 x 10 matrix
     return None
+
+
+def calculate_penalization_bspline(l, w, theta,  degree: int = 3):
+    raise NotImplementedError('Not implemented yet.')
