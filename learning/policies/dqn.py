@@ -21,13 +21,14 @@ from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# s.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
     # Training config specifies the hyperparameters of agent and learning
     n_episodes = 10000
     warmup_episodes = n_episodes * 0.8
+    checkpoint_every = n_episodes/100
 
     learning_rate = 0.001
     end_learning_rate = 0.00001
@@ -121,7 +122,7 @@ class DQNAgent(BaseModelMixin, Policy):
     def update_target(self):
         self.target_net.set_weights(self.main_net.get_weights())
 
-    def train(self):
+    def train(self, *args, **kwargs):
         batch = self.memory.sample(self.config.batch_size)
         states = batch['s']
         actions = batch['a']
@@ -136,14 +137,14 @@ class DQNAgent(BaseModelMixin, Policy):
             # target_q = self.target_net.predict_on_batch(next_states)
             # next_action = np.argmax(target_q.numpy(), axis=1)
             # double_dqn
-            target_q = self.main_net.predict_on_batch(next_states)
+            target_q = self.main_net(next_states)
             next_action = np.argmax(target_q.numpy(), axis=1)
-            target_q = self.target_net.predict_on_batch(next_states)
+            target_q = self.target_net(next_states)
 
             target_value = tf.reduce_sum(tf.one_hot(next_action, self.act_size) * target_q, axis=1)
             target_value = (1 - dones) * self.config.gamma * target_value + rewards
 
-            main_q = self.main_net.predict_on_batch(states)
+            main_q = self.main_net(states)
             main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
 
             td_error = target_value - main_value
@@ -206,7 +207,7 @@ class DQNAgent(BaseModelMixin, Policy):
                 state = next_state.copy()
 
                 if self.memory.size > self.config.batch_size:
-                    loss = self.train()
+                    self.train(epoch=i)
                     if i % self.config.target_update_every_step == 0:
                         self.update_target()
 
@@ -236,6 +237,9 @@ class DQNAgent(BaseModelMixin, Policy):
                                  f"{avg_rewards} eps: {self.config.epsilon_schedule.current_p} Learning rate (10e3): "
                                  f"{self.optimizer._decayed_lr(tf.float32).numpy() * 1000}")
 
+            if i % self.config.checkpoint_every == 0:
+                self.checkpoint(i)
+
             if i % self.config.plot_every_episode == 0 and self.config.plot_progression_flag:
                 self.logger.info(f"episode:{i}/{self.config.n_episodes} Plotting policy")
                 self.plot_policy(i)
@@ -243,6 +247,19 @@ class DQNAgent(BaseModelMixin, Policy):
 
         plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
         self.save()
+
+    def checkpoint(self, epoch):
+        checkpoint_path = os.path.join(self.model_dir, 'checkpoints', str(epoch))
+        os.makedirs(checkpoint_path, exist_ok=True)
+        path_model = os.path.join(checkpoint_path, 'main_net.h5')
+        env_path = os.path.join(checkpoint_path, 'env.pkl')
+        # path_memory_buffer = os.path.join(checkpoint_path, 'buffer.pkl')
+        config_path = os.path.join(checkpoint_path, 'train_config.pkl')
+
+        self.config.save(config_path)
+        self.main_net.save(path_model)
+        # self.memory.save(path_memory_buffer)
+        self.env.save(env_path)
 
     def build(self, initialize=False):
         self.target_net = construct_nn(self.env, self.config, initialize=initialize)
@@ -284,7 +301,7 @@ class DQNAgent(BaseModelMixin, Policy):
 
     def plot_policy(self, step_i):
         # plots policy in w and lambda space
-        predictions = self.main_net.predict_on_batch(self._space_product).numpy()
+        predictions = self.main_net.predict_on_batch(self._space_product)
         z = np.amax(predictions, axis=1).reshape(self._l_points, self._w_points)
         p = np.argmax(predictions, axis=1).reshape(self._l_points, self._w_points)
 

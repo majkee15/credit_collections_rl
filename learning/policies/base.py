@@ -134,6 +134,7 @@ class BaseModelMixin(ABC):
         # tensorboard
         return self._get_dir('tb_logs')
 
+
     @property
     def writer(self):
         if self._writer is None:

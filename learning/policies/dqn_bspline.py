@@ -21,13 +21,15 @@ from sklearn.preprocessing import PolynomialFeatures
 
 from learning.policies.dqn import DQNAgent
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfig):
     # Training config specifies the hyperparameters of agent and learning
     n_episodes = 50000
     warmup_episodes = n_episodes * 0.8
+    checkpoint_every = 100
+    target_update_every_step = 100
 
     learning_rate = 0.01
     end_learning_rate = 0.0001
@@ -38,7 +40,6 @@ class DefaultConfig(TrainConfig):
     epsilon = 1
     epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
-    target_update_every_step = 100
     log_every_episode = 10
 
     # Memory setting
@@ -75,7 +76,7 @@ class DQNAgentPoly(DQNAgent):
         DQNAgent.__init__(self, env, name, config, training)
         self.env = SplineObservationWrapper(self.env, n_l_knots=6, n_w_knots=6, normalized=config.normalize_states)
 
-    def train(self):
+    def train(self, *args, **kwargs):
         batch = self.memory.sample(self.config.batch_size)
         states = batch['s']
         actions = batch['a']
@@ -94,28 +95,38 @@ class DQNAgentPoly(DQNAgent):
             # target_q = self.target_net.predict_on_batch(next_states)
             # next_action = np.argmax(target_q.numpy(), axis=1)
             # double_dqn
-            target_q = self.main_net.predict_on_batch(next_states)
+            target_q = self.main_net(next_states)
             next_action = np.argmax(target_q.numpy(), axis=1)
-            target_q = self.target_net.predict_on_batch(next_states)
+            target_q = self.target_net(next_states)
 
             target_value = tf.reduce_sum(tf.one_hot(next_action, self.act_size) * target_q, axis=1)
             target_value = (1 - dones) * self.config.gamma * target_value + rewards
 
-            main_q = self.main_net.predict_on_batch(states)
+            main_q = self.main_net(states)
             main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
 
             td_error = target_value - main_value
             element_wise_loss = tf.square(td_error) * 0.5
 
-            # if self.config.constrained:
-            #     penalization = calculate_penalization(0, 0, 0)
-            # else:
-            #     penalization = 0
+            if self.config.constrained:
+                first_l, first_w = self.env.penalization(states[:, 0], states[:, 1])
+                # penalization = np.sum(np.maximum(-np.matmul(first_l, self.main_net.weights[0].numpy()), 0 ) +\
+                #                np.maximum(-np.matmul(first_w, self.main_net.weights[0].numpy()), 0))
+
+                power = tf.math.floor(kwargs['epoch'] / 50)
+                coeff = tf.math.minimum(10e4, 2 * tf.math.pow(power, 2))
+                penalization = coeff * 0.5 * (
+                            tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_l, dqn_variable), 0))) +
+                            tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_w, dqn_variable), 0))))
+            else:
+                penalization = 0
 
             if self.config.prioritized_memory_replay:
                 error = tf.reduce_mean(element_wise_loss * weights)
             else:
                 error = tf.reduce_mean(element_wise_loss)
+
+            error = error + penalization
 
         if self.config.prioritized_memory_replay:
             self.memory.update_priorities(idx, np.abs(td_error.numpy()) + self.config.prior_eps)
@@ -152,5 +163,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgentPoly(environment, '4ActionsSplines50K', training=True, config=DefaultConfig())
+    dqn = DQNAgentPoly(environment, 'Vanilla4ActionsSplines50K', training=True, config=DefaultConfig())
     dqn.run_training()

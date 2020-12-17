@@ -146,10 +146,10 @@ class SplineObservationWrapper(gym.ObservationWrapper):
             high = self.observation_space.high
             low = self.observation_space.low
         self.w_knots = np.linspace(0, high[1], n_w_knots)
-        self.l_knots = np.linspace(low[0]*0.95, high[0]*1.01, n_l_knots)
+        self.l_knots = np.linspace(low[0] * 0.95, high[0] * 1.01, n_l_knots)
         self.total_features = (n_w_knots + 2) * (n_l_knots + 2)
         self.w_np_knots = np.concatenate((3 * [0], self.w_knots, 3 * [high[1]]))
-        self.l_np_knots = np.concatenate((3 * [low[0]*0.95], self.l_knots, 3 * [high[0]*1.01]))
+        self.l_np_knots = np.concatenate((3 * [low[0] * 0.95], self.l_knots, 3 * [high[0] * 1.01]))
 
     def transform_1d_w(self, eval_point):
         # the first element of the transform is the original eval_point
@@ -180,11 +180,47 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         final[:, 0] = l_features[:, 0]
         final[:, 1] = w_features[:, 1]
 
-        for i, row in enumerate(w_features):
-            final[i, 2:] = [i * j for i, j in product(row[1:], l_features[i, 1:])]
+        for r, row in enumerate(w_features):
+            final[r, 2:] = [i * j for i, j in product(row[1:], l_features[r, 1:])]
         if np.isnan(final).any():
             print("NAN")
         return final
+
+    def transform_1d_l_der(self, eval_point):
+        y_first = np.zeros((eval_point.shape[0], self.n_l_knots + 2))
+        for i in range(self.n_l_knots + 2):
+            y_first[:, i] = BSpline.construct_fast(self.l_np_knots,
+                                                   (np.arange(len(self.l_knots) + 2) == i).astype(float),
+                                                   3,
+                                                   extrapolate=False).derivative()(eval_point)
+        return y_first
+
+    def transform_1d_w_der(self, eval_point):
+        # the first element of the transform is the original eval_point
+        # hence +1 on the next line
+        y_first = np.zeros((eval_point.shape[0], self.n_w_knots + 2))
+        for i in range(self.n_w_knots + 2):
+            y_first[:, i] = BSpline.construct_fast(self.w_np_knots,
+                                                   (np.arange(len(self.w_knots) + 2) == i).astype(float),
+                                                   3,
+                                                   extrapolate=False).derivative()(eval_point)
+        return y_first
+
+    def penalization(self, lam, w):
+        w_features = self.transform_1d_w(w)
+        l_features = self.transform_1d_l(lam)
+        w_features_der = self.transform_1d_w_der(w)
+        l_features_der = self.transform_1d_l_der(lam)
+        first_der_features = self.total_features
+        first_w = np.zeros((len(w), first_der_features), dtype='float32')
+        first_l = np.zeros_like(first_w)
+        #     final[:, 0] = l_features[:, 0]
+        #     final[:, 1] = w_features[:, 1]
+        for r, row in enumerate(w_features):
+            first_w[r, :] = [i * j for i, j in product(w_features_der[r, :], l_features[r, 1:])]
+            first_l[r, :] = [i * j for i, j in product(w_features[r, 1:], l_features_der[r, :])]
+
+        return first_w, first_l
 
     def observation(self, observation):
         if observation.ndim == 1:
