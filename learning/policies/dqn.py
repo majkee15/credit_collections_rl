@@ -15,7 +15,7 @@ from learning.collections_env import CollectionsEnv, BetaRepayment, UniformRepay
 from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization
 
 from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplayMemory
-from learning.policies.base import Policy, BaseModelMixin, TrainConfig
+from learning.policies.base import Policy, BaseModelMixin, TrainConfigBase
 from learning.utils.misc import plot_learning_curve, plot_to_image
 from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
@@ -24,7 +24,7 @@ from learning.utils.annealing_schedule import AnnealingSchedule
 # s.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
-class DefaultConfig(TrainConfig):
+class DefaultConfig(TrainConfigBase):
     # Training config specifies the hyperparameters of agent and learning
     n_episodes = 10000
     warmup_episodes = n_episodes * 0.8
@@ -385,7 +385,7 @@ if __name__ == '__main__':
     params = Parameters()
     params.rho = 0.15
 
-    actions_bins = np.array([0, 0.2, 1.0])
+    actions_bins = np.array([0, 0.2, 0.5, 1.0])
     n_actions = len(actions_bins)
 
     # rep_dist = BetaRepayment(params, 0.9, 0.5, 10, MAX_ACCOUNT_BALANCE)
@@ -397,5 +397,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, '4Actions100K', training=True, config=DefaultConfig(), initialize=False)
+    dqn = DQNAgent(environment, '4Actions100Kerr', training=True, config=DefaultConfig(), initialize=False)
     dqn.run_training()

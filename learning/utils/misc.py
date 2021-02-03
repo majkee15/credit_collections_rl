@@ -1,4 +1,3 @@
-import matplotlib#; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -75,8 +74,6 @@ class Config:
     def load(cls, filename):
         with open(filename, 'rb') as f:
             return pickle.load(f)
-
-
 
 
 def plot_learning_curve(filename, value_dict, xlabel='step'):

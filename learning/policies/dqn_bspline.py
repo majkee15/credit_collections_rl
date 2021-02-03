@@ -12,7 +12,7 @@ from learning.collections_env import CollectionsEnv, BetaRepayment, UniformRepay
 from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization, SplineObservationWrapper
 
 from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplayMemory
-from learning.policies.base import Policy, BaseModelMixin, TrainConfig
+from learning.policies.base import Policy, BaseModelMixin, TrainConfigBase
 from learning.utils.misc import plot_learning_curve, plot_to_image
 from learning.utils.construct_poly import construct_spline_approx
 from learning.utils.annealing_schedule import AnnealingSchedule
@@ -24,7 +24,7 @@ from learning.policies.dqn import DQNAgent
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
-class DefaultConfig(TrainConfig):
+class DefaultConfig(TrainConfigBase):
     # Training config specifies the hyperparameters of agent and learning
     n_episodes = 50000
     warmup_episodes = n_episodes * 0.8

@@ -16,7 +16,7 @@ from abc import ABC, abstractmethod
 
 
 
-class TrainConfig(Config):
+class TrainConfigBase(Config):
     lr = 0.001
     n_steps = 10000
     warmup_steps = 5000
