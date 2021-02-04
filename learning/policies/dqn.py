@@ -187,10 +187,10 @@ class DQNAgent(BaseModelMixin, Policy):
         for i in range(n_episodes):
             state = self.env.reset()
             if state[0] > self.env.observation_space.high[0]:
-                print("Houston we have a problem.")
+                print("Houston, we have a problem.")
 
             if state[1] > self.env.observation_space.high[1]:
-                print("Houston we have a problem.")
+                print("Houston, we have a problem.")
 
             assert state[0] < self.env.observation_space.high[0]
             assert state[1] < self.env.observation_space.high[1]
@@ -283,20 +283,21 @@ class DQNAgent(BaseModelMixin, Policy):
         # np.save(path_actions, self.env.action_bins)
 
     @classmethod
-    def load(cls, model_path):
+    def load(cls, model_path, load_buffer=False):
         # loads trained model
-        loaded_config = TrainConfig.load(os.path.join(model_path, 'train_config.pkl'))
+        loaded_config = TrainConfigBase.load(os.path.join(model_path, 'train_config.pkl'))
         loaded_env = CollectionsEnv.load(os.path.join(model_path, 'env.pkl'))
         loaded_instance = DQNAgent(loaded_env, model_path, loaded_config, initialize=False, training=False)
         loaded_instance.main_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
         loaded_instance.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
-        try:
-            buffer_path = os.path.join(model_path, 'buffer.pkl')
-            with open(buffer_path, 'rb') as f:
-                buffer = pickle.load(f)
-                loaded_instance.memory.buffer = buffer
-        except (FileNotFoundError, IOError):
-            print('No buffer found.')
+        if load_buffer:
+            try:
+                buffer_path = os.path.join(model_path, 'buffer.pkl')
+                with open(buffer_path, 'rb') as f:
+                    buffer = pickle.load(f)
+                    loaded_instance.memory.buffer = buffer
+            except (FileNotFoundError, IOError):
+                print('No buffer found.')
         return loaded_instance
 
     def plot_policy(self, step_i):

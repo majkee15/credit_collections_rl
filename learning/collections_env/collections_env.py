@@ -78,6 +78,8 @@ class CollectionsEnv(gym.Env):
             raise TypeError(f"Cannot assign {starting_state} int starting state.")
 
     def reset(self, tostate=None):
+        # TODO: this if false statement does not work as expected
+        # when tostate supplied it does not work if randomize_start is true
         if self.randomize_start:
             draw_lambda = np.random.uniform(self.params.lambda0, self.MAX_LAMBDA)
             draw_w = np.random.uniform(MIN_ACCOUNT_BALANCE, MAX_ACCOUNT_BALANCE)
