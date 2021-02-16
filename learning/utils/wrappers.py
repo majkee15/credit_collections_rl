@@ -132,7 +132,7 @@ class PolynomialObservationWrapper(gym.ObservationWrapper):
 
 
 class SplineObservationWrapper(gym.ObservationWrapper):
-    # converts statespace to cubic spline basis features
+    # converts state space to cubic spline basis features
     # n_knots + order - 1 basis functions
     # TODO: Normalization does not work
     def __init__(self, environment, n_l_knots, n_w_knots, normalized):
@@ -164,6 +164,8 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         return y_py
 
     def transform_1d_l(self, eval_point):
+        # the first element of the transform is the original eval_point
+        # hence +1 on the next line
         y_py = np.zeros((eval_point.shape[0], self.n_l_knots + 2 + 1))
         y_py[:, 0] = eval_point
         for i in range(self.n_l_knots + 2):
@@ -177,8 +179,10 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         w_features = self.transform_1d_w(xy_inp[:, 1])
         l_features = self.transform_1d_l(xy_inp[:, 0])
         final = np.zeros((len(xy_inp), self.total_features + 2))
+        # TODO: here I think it should be w_features[:,0]
+        #    it seems other way around, balance should be first
         final[:, 0] = l_features[:, 0]
-        final[:, 1] = w_features[:, 1]
+        final[:, 1] = w_features[:, 0]
 
         for r, row in enumerate(w_features):
             final[r, 2:] = [i * j for i, j in product(row[1:], l_features[r, 1:])]
@@ -231,7 +235,8 @@ class SplineObservationWrapper(gym.ObservationWrapper):
     def convert_back(self, transformed_observation):
         # untransformed observations are at position 1 and 2 -- position 0 is intercept
         if transformed_observation.ndim == 1:
-            return transformed_observation[:, 0:2]
+            # was [:, 0:2]
+            return transformed_observation[0:2]
         else:
             return transformed_observation[:, 0:2]
 

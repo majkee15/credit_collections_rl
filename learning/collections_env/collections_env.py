@@ -29,6 +29,7 @@ class CollectionsEnv(gym.Env):
             self.starting_state = np.array([self.lambda0 + 0.01, self.w0], dtype=np.float32)
         else:
             self.starting_state = starting_state
+            assert isinstance(self.starting_state[0],  (np.floating, float, np.float64)), "starting_state has to be FLOAT.'"
 
         # GYM specific attributes
         self.action_space = spaces.Box(low=np.array([0]), high=np.array([MAX_ACTION]), dtype=np.float32)
@@ -80,6 +81,7 @@ class CollectionsEnv(gym.Env):
     def reset(self, tostate=None):
         # TODO: this if false statement does not work as expected
         # when tostate supplied it does not work if randomize_start is true
+        assert isinstance(tostate[0], (np.floating, float, np.float64)), "starting_state has to be FLOAT.'"
         if self.randomize_start:
             draw_lambda = np.random.uniform(self.params.lambda0, self.MAX_LAMBDA)
             draw_w = np.random.uniform(MIN_ACCOUNT_BALANCE, MAX_ACCOUNT_BALANCE)

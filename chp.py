@@ -9,6 +9,7 @@ class CHP(Base):
     def __init__(self, starting_balance, starting_intensity, marginal_cost=1.0, collection_horizon=None,
                  lambda_infty=None, kappa=None, delta10=None, delta11=None, control_function=None,
                  value_precision_thershold=0.001, rho=0.05):
+
         super().__init__(__class__.__name__)
         self.starting_intensity = starting_intensity
         self.starting_balance = starting_balance

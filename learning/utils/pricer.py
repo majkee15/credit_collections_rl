@@ -1,3 +1,8 @@
+# this likely is not a real pricer
+# not environment dependent
+# does not take into account the policy
+
+
 import numpy as np
 from dcc import AAV, Parameters
 from scipy.integrate import quad
