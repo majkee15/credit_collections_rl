@@ -8,6 +8,6 @@ services:
   brute_force_search:
     build:
       context: ""
-      dockerfile: ./brute_force/Dockerfile
+      dockerfile: legacy/brute_force/Dockerfile
     volumes:
       - /Users/mmark/Documents/credit_collections/credit_collections_rl:/credit_collections_rl #set your own path

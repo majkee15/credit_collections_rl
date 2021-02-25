@@ -1,6 +1,5 @@
 import pytest
-from gym import spaces
-from space_wrappers.misc import *
+from legacy.space_wrappers.misc import *
 try:
     from unittest import mock
 except ImportError:

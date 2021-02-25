@@ -1,7 +1,7 @@
 from base import Base
 import numpy as np
 import matplotlib.pyplot as plt
-from osl.mc import sustained_ihp_c
+from legacy.osl.mc import sustained_ihp_c
 import time
 import multiprocessing as mp
 import functools
@@ -197,7 +197,7 @@ if __name__ == '__main__':
     approx_lstars = sihp.calculate_frontier(plot_flag=True, dist='uniform')
     print(approx_lstars)
 
-    from osl.exact import OSL
+    from legacy.osl.exact import OSL
     osl = OSL(starting_balance, params)
     lhats, vgreedy = osl.calculate_greedy_frontier()
     fig, ax = plt.subplots()

@@ -1,4 +1,4 @@
-# simulate an exponential controlled HP with control policies given by f(w) = lambda
+# simulate an exponential controlled HP with control policies f(s=(lambda,w)) = action
 import numpy as np
 import matplotlib.pyplot as plt
 from base import Base
@@ -289,7 +289,7 @@ if __name__ == '__main__':
 
     params = Parameters()
     chp = CHP(starting_balance=w0, starting_intensity=l0, params=params,
-              collection_horizon=1000, value_precision_thershold=1e-3, control_function=None)
+              collection_horizon=100, value_precision_thershold=1e-3, control_function=None)
     print(chp.calculate_value_single())
     chp.plot_statespace()
     chp.plot_intensity()

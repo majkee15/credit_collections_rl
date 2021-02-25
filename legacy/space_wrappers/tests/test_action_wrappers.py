@@ -1,8 +1,7 @@
 import gym
-from space_wrappers import *
+from legacy.space_wrappers import *
 from gym import spaces
 import numpy as np
-import pytest
 
 
 class ExpectEnv(gym.Env):

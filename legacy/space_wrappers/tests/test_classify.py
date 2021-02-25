@@ -1,5 +1,4 @@
-from space_wrappers.classify import *
-from gym import Space
+from legacy.space_wrappers.classify import *
 from gym.spaces import *
 import numpy as np
 import pytest

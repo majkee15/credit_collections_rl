@@ -16,8 +16,8 @@ class CollectionsEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, w0=MAX_ACCOUNT_BALANCE, params=Parameters(), repayment_dist=None, reward_shaping='discrete',
-                 randomize_start=False,
-                 starting_state=None, max_lambda=None):
+                 randomize_start=False, starting_state=None, max_lambda=None):
+
         super(CollectionsEnv, self).__init__()
 
         # Environment specific
@@ -29,7 +29,8 @@ class CollectionsEnv(gym.Env):
             self.starting_state = np.array([self.lambda0 + 0.01, self.w0], dtype=np.float32)
         else:
             self.starting_state = starting_state
-            assert isinstance(self.starting_state[0],  (np.floating, float, np.float64)), "starting_state has to be FLOAT.'"
+            assert isinstance(self.starting_state[0],  (np.floating, float, np.float64)), \
+                "starting_state has to be FLOAT.'"
 
         # GYM specific attributes
         self.action_space = spaces.Box(low=np.array([0]), high=np.array([MAX_ACTION]), dtype=np.float32)
@@ -74,7 +75,6 @@ class CollectionsEnv(gym.Env):
         if isinstance(starting_state, np.ndarray):
             if starting_state.shape[0] == 2:
                 self.__starting_state = starting_state
-            # print('Setting')
         else:
             raise TypeError(f"Cannot assign {starting_state} int starting state.")
 
@@ -144,16 +144,6 @@ class CollectionsEnv(gym.Env):
             # sparse reward formulation
             reward = (r * self.current_state[1] - action * self.params.c)
             self.current_state[1] = self.current_state[1] * (1 - r)
-        elif self.reward_shaping == 'expected':
-            prob_of_arrival = 1 - np.exp(-(self.params.lambdainf * self.dt +
-                                           ((self.current_state[0] - self.params.lambdainf) / self.params.kappa) *
-                                           (np.exp(-self.params.kappa * (self.current_time + self.dt)) -
-                                            np.exp(-self.params.kappa * self.current_time))
-                                           ))
-            reward = (self.current_state[1] * self.repayment_dist.mean(
-                self.current_state[1]) * prob_of_arrival - self.params.c * action)
-            self.current_state[1] = self.current_state[1] - self.current_state[1] * self.repayment_dist.mean(
-                self.current_state[1]) * prob_of_arrival
         else:
             raise NotImplementedError('Not implemented rewards.')
 

@@ -1,5 +1,5 @@
 import gym
-from space_wrappers.transform import discretize, flatten, rescale
+from legacy.space_wrappers.transform import discretize, flatten, rescale
 from gym.spaces import Box, Discrete, MultiDiscrete, MultiBinary, Tuple
 import numpy as np
 import itertools
@@ -39,7 +39,7 @@ def test_discretize_discrete():
 
 
 def test_discretize_nd_box():
-    from space_wrappers.tests.space_equal import expects
+    from legacy.space_wrappers.tests import expects
 
     cont = Box(np.array([0.0, 1.0]), np.array([1.0, 2.0]), dtype=np.float32)
     trafo = discretize(cont, 10)
