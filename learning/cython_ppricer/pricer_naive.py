@@ -1,8 +1,5 @@
-import numpy as np
-from joblib import delayed, Parallel
 import math
-from multiprocessing import cpu_count
-
+import numpy as np
 
 def t_equation(lambda_start, lhat, params):
     # equation for duration to reach a holding region
@@ -21,7 +18,7 @@ def t_equation(lambda_start, lhat, params):
     except:
         print('warning')
         print(f'Numerator {(lambda_start - params.lambdainf)}')
-        print(f'Denominator {lhat - params.lambdainf}')
+        print(f'Denominator {(lhat) - params.lambdainf}')
 
 
 def next_arrival(t_to_sustain, l, params):
@@ -116,23 +113,8 @@ def single_collection(start_state, ww, ll, policy_map, params, action_bins):
     return reward - cost
 
 
-def value_account_parallel(account, ww, ll, p, params, action_bins, n_iterations=1000):
-    #     tasks = []
-    #     for _ in range(n_iterations):
-    #         tasks.append(single_collection(account, ww, ll, p, params))
-    workers = cpu_count() - 2
-    rest = Parallel(n_jobs=workers)(
-        delayed(single_collection)(account, ww, ll, p, params, action_bins) for i in range(n_iterations))
-    return rest
-
-
 def value_account(account, ww, ll, p, params, action_bins, n_iterations=1000):
     vals = np.zeros(n_iterations, dtype='float32')
     for i in range(n_iterations):
         vals[i] = single_collection(account, ww, ll, p, params, action_bins)
     return vals
-
-
-if __name__ == '__main__':
-    pass
-
