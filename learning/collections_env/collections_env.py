@@ -81,14 +81,14 @@ class CollectionsEnv(gym.Env):
     def reset(self, tostate=None):
         # TODO: this if false statement does not work as expected
         # when tostate supplied it does not work if randomize_start is true
-        assert isinstance(tostate[0], (np.floating, float, np.float64)), "starting_state has to be FLOAT.'"
-        if self.randomize_start:
+        if tostate is not None and type(tostate) is np.ndarray:
+            tostate = tostate.astype('float64')
+            self.current_state = tostate.copy()
+
+        elif tostate is None and self.randomize_start:
             draw_lambda = np.random.uniform(self.params.lambda0, self.MAX_LAMBDA)
             draw_w = np.random.uniform(MIN_ACCOUNT_BALANCE, MAX_ACCOUNT_BALANCE)
             self.current_state = np.array([draw_lambda, draw_w])
-
-        elif tostate is not None:
-            self.current_state = tostate.copy()
 
         else:
             self.current_state = self.starting_state.copy()

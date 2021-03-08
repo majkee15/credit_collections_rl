@@ -26,7 +26,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 class DefaultConfig(TrainConfigBase):
     # Training config specifies the hyperparameters of agent and learning
-    n_episodes = 50000
+    n_episodes = 20000
     warmup_episodes = n_episodes * 0.8
     checkpoint_every = 100
     target_update_every_step = 100
@@ -64,7 +64,7 @@ class DefaultConfig(TrainConfigBase):
     # Approximator setting
     # Poly features dim
     poly_order = 3
-    constrained = False
+    constrained = True
 
     # repayment distribution:
 
@@ -163,5 +163,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgentPoly(environment, 'Vanilla4ActionsSplines50K', training=True, config=DefaultConfig())
+    dqn = DQNAgentPoly(environment, '4ActsConstrTest', training=True, config=DefaultConfig())
     dqn.run_training()

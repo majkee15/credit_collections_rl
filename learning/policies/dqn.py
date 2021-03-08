@@ -352,7 +352,7 @@ class DQNAgent(BaseModelMixin, Policy):
         visits = self.env.convert_back(np.array([trans.s for trans in self.memory.buffer]))
         visits_w = visits[:, 1]
         visits_l = visits[:, 0]
-            #np.array([vis[1] for vis in visits])
+        #np.array([vis[1] for vis in visits])
         #visits_l = np.array([vis[0] for vis in visits])
 
         # Generate some test data
@@ -361,11 +361,13 @@ class DQNAgent(BaseModelMixin, Policy):
         x = visits_w # [mask]
         y = visits_l # [mask]
 
-        # fig,ax = plt.subplots(figsize=(10,10))
-        if self.config.normalize_states:
-            rangespace= [[0, 1], [0, 1]]
-        else:
-            rangespace = [[0, self.env.w0], [0, self.env.MAX_LAMBDA]]
+        # This part of code shouldn't be needed given the convert_back method
+        # if self.config.normalize_states:
+        #     rangespace= [[0, 1], [0, 1]]
+        # else:
+        #     rangespace = [[0, self.env.w0], [0, self.env.MAX_LAMBDA]]
+
+        rangespace = [[0, self.env.w0], [0, self.env.MAX_LAMBDA]]
 
         heatmap, xedges, yedges = np.histogram2d(x, y, bins=(30, 20), range=rangespace)
         extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
@@ -398,5 +400,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, '4Actions100Kerr', training=True, config=DefaultConfig(), initialize=False)
+    dqn = DQNAgent(environment, 'test', training=True, config=DefaultConfig(), initialize=False)
     dqn.run_training()
