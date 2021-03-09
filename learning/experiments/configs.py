@@ -6,7 +6,7 @@ from learning.utils.annealing_schedule import AnnealingSchedule
 
 TOTAL_NE = 25000
 
-class ConfigSplineConstr(Config):
+class ConfigSplineApprox(Config):
     # Training config specifies the hyper parameters of agent and learning
     n_episodes = TOTAL_NE
     warmup_episodes = int(n_episodes * 0.8)

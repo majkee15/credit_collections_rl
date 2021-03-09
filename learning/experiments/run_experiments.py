@@ -7,7 +7,7 @@ from learning.collections_env import CollectionsEnv, BetaRepayment, UniformRepay
 from learning.utils.wrappers import DiscretizedActionWrapper
 from learning.policies.dqn import DQNAgent
 from learning.policies.dqn_bspline import DQNAgentPoly
-from learning.experiments.configs import ConfigDQN, ConfigSplineConstr, ConfigSplineNaive, ConfigDQN200params
+from learning.experiments.configs import ConfigDQN, ConfigSplineApprox, ConfigSplineNaive, ConfigDQN200params
 from dcc import Parameters
 
 # desactivate CUDA -- the nature of the code makes it comparable to CPU run appli
@@ -60,5 +60,5 @@ if __name__ == '__main__':
 
     names = ['DQN', 'SPLINE', 'MONOSPLINE', 'DQN200p']
     experiment_types = ['dqn', 'bspline', 'bspline', 'dqn']
-    configs = [ConfigDQN(), ConfigSplineNaive(), ConfigSplineConstr(), ConfigDQN200params()]
+    configs = [ConfigDQN(), ConfigSplineNaive(), ConfigSplineApprox(), ConfigDQN200params()]
     compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=2), scheduler='distributed')

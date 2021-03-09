@@ -2,7 +2,7 @@ import numpy as np
 from joblib import delayed, Parallel
 import math
 from multiprocessing import cpu_count
-
+from itertools import product
 
 def t_equation(lambda_start, lhat, params):
     # equation for duration to reach a holding region
@@ -120,7 +120,7 @@ def value_account_parallel(account, ww, ll, p, params, action_bins, n_iterations
     #     tasks = []
     #     for _ in range(n_iterations):
     #         tasks.append(single_collection(account, ww, ll, p, params))
-    workers = cpu_count() - 2
+    workers = np.minimum(32, cpu_count() - 2)
     rest = Parallel(n_jobs=workers)(
         delayed(single_collection)(account, ww, ll, p, params, action_bins) for i in range(n_iterations))
     return rest
@@ -133,6 +133,34 @@ def value_account(account, ww, ll, p, params, action_bins, n_iterations=1000):
     return vals
 
 
-if __name__ == '__main__':
-    pass
+def create_map(agent, w_points=80, l_points=80, lam_lim=7, larger_offset=False):
+    if larger_offset:
+        l = np.linspace(agent.env.observation_space.low[0], lam_lim * 1.2, l_points)
+        w = np.linspace(agent.env.observation_space.low[1], agent.env.observation_space.high[1], w_points)
+
+    #     w_normalized = np.linspace(0, 1, w_points)
+    #     l_normalized = np.linspace(0, agent.env.observation((lam_lim,100))[0], l_points)
+    #     wwn, lln = np.meshgrid(w_normalized, l_normalized)
+        ww, ll = np.meshgrid(w, l)
+        space_iterator = product(l, w)
+        space_product = agent.env.observation(np.array([[i, j] for i, j in space_iterator]))
+        predictions = agent.main_net.predict_on_batch(space_product)
+        z = np.amax(predictions, axis=1).reshape(l_points, w_points)
+        p = np.argmax(predictions, axis=1).reshape(l_points, w_points)
+        p[int(p.shape[0]*0.9):, :] = 0.0
+    else:
+
+        l = np.linspace(agent.env.observation_space.low[0], lam_lim, l_points)
+        w = np.linspace(agent.env.observation_space.low[1], agent.env.observation_space.high[1], w_points)
+
+    #     w_normalized = np.linspace(0, 1, w_points)
+    #     l_normalized = np.linspace(0, agent.env.observation((lam_lim,100))[0], l_points)
+    #     wwn, lln = np.meshgrid(w_normalized, l_normalized)
+        ww, ll = np.meshgrid(w, l)
+        space_iterator = product(l, w)
+        space_product = agent.env.observation(np.array([[i, j] for i, j in space_iterator]))
+        predictions = agent.main_net.predict_on_batch(space_product)
+        z = np.amax(predictions, axis=1).reshape(l_points, w_points)
+        p = np.argmax(predictions, axis=1).reshape(l_points, w_points)
+    return ww, ll, p, z
 
