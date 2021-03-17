@@ -4,7 +4,9 @@ from learning.utils.misc import Config
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-TOTAL_NE = 25000
+TOTAL_NE = 50000
+LOG_EVERY = 20
+PLOT_EVERY = 100
 
 class ConfigSplineApprox(Config):
     # Training config specifies the hyper parameters of agent and learning
@@ -22,7 +24,7 @@ class ConfigSplineApprox(Config):
     epsilon = 1
     epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
-    log_every_episode = 10
+    log_every_episode = LOG_EVERY
 
     # Memory setting
     batch_size = 512
@@ -38,7 +40,7 @@ class ConfigSplineApprox(Config):
 
     # progression plot
     plot_progression_flag = True
-    plot_every_episode = target_update_every_step
+    plot_every_episode = PLOT_EVERY
 
     # env setting
     normalize_states = False
@@ -65,7 +67,7 @@ class ConfigSplineNaive(Config):
     epsilon = 1
     epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
-    log_every_episode = 10
+    log_every_episode = LOG_EVERY
 
     # Memory setting
     batch_size = 512
@@ -81,7 +83,7 @@ class ConfigSplineNaive(Config):
 
     # progression plot
     plot_progression_flag = True
-    plot_every_episode = target_update_every_step
+    plot_every_episode = PLOT_EVERY
 
     # env setting
     normalize_states = False
@@ -108,7 +110,7 @@ class ConfigDQN(Config):
     epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
     target_update_every_step = 50
-    log_every_episode = 10
+    log_every_episode = LOG_EVERY
 
     # Net setting
     layers = (128, 128, 128)
@@ -127,7 +129,7 @@ class ConfigDQN(Config):
 
     # progression plot
     plot_progression_flag = True
-    plot_every_episode = target_update_every_step
+    plot_every_episode = PLOT_EVERY
 
     # env setting
     normalize_states = True
@@ -149,7 +151,7 @@ class ConfigDQN200params(Config):
     epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
     target_update_every_step = 50
-    log_every_episode = 10
+    log_every_episode = LOG_EVERY
 
     # Net setting
     layers = (10, 10, 10)
@@ -168,7 +170,7 @@ class ConfigDQN200params(Config):
 
     # progression plot
     plot_progression_flag = True
-    plot_every_episode = target_update_every_step
+    plot_every_episode = PLOT_EVERY
 
     # env setting
     normalize_states = True

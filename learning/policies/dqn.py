@@ -33,7 +33,7 @@ class DefaultConfig(TrainConfigBase):
     learning_rate = 0.001
     end_learning_rate = 0.00001
     # decaying learning rate
-    learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, n_episodes)
+    learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, warmup_episodes)
     # gamma (discount factor) is set as exp(-rho * dt) in the body of the learning program
     gamma = np.NaN
     epsilon = 1
@@ -289,7 +289,8 @@ class DQNAgent(BaseModelMixin, Policy):
         loaded_env = CollectionsEnv.load(os.path.join(model_path, 'env.pkl'))
         loaded_instance = DQNAgent(loaded_env, model_path, loaded_config, initialize=False, training=False)
         loaded_instance.main_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
-        loaded_instance.target_net = tf.keras.models.load_model(os.path.join(model_path, 'main_net.h5'))
+        loaded_instance.main_net.compile()
+        loaded_instance.target_net = loaded_instance.main_net
         if load_buffer:
             try:
                 buffer_path = os.path.join(model_path, 'buffer.pkl')

@@ -41,7 +41,7 @@ class Policy(ABC):
         # Logger
         self.logger = logging.getLogger(name)
         self.logger.setLevel(os.getenv('LOG_LEVEL', 'INFO'))
-        self.logger.info('Instantiated class ' + self.__class__.__name__)
+        # self.logger.info('Instantiated class ' + self.__class__.__name__)
 
     @property
     def act_size(self):
