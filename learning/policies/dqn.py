@@ -21,7 +21,7 @@ from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-# s.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 class DefaultConfig(TrainConfigBase):
@@ -63,6 +63,7 @@ class DefaultConfig(TrainConfigBase):
 
     # env setting
     normalize_states = True
+    regularizer = None
 
     # repayment distribution:
 
@@ -180,7 +181,7 @@ class DQNAgent(BaseModelMixin, Policy):
                 tf.summary.scalar('Loss', tf.reduce_mean(element_wise_loss), step=self.global_step)
 
     def run_training(self):
-        self.build(self._initialize)
+        self.build()
         n_episodes = self.config.n_episodes
         total_rewards = np.empty(n_episodes)
 
@@ -256,13 +257,13 @@ class DQNAgent(BaseModelMixin, Policy):
         # path_memory_buffer = os.path.join(checkpoint_path, 'buffer.pkl')
         config_path = os.path.join(checkpoint_path, 'train_config.pkl')
 
-        self.config.save(config_path)
+        self.config.save(filename=config_path)
         self.main_net.save(path_model)
         # self.memory.save(path_memory_buffer)
         self.env.save(env_path)
 
-    def build(self, initialize=False):
-        self.target_net = construct_nn(self.env, self.config, initialize=initialize)
+    def build(self):
+        self.target_net = construct_nn(self.env, self.config, initialize=self._initialize)
         self.main_net = tf.keras.models.clone_model(self.target_net)
         self.main_net.set_weights(self.target_net.get_weights())
 

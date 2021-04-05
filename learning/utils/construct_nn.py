@@ -10,7 +10,20 @@ def construct_nn(env, config, initialize=False):
     target_net = tf.keras.Sequential()
     target_net.add(tf.keras.layers.Input(shape=env.observation_space.shape))
     for i, layer_size in enumerate(config.layers):
-        target_net.add(tf.keras.layers.Dense(layer_size, activation='relu'))
+        if config.regularizer is None:
+            target_net.add(tf.keras.layers.Dense(layer_size, activation='relu'))
+        elif config.regularizer == "l1":
+            target_net.add(tf.keras.layers.Dense(layer_size, activation='relu',
+                                                 kernel_regularizer=tf.keras.regularizers.l1(
+                                                     config.regularizer_parameter)))
+        elif config.regularizer == "l2":
+            target_net.add(tf.keras.layers.Dense(layer_size, activation='relu',
+                                                 kernel_regularizer=tf.keras.regularizers.l2(
+                                                     config.regularizer_parameter)))
+        elif config.regularizer == "l1_l2":
+            target_net.add(tf.keras.layers.Dense(layer_size, activation='relu',
+                                                 kernel_regularizer=tf.keras.regularizers.l1_l2(
+                                                     l1=config.regularizer_parameter, l2=config.regularizer_parameter)))
         if config.batch_normalization:
             target_net.add(tf.keras.layers.BatchNormalization())
     target_net.add(tf.keras.layers.Dense(env.action_space.n, activation='linear'))

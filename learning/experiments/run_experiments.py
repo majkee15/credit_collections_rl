@@ -7,13 +7,13 @@ from learning.collections_env import CollectionsEnv, BetaRepayment, UniformRepay
 from learning.utils.wrappers import DiscretizedActionWrapper
 from learning.policies.dqn import DQNAgent
 from learning.policies.dqn_bspline import DQNAgentPoly
-from learning.experiments.configs import ConfigDQN, ConfigSplineApprox, ConfigSplineNaive, ConfigDQN200params
+from learning.experiments.configs import *
 from dcc import Parameters
 
-# desactivate CUDA -- the nature of the code makes it comparable to CPU run appli
+# deactivate CUDA -- the nature of the code makes it comparable to CPU run appli
 # with this disabled we can perform multiprocessing
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 @delayed
 def setup_experiment(conf, name, extype='dqn'):
@@ -59,7 +59,8 @@ if __name__ == '__main__':
     client = Client(n_workers=50, threads_per_worker=2)
 
     # names = ['DQN', 'SPLINE', 'MONOSPLINE', 'DQN200p']
-    names = ['DQN200TRUEp']
-    experiment_types = ['dqn']
-    configs = [ConfigDQN200params()]
-    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=10), scheduler='distributed')
+    names = ['DQN200TRUEp', 'L2_high', 'L2_low', 'L1_high', 'L1_low']
+    experiment_types = ['dqn'] * 5
+    configs = [DQN200params(),DQN200paramsRegularizedL2high(), DQN200paramsRegularizedL2low(),
+               DQN200paramsRegularizedL1high(), CDQN200paramsRegularizedL1low()]
+    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=5), scheduler='distributed')
