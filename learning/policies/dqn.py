@@ -20,7 +20,6 @@ from learning.utils.misc import plot_learning_curve, plot_to_image
 from learning.utils.construct_nn import construct_nn
 from learning.utils.annealing_schedule import AnnealingSchedule
 
-
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
@@ -28,7 +27,7 @@ class DefaultConfig(TrainConfigBase):
     # Training config specifies the hyperparameters of agent and learning
     n_episodes = 10000
     warmup_episodes = n_episodes * 0.8
-    checkpoint_every = n_episodes/100
+    checkpoint_every = n_episodes / 100
 
     learning_rate = 0.001
     end_learning_rate = 0.00001
@@ -64,6 +63,8 @@ class DefaultConfig(TrainConfigBase):
     # env setting
     normalize_states = True
     regularizer = None
+
+    constrained = False
 
     # repayment distribution:
 
@@ -109,6 +110,8 @@ class DQNAgent(BaseModelMixin, Policy):
         self._space_iterator = product(self._l_grid_plot, self._w_grid_plot)
         # We initialize this at bild() to comply with inheritance
         self._space_product = None
+
+        self._tb_log_holder = {}
 
     def get_action(self, state, epsilon=0.0):
         q_value = self.main_net.predict_on_batch(state[None, :])
@@ -166,19 +169,34 @@ class DQNAgent(BaseModelMixin, Policy):
         # Augment training step
         self.global_step += 1
         # log into tensorboard
-        self.log_tensorboard(dqn_grads, main_value, target_value, td_error, element_wise_loss)
+        self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': main_value[0], 'Prediction': main_value,
+                               'Target': target_value, 'TD error': td_error, 'Elementwise Loss': element_wise_loss,
+                               'Loss': tf.reduce_mean(element_wise_loss)}
         return tf.reduce_mean(element_wise_loss)
 
-    def log_tensorboard(self, dqn_grads, main_value, target_value, td_error, element_wise_loss):
+        # def log_tensorboard(self, dqn_grads, main_value, target_value, td_error, element_wise_loss):
+        #     with self.writer.as_default():
+        #         with tf.name_scope('Network'):
+        #             tf.summary.histogram('Weights', self.main_net.weights[0], step=self.global_step)
+        #             tf.summary.histogram('Gradients', dqn_grads[0], step=self.global_step)
+        #             tf.summary.histogram('Predictions', main_value, step=self.global_step)
+        #             tf.summary.histogram('Target', target_value, step=self.global_step)
+        #             tf.summary.histogram('TD error', td_error, step=self.global_step)
+        #             tf.summary.histogram('Elementwise Loss', element_wise_loss, step=self.global_step)
+        #             tf.summary.scalar('Loss', tf.reduce_mean(element_wise_loss), step=self.global_step)
+
+    def log_tensorboard(self, step, **kwargs):
         with self.writer.as_default():
             with tf.name_scope('Network'):
-                tf.summary.histogram('Weights', self.main_net.weights[0], step=self.global_step)
-                tf.summary.histogram('Gradients', dqn_grads[0], step=self.global_step)
-                tf.summary.histogram('Predictions', main_value, step=self.global_step)
-                tf.summary.histogram('Target', target_value, step=self.global_step)
-                tf.summary.histogram('TD error', td_error, step=self.global_step)
-                tf.summary.histogram('Elementwise Loss', element_wise_loss, step=self.global_step)
-                tf.summary.scalar('Loss', tf.reduce_mean(element_wise_loss), step=self.global_step)
+                for kwarg in kwargs:
+                    tf.summary.histogram(kwarg, kwargs[kwarg], step=step)
+                    # tf.summary.histogram('Weights', self.main_net.weights[0], step=self.global_step)
+                    # tf.summary.histogram('Gradients', dqn_grads[0], step=self.global_step)
+                    # tf.summary.histogram('Predictions', main_value, step=self.global_step)
+                    # tf.summary.histogram('Target', target_value, step=self.global_step)
+                    # tf.summary.histogram('TD error', td_error, step=self.global_step)
+                    # tf.summary.histogram('Elementwise Loss', element_wise_loss, step=self.global_step)
+                    # tf.summary.scalar('Loss', tf.reduce_mean(element_wise_loss), step=self.global_step)
 
     def run_training(self):
         self.build()
@@ -219,17 +237,6 @@ class DQNAgent(BaseModelMixin, Policy):
             self.config.beta_schedule.anneal()
             self.global_lr.assign(self.config.learning_rate_schedule.anneal())
 
-            with self.writer.as_default():
-                with tf.name_scope('Performance'):
-                    tf.summary.scalar('episode reward', score, step=i)
-                    tf.summary.scalar('running avg reward(100)', avg_rewards, step=i)
-
-                if self.config.prioritized_memory_replay:
-                    with tf.name_scope('Schedules'):
-                        tf.summary.scalar('Beta', self.config.beta_schedule.current_p, step=i)
-                        tf.summary.scalar('Epsilon', self.config.epsilon_schedule.current_p, step=i)
-                        tf.summary.scalar('Learning rate', self.optimizer._decayed_lr(tf.float32).numpy(), step=i)
-
             if i % self.config.log_every_episode == 0:
                 # print("episode:", i, "/", self.config.n_episodes, "episode reward:", score, "avg reward (last 100):",
                 #       avg_rewards, "eps:", self.config.epsilon_schedule.current_p, "Learning rate (10e3):",
@@ -238,6 +245,21 @@ class DQNAgent(BaseModelMixin, Policy):
                                  f"{avg_rewards} eps: {self.config.epsilon_schedule.current_p} Learning rate (10e3): "
                                  f"{self.optimizer._decayed_lr(tf.float32).numpy() * 1000}")
 
+                with self.writer.as_default():
+                    with tf.name_scope('Performance'):
+                        tf.summary.scalar('episode reward', score, step=i)
+                        tf.summary.scalar('running avg reward(100)', avg_rewards, step=i)
+
+                    if self.config.prioritized_memory_replay:
+                        with tf.name_scope('Schedules'):
+                            tf.summary.scalar('Beta', self.config.beta_schedule.current_p, step=i)
+                            tf.summary.scalar('Epsilon', self.config.epsilon_schedule.current_p, step=i)
+                            tf.summary.scalar('Learning rate', self.optimizer._decayed_lr(tf.float32).numpy(), step=i)
+
+                # Plot training stats
+                self.log_tensorboard(step=i, **self._tb_log_holder)
+
+            # Checkpointing
             if i % self.config.checkpoint_every == 0:
                 self.checkpoint(i)
 
@@ -320,8 +342,6 @@ class DQNAgent(BaseModelMixin, Policy):
         #         z[j, i] = np.amax(self.main_net.predict_on_batch(fixed_obs[None, :]))
         #         p[j, i] = environment.action(np.argmax(self.main_net.predict_on_batch(fixed_obs[None, :])))
 
-
-
         fig, ax = plt.subplots(nrows=1, ncols=2)
         cmap = m.cm.get_cmap('YlOrBr', self.act_size)
         boundaries = np.linspace(0, self.act_size, self.act_size + 1)
@@ -354,14 +374,14 @@ class DQNAgent(BaseModelMixin, Policy):
         visits = self.env.convert_back(np.array([trans.s for trans in self.memory.buffer]))
         visits_w = visits[:, 1]
         visits_l = visits[:, 0]
-        #np.array([vis[1] for vis in visits])
-        #visits_l = np.array([vis[0] for vis in visits])
+        # np.array([vis[1] for vis in visits])
+        # visits_l = np.array([vis[0] for vis in visits])
 
         # Generate some test data
         # mask = visits_w >= 0
 
-        x = visits_w # [mask]
-        y = visits_l # [mask]
+        x = visits_w  # [mask]
+        y = visits_l  # [mask]
 
         # This part of code shouldn't be needed given the convert_back method
         # if self.config.normalize_states:

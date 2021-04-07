@@ -50,6 +50,7 @@ class DQNBaseConfig(Config):
     # env setting
     normalize_states = True
     regularizer = None
+    constrained = False
 
 class DQN200params(DQNBaseConfig):
     layers = (10, 10, 10)

@@ -7,7 +7,8 @@ from scipy.interpolate import BSpline
 from itertools import product
 
 
-# This is Legacy
+# LEGACY VERSION OF THE WRAPPER
+
 # class DiscretizedObservationWrapper(gym.ObservationWrapper):
 #     def __init__(self, env, n_bins=10, low=None, high=None):
 #         super().__init__(env)
@@ -182,7 +183,7 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         # TODO: here I think it should be w_features[:,0]
         #    it seems other way around, balance should be first
         final[:, 0] = l_features[:, 0]
-        final[:, 1] = w_features[:, 0]
+        final[:, 1] = w_features[:, 1]
 
         for r, row in enumerate(w_features):
             final[r, 2:] = [i * j for i, j in product(row[1:], l_features[r, 1:])]
