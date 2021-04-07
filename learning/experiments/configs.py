@@ -7,14 +7,14 @@ from learning.utils.annealing_schedule import AnnealingSchedule
 TOTAL_NE = 50000
 LOG_EVERY = 20
 PLOT_EVERY = 100
-
+CHECKPOINT_EVERY = 500
 # DQN CONFIGS
 
 class DQNBaseConfig(Config):
 
     n_episodes = TOTAL_NE
     warmup_episodes = int(n_episodes * 0.8)
-    checkpoint_every = n_episodes / 100
+    checkpoint_every = CHECKPOINT_EVERY
 
     learning_rate = 0.001
     end_learning_rate = 0.00001
@@ -80,7 +80,7 @@ class SplineBaseConfig(Config):
     # Training config specifies the hyper parameters of agent and learning
     n_episodes = TOTAL_NE
     warmup_episodes = int(n_episodes * 0.8)
-    checkpoint_every = n_episodes/100
+    checkpoint_every = CHECKPOINT_EVERY
     target_update_every_step = 100
 
     learning_rate = 0.01
