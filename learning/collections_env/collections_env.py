@@ -8,7 +8,7 @@ from learning.collections_env import utils
 from learning.collections_env.repayment_distribution import UniformRepayment, BetaRepayment
 
 MAX_ACCOUNT_BALANCE = 200.0
-MIN_ACCOUNT_BALANCE = 1
+MIN_ACCOUNT_BALANCE = 1.0
 MAX_ACTION = 5.0
 
 

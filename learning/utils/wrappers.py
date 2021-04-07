@@ -256,44 +256,55 @@ if __name__ == '__main__':
 
     env = CollectionsEnv()
 
-    print("3 actions initialized from integer")
-    bins = 2
+    # Discretization wrapper test
+    # print("3 actions initialized from integer")
+    # bins = 2
+    #
+    # enva = DiscretizedActionWrapper(env, bins=bins)
+    #
+    # print(f'Action bins: {enva.action_bins}')
+    # print(f' N actions: {enva.action_space.n}')
+    #
+    # sample = enva.action_space.sample()
+    # print(f'Sampled: {sample}')
+    # print(f'Action: {enva.action(sample)}')
+    #
+    # sample = enva.action_space.sample()
+    # print(f'Sampled: {sample}')
+    # print(f'Action: {enva.action(sample)}')
+    #
+    # sample = enva.action_space.sample()
+    # print(f'Sampled: {sample}')
+    # print(f'Action: {enva.action(sample)}')
+    #
+    # print("3 actions initialized from array")
+    #
+    # bins = np.linspace(0, enva.MAX_ACTION, 4)
+    # enva = DiscretizedActionWrapper(env, bins=bins)
+    #
+    # print(f'Action bins: {enva.action_bins}')
+    # print(f' N actions: {enva.action_space.n}')
+    #
+    # sample = enva.action_space.sample()
+    # print(f'Sampled: {sample}')
+    # print(f'Action: {enva.action(sample)}')
+    #
+    # sample = enva.action_space.sample()
+    # print(f'Sampled: {sample}')
+    # print(f'Action: {enva.action(sample)}')
+    #
+    # #######
+    # enva = StateNormalization(enva)
+    # print(f'State [0.11, 0] is squished into:{enva.observation(np.array([0.11, 0]))}')
+    # print(f'State [5, 100] is squished into:{enva.observation(np.array([5, 100]))}')
+    # print(f'State [2, 50] is squished into:{enva.observation(np.array([2, 50]))}')
 
-    enva = DiscretizedActionWrapper(env, bins=bins)
-
-    print(f'Action bins: {enva.action_bins}')
-    print(f' N actions: {enva.action_space.n}')
-
-    sample = enva.action_space.sample()
-    print(f'Sampled: {sample}')
-    print(f'Action: {enva.action(sample)}')
-
-    sample = enva.action_space.sample()
-    print(f'Sampled: {sample}')
-    print(f'Action: {enva.action(sample)}')
-
-    sample = enva.action_space.sample()
-    print(f'Sampled: {sample}')
-    print(f'Action: {enva.action(sample)}')
-
-    print("3 actions initialized from array")
-
-    bins = np.linspace(0, enva.MAX_ACTION, 4)
-    enva = DiscretizedActionWrapper(env, bins=bins)
-
-    print(f'Action bins: {enva.action_bins}')
-    print(f' N actions: {enva.action_space.n}')
-
-    sample = enva.action_space.sample()
-    print(f'Sampled: {sample}')
-    print(f'Action: {enva.action(sample)}')
-
-    sample = enva.action_space.sample()
-    print(f'Sampled: {sample}')
-    print(f'Action: {enva.action(sample)}')
-
-    #######
-    enva = StateNormalization(enva)
-    print(f'State [0.11, 0] is squished into:{enva.observation(np.array([0.11, 0]))}')
-    print(f'State [5, 100] is squished into:{enva.observation(np.array([5, 100]))}')
-    print(f'State [2, 50] is squished into:{enva.observation(np.array([2, 50]))}')
+    #BSpline test
+    senv = SplineObservationWrapper(env, 6, 6, False)
+    single_states = np.array([[0.5, 100], [0.6, 101]])
+    sinsle_state = np.array([0.1, 50.])
+    print(env.observation_space.low)
+    print(f'Lambda feature: {senv.transform_1d_l(single_states[:, 0])}')
+    print(f'W feature: {senv.transform_1d_w(single_states[:, 1])}')
+    print(f'2d feature: {senv.transform_2d(single_states)}')
+    print(f'Observation: {senv.observation(sinsle_state)}')

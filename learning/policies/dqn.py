@@ -155,6 +155,8 @@ class DQNAgent(BaseModelMixin, Policy):
 
             element_wise_loss = tf.square(td_error) * 0.5
 
+
+
             if self.config.prioritized_memory_replay:
                 idx = batch['indices']
                 weights = batch['weights']
@@ -169,7 +171,7 @@ class DQNAgent(BaseModelMixin, Policy):
         # Augment training step
         self.global_step += 1
         # log into tensorboard
-        self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': main_value[0], 'Prediction': main_value,
+        self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': self.main_net.weights[0], 'Prediction': main_value,
                                'Target': target_value, 'TD error': td_error, 'Elementwise Loss': element_wise_loss,
                                'Loss': tf.reduce_mean(element_wise_loss)}
         return tf.reduce_mean(element_wise_loss)
@@ -189,7 +191,10 @@ class DQNAgent(BaseModelMixin, Policy):
         with self.writer.as_default():
             with tf.name_scope('Network'):
                 for kwarg in kwargs:
-                    tf.summary.histogram(kwarg, kwargs[kwarg], step=step)
+                    if kwargs[kwarg].ndim > 0:
+                        tf.summary.histogram(kwarg, kwargs[kwarg], step=step)
+                    else:
+                        tf.summary.scalar(kwarg, kwargs[kwarg], step=step)
                     # tf.summary.histogram('Weights', self.main_net.weights[0], step=self.global_step)
                     # tf.summary.histogram('Gradients', dqn_grads[0], step=self.global_step)
                     # tf.summary.histogram('Predictions', main_value, step=self.global_step)

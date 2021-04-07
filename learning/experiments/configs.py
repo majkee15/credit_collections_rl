@@ -10,6 +10,7 @@ PLOT_EVERY = 100
 
 # DQN CONFIGS
 
+
 class DQNBaseConfig(Config):
 
     n_episodes = TOTAL_NE

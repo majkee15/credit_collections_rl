@@ -115,6 +115,7 @@ class DQNAgentPoly(DQNAgent):
 
                 power = tf.math.floor(kwargs['epoch'] / 50)
                 coeff = tf.math.minimum(10e4, 2 * tf.math.pow(power, 2))
+                # coeff = 2.0
                 penalization = coeff * 0.5 * (
                             tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_l, dqn_variable), 0))) +
                             tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_w, dqn_variable), 0))))
@@ -128,15 +129,19 @@ class DQNAgentPoly(DQNAgent):
 
             error = error + penalization
 
+
         if self.config.prioritized_memory_replay:
             self.memory.update_priorities(idx, np.abs(td_error.numpy()) + self.config.prior_eps)
 
         # loss = self.main_net.train_on_batch(states, target_value)
         dqn_grads = tape.gradient(error, dqn_variable)
+
         self.optimizer.apply_gradients(zip(dqn_grads, dqn_variable))
         # Logging
         self.global_step += 1
-        self.log_tensorboard(dqn_grads, main_value, target_value, td_error, element_wise_loss)
+        self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': self.main_net.weights[0], 'Prediction': main_value,
+                               'Target': target_value, 'TD error': td_error, 'Elementwise Loss': element_wise_loss,
+                               'Loss': tf.reduce_mean(element_wise_loss), 'Penalization': penalization}
         return tf.reduce_mean(element_wise_loss)
 
     def build(self, initialize=False):
