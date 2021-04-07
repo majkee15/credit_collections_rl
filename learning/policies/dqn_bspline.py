@@ -114,8 +114,8 @@ class DQNAgentPoly(DQNAgent):
                 #                np.maximum(-np.matmul(first_w, self.main_net.weights[0].numpy()), 0))
 
                 power = tf.math.floor(kwargs['epoch'] / 50)
-                coeff = tf.math.minimum(10e4, 2 * tf.math.pow(power, 2))
-                # coeff = 2.0
+                # coeff = tf.math.minimum(10e4, 2 * tf.math.pow(power, 2))
+                coeff = 0.5
                 penalization = coeff * 0.5 * (
                             tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_l, dqn_variable), 0))) +
                             tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_w, dqn_variable), 0))))

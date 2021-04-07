@@ -64,7 +64,7 @@ class DefaultConfig(TrainConfigBase):
     normalize_states = True
     regularizer = None
 
-    constrained = False
+    constrained = True
 
     # repayment distribution:
 
@@ -133,14 +133,20 @@ class DQNAgent(BaseModelMixin, Policy):
         rewards = batch['r']
         next_states = batch['s_next']
         dones = batch['done']
+        if self.config.prioritized_memory_replay:
+            idx = batch['indices']
+            weights = batch['weights']
 
         dqn_variable = self.main_net.trainable_variables
-        with tf.GradientTape() as tape:
+        network_input_to_watch = tf.Variable(tf.convert_to_tensor(states, dtype='float32'))
+
+        with tf.GradientTape(persistent=True) as tape:
             tape.watch(dqn_variable)
+            tape.watch(network_input_to_watch)
             # simple dqn
             # target_q = self.target_net.predict_on_batch(next_states)
             # next_action = np.argmax(target_q.numpy(), axis=1)
-            # double_dqn
+            # double_dqn -- this is a feature, not a bug
             target_q = self.main_net(next_states)
             next_action = np.argmax(target_q.numpy(), axis=1)
             target_q = self.target_net(next_states)
@@ -148,32 +154,38 @@ class DQNAgent(BaseModelMixin, Policy):
             target_value = tf.reduce_sum(tf.one_hot(next_action, self.act_size) * target_q, axis=1)
             target_value = (1 - dones) * self.config.gamma * target_value + rewards
 
-            main_q = self.main_net(states)
+            main_q = self.main_net(network_input_to_watch)
             main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
 
             td_error = target_value - main_value
-
             element_wise_loss = tf.square(td_error) * 0.5
 
-
+            if self.config.constrained:
+                coeff = 2.0
+                penalization = coeff * tf.reduce_sum(tf.maximum(-tape.gradient(main_value, network_input_to_watch), 0))
+            else:
+                penalization = 0.0
 
             if self.config.prioritized_memory_replay:
-                idx = batch['indices']
-                weights = batch['weights']
                 error = tf.reduce_mean(element_wise_loss * weights)
-                self.memory.update_priorities(idx, np.abs(td_error.numpy()) + self.config.prior_eps)
             else:
                 error = tf.reduce_mean(element_wise_loss)
 
+            error = error + penalization
+
+        if self.config.prioritized_memory_replay:
+            self.memory.update_priorities(idx, np.abs(td_error.numpy()) + self.config.prior_eps)
+
         # loss = self.main_net.train_on_batch(states, target_value)
         dqn_grads = tape.gradient(error, dqn_variable)
+
         self.optimizer.apply_gradients(zip(dqn_grads, dqn_variable))
-        # Augment training step
+        # Logging
         self.global_step += 1
-        # log into tensorboard
-        self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': self.main_net.weights[0], 'Prediction': main_value,
+        self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': tf.convert_to_tensor(self.main_net.weights[0]),
+                               'Prediction': main_value,
                                'Target': target_value, 'TD error': td_error, 'Elementwise Loss': element_wise_loss,
-                               'Loss': tf.reduce_mean(element_wise_loss)}
+                               'Loss': tf.reduce_mean(element_wise_loss), 'Penalization': penalization}
         return tf.reduce_mean(element_wise_loss)
 
         # def log_tensorboard(self, dqn_grads, main_value, target_value, td_error, element_wise_loss):
@@ -427,5 +439,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, 'test', training=True, config=DefaultConfig(), initialize=False)
+    dqn = DQNAgent(environment, 'test_constr', training=True, config=DefaultConfig(), initialize=False)
     dqn.run_training()
