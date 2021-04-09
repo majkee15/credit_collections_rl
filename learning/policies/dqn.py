@@ -65,6 +65,7 @@ class DefaultConfig(TrainConfigBase):
     regularizer = None
 
     constrained = True
+    penal_coeff = 2.0
 
     # repayment distribution:
 
@@ -161,7 +162,7 @@ class DQNAgent(BaseModelMixin, Policy):
             element_wise_loss = tf.square(td_error) * 0.5
 
             if self.config.constrained:
-                coeff = 2.0
+                coeff = self.config.penal_coeff
                 penalization = coeff * tf.reduce_sum(tf.maximum(-tape.gradient(main_value, network_input_to_watch), 0))
             else:
                 penalization = 0.0

@@ -56,10 +56,10 @@ def run_multiple_delayed(names, experiment_types, configs, n_repeats=1):
 
 
 if __name__ == '__main__':
-    client = Client(n_workers=2, threads_per_worker=2)
+    client = Client(n_workers=40, threads_per_worker=2)
 
     # names = ['DQN', 'SPLINE', 'MONOSPLINE', 'DQN200p']
-    names = ['BSplineConstr-par-not-correct']
-    experiment_types = ['bspline']
-    configs = [SplineConstrainedConfig()]
-    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=2), scheduler='distributed')
+    names = ['DQN-monotone-low-same', 'DQN-monotone-high-same']
+    experiment_types = ['dqn'] * 2
+    configs = [DQNConstrainedlow(), DQNConstrainedhigh()]
+    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=5), scheduler='distributed')

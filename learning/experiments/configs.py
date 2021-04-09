@@ -57,6 +57,16 @@ class DQN200params(DQNBaseConfig):
     layers = (10, 10, 10)
 
 
+class DQNConstrainedlow(DQNBaseConfig):
+    constrained = True
+    penal_coeff = 0.01
+
+
+class DQNConstrainedhigh(DQNBaseConfig):
+    constrained = True
+    penal_coeff = 0.1
+
+
 class CDQN200paramsRegularizedL1low(DQNBaseConfig):
     regularizer = 'l1'
     regularizer_parameter = 0.01
