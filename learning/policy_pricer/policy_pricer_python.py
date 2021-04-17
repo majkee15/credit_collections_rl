@@ -81,7 +81,7 @@ def single_collection(start_state, ww, ll, policy_map, params, action_bins):
 
     current_w = start_state[1].copy()
     current_l = start_state[0].copy()
-    current_time = 0
+    current_time = 0.0
 
     # This will be evaluated in a loop
     reward = 0.0
@@ -105,17 +105,18 @@ def single_collection(start_state, ww, ll, policy_map, params, action_bins):
 
         if current_action != 0.0:
             current_l = current_l + current_action * params.delta2
-            cost += current_action * params.c
+            cost += current_action * params.c * np.exp(-params.rho * current_time)
         else:
 
             lhat_slice = l_vec[(l_vec <= current_l) & (l_slice > 0)]
 
             if lhat_slice.shape[0] > 0:
                 lhat = lhat_slice[-1]
+                t_to_action = t_equation(current_l, lhat, params)
+                time_to_action = round_decimals_up(t_to_action, 2)
             else:
-                lhat = 0
-
-            time_to_action = round_decimals_up(t_equation(current_l, lhat, params), 5)
+                lhat = params.lambdainf + 0.0001
+                time_to_action = 1000
 
             relative_repayment, arr_time = next_arrival(time_to_action, current_l, params)
             current_time += arr_time
@@ -193,4 +194,7 @@ if __name__ == '__main__':
     degenerate_p = autonomous_p.copy()
     # degenerate_p[:, 300:] = 1
     degenerate_p[:400, 50:] = 1
-    print(np.mean(value_account(sample_acc, ww, ll, degenerate_p, params, np.array([0., 3.]), n_iterations=5000)))
+
+    print(np.mean(value_account(sample_acc, ww, ll, autonomous_p, params, np.array([0., 2.]), n_iterations=10000)))
+
+    print(aav.u(sample_acc[0], sample_acc[1]))

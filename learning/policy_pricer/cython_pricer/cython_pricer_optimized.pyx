@@ -10,7 +10,9 @@ from cython.parallel cimport prange, parallel
 # params order
 # [lambda_inf, kappa, delta_10, delta_11, delta_2, c, rho]
 
-cdef double r_ = 0.1
+cdef:
+    double r_ = 0.1
+    double [::1] result_tt = np.zeros(2, dtype='float64')
 
 ### Random Generators:
 
@@ -62,7 +64,7 @@ cdef inline double t_equation(double lambda_start, double lhat, double[::1] para
     denominator = (lhat - params[0])
 
     if lambda_start <= lhat:
-        return 0
+        return 0.0
     else:
         t = 1 / params[1] * \
             log(numerator / denominator)
@@ -90,7 +92,7 @@ cdef inline double drift(double s, double lambda_start, double[::1] params) nogi
 @boundscheck(False)
 @wraparound(False)
 @cdivision(True)
-cdef (double, double) next_arrival(double t_to_sustain, double l, double [::1] params) nogil:
+cpdef double[::1] next_arrival(double t_to_sustain, double l, double [::1] params) nogil:
     """
     
     Args:
@@ -106,7 +108,6 @@ cdef (double, double) next_arrival(double t_to_sustain, double l, double [::1] p
         double s = 0.0, relative_repayment = 0.0
         double w, lstar
         bint flag_finished = False
-        double [::1] result
 
     while not flag_finished:
         lstar = l
@@ -115,12 +116,16 @@ cdef (double, double) next_arrival(double t_to_sustain, double l, double [::1] p
         d = r2()
         if d * lstar <= drift(s, l, params):
             # arrival
-            relative_repayment = potential_repayment(r_, 1)
-        elif s > t_to_sustain:
-            relative_repayment = 0.0
-            s = t_to_sustain
-        flag_finished = True
-    return relative_repayment, s
+            relative_repayment = potential_repayment(r_, 1.0)
+            if s > t_to_sustain:
+                relative_repayment = 0.0
+                s = t_to_sustain
+            flag_finished = True
+
+    result_tt[0] = relative_repayment
+    result_tt[1] = s
+
+    return result_tt
 
 @boundscheck(False)
 @wraparound(False)
@@ -140,56 +145,66 @@ cpdef double single_collection(double [::1] start_state, double [:, ::1] ww, ll,
 
     """
     cdef:
-        double [::1] w_vec, lhat_slice
-        #int [::1] lslice
+        double [::1] w_vec, lhat_slice, tt_res
         double current_time = 0.0, reward = 0.0, cost = 0.0
         double current_w, current_l, current_action, arr_time, relative_repayment, time_to_action, lhat
-        int w_ind, current_action_type
+        int w_ind, current_action_type, lshape
 
 
 
     w_vec = ww[0, :]
     l_vec = ll[:, 0]
+    lshape = len(l_vec)
+
 
     current_w = start_state[1]
     current_l = start_state[0]
 
     while current_w > 1.0:
 
-        w_ind = np.digitize(current_w, w_vec, right=True)
+        w_ind = np.searchsorted(w_vec, current_w, side='left')
         l_slice = policy_map[:, w_ind]
-        current_action_type = l_slice[np.digitize(current_l, l_vec, right=True)]
-        current_action = action_bins[current_action_type]
+        # current_action_type = l_slice[np.digitize(current_l, l_vec, right=True)]
+        # current_action = action_bins[current_action_type]
+
+        l_ind = np.searchsorted(l_vec, current_l, side='left')
+
+        if l_ind >= lshape:
+            current_action_type = 0
+            current_action = 0.0
+        else:
+            current_action_type = l_slice[l_ind]
+            current_action = action_bins[current_action_type]
 
         if current_action != 0.0:
             current_l = current_l + current_action * params[4]
-            cost += current_action * params[5]
+            cost += current_action * params[5] * exp(-params[6] * current_time)
         else:
 
             lhat_slice = l_vec[(l_vec <= current_l) & (l_slice > 0)]
-            if lhat_slice.shape[0] > 0.0:
+
+            if lhat_slice.shape[0] > 0:
                 lhat = lhat_slice[-1]
+                time_to_action = round_decimals_up(t_equation(current_l, lhat, params), 2)
             else:
-                lhat = 0.0
+                lhat = params[0] + 0.0001
+                time_to_action = 1000
 
+            tt_res = next_arrival(time_to_action, current_l, params)
+            current_time += tt_res[1]
+            current_l = drift(tt_res[1], current_l, params)
 
-            time_to_action = round_decimals_up(t_equation(current_l, lhat, params), 5)
-
-            relative_repayment, arr_time = next_arrival(time_to_action, current_l, params)
-            current_time += arr_time
-            current_l = drift(arr_time, current_l, params)
-
-            if relative_repayment > 0.0:
-                reward += exp(-params[6] * current_time) * relative_repayment * current_w
-                current_w = current_w * (1 - relative_repayment)
-                current_l = current_l + relative_repayment * params[3] + params[2]
+            if tt_res[0] > 0.0:
+                reward += exp(-params[6] * current_time) * tt_res[0] * current_w
+                current_w = current_w * (1 - tt_res[0])
+                current_l = current_l + tt_res[0] * params[3] + params[2]
 
     return reward - cost
 
 @boundscheck(False)
 @wraparound(False)
 @cdivision(True)
-cdef double single_collection_fast(double [::1] start_state, double [:, ::1] ww, double[:, ::1] ll, cnp.int64_t[:, ::1] policy_map, double [::1] params, double [::1] action_bins) nogil:
+cpdef double single_collection_fast(double [::1] start_state, double [:, ::1] ww, double[:, ::1] ll, cnp.int64_t[:, ::1] policy_map, double [::1] params, double [::1] action_bins) nogil:
     """
     
     Args:
@@ -204,12 +219,12 @@ cdef double single_collection_fast(double [::1] start_state, double [:, ::1] ww,
 
     """
     cdef:
-        double [::1] w_vec
+        double [::1] w_vec, tt_res
         cnp.int64_t [:] l_slice
         double [:] l_vec, lhat_slice
         double current_time = 0.0, reward = 0.0, cost = 0.0
         double current_w, current_l, current_action, arr_time, relative_repayment, time_to_action, lhat
-        cnp.int64_t w_ind, index_lhatslice = 0, current_action_type, lshape, l_ind
+        cnp.int64_t w_ind, current_action_type, lshape, l_ind, index_last_lhat
 
 
 
@@ -224,7 +239,7 @@ cdef double single_collection_fast(double [::1] start_state, double [:, ::1] ww,
 
         w_ind = mySearchSorted(w_vec, current_w)
         l_slice = policy_map[:, w_ind]
-        l_ind= mySearchSorted(l_vec, current_l)
+        l_ind = mySearchSorted(l_vec, current_l)
 
         if l_ind >= lshape:
             current_action_type = 0
@@ -235,34 +250,37 @@ cdef double single_collection_fast(double [::1] start_state, double [:, ::1] ww,
 
         if current_action != 0.0:
             current_l = current_l + current_action * params[4]
-            cost += current_action * params[5]
+            cost += current_action * params[5] * exp(-current_time * params[6])
         else:
 
             # lhat_slice = l_vec[(l_vec <= current_l) & (l_slice > 0)]
-            for i in range(lshape):
-                if l_vec[i] <= current_l and l_slice[i]>0:
-                    index_lhatslice = index_lhatslice + 1
+            # for i in range(lshape):
+            #     if l_vec[i] <= current_l and l_slice[i]>0:
+            #         index_lhatslice = index_lhatslice + 1
 
-            lhat_slice = l_vec[:index_lhatslice]
+            index_last_lhat = mySearchSorted(l_vec, current_l)
+
+            while l_slice[index_last_lhat] == 0:
+                index_last_lhat = index_last_lhat - 1
 
 
-
-
-            if  index_lhatslice> 0:
-                lhat = lhat_slice[index_lhatslice]
+            if  index_last_lhat > 0:
+                lhat = l_slice[index_last_lhat]
+                time_to_action = round_decimals_up(t_equation(current_l, lhat, params), 5)
             else:
-                lhat = 0
+                lhat = params[0] + 0.0001
+                time_to_action = 1000
 
-            time_to_action = round_decimals_up(t_equation(current_l, lhat, params), 5)
 
-            relative_repayment, arr_time = next_arrival(time_to_action, current_l, params)
-            current_time += arr_time
-            current_l = drift(arr_time, current_l, params)
 
-            if relative_repayment > 0.0:
-                reward += exp(-params[6] * current_time) * relative_repayment * current_w
-                current_w = current_w * (1 - relative_repayment)
-                current_l = current_l + relative_repayment * params[3] + params[2]
+            tt_res = next_arrival(time_to_action, current_l, params)
+            current_time += tt_res[0]
+            current_l = drift(tt_res[0], current_l, params)
+
+            if tt_res[1] > 0.0:
+                reward += exp(-params[6] * current_time) * tt_res[1] * current_w
+                current_w = current_w * (1 - tt_res[1])
+                current_l = current_l + tt_res[1] * params[3] + params[2]
 
     return reward - cost
 
@@ -270,7 +288,7 @@ cdef double single_collection_fast(double [::1] start_state, double [:, ::1] ww,
 @boundscheck(False)
 @wraparound(False)
 @cdivision(True)
-cdef double round_decimals_up(double number, int decimals) nogil:
+cpdef double round_decimals_up(double number, int decimals) nogil:
     """
     Returns a value rounded up to a specific number of decimal places.
     """
@@ -294,6 +312,7 @@ cpdef double [::1] value_account(double [::1] account, double [:, ::1] ww, ll, p
         double [::1] vals
 
     vals = np.zeros(n_iterations, dtype=np.float64)
+
     for i in range(n_iterations):
         vals[i] = single_collection(account, ww, ll, policy_map, params, action_bins)
     return vals
