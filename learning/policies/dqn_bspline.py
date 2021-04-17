@@ -26,9 +26,9 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 class DefaultConfig(TrainConfigBase):
     # Training config specifies the hyperparameters of agent and learning
-    n_episodes = 20000
+    n_episodes = 10000
     warmup_episodes = n_episodes * 0.8
-    checkpoint_every = 100
+    checkpoint_every = 10
     target_update_every_step = 100
 
     learning_rate = 0.01
@@ -43,7 +43,7 @@ class DefaultConfig(TrainConfigBase):
     log_every_episode = 10
 
     # Memory setting
-    batch_size = 1000
+    batch_size = 512
     memory_size = 1000000
 
     # PER setting
@@ -64,7 +64,8 @@ class DefaultConfig(TrainConfigBase):
     # Approximator setting
     # Poly features dim
     poly_order = 3
-    constrained = True
+    constrained = False
+    penal_coeff = 0.1
 
     # repayment distribution:
 
@@ -74,6 +75,7 @@ class DQNAgentPoly(DQNAgent):
     def __init__(self, env, name, config=None, training=True):
 
         DQNAgent.__init__(self, env, name, config, training)
+
         self.env = SplineObservationWrapper(self.env, n_l_knots=6, n_w_knots=6, normalized=config.normalize_states)
 
     def train(self, *args, **kwargs):
@@ -115,12 +117,12 @@ class DQNAgentPoly(DQNAgent):
 
                 power = tf.math.floor(kwargs['epoch'] / 50)
                 # coeff = tf.math.minimum(10e4, 2 * tf.math.pow(power, 2))
-                coeff = 0.5
+                coeff = self.config.penal_coeff
                 penalization = coeff * 0.5 * (
-                            tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_l, dqn_variable), 0))) +
-                            tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_w, dqn_variable), 0))))
+                        tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_l, dqn_variable), 0))) +
+                        tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_w, dqn_variable), 0))))
             else:
-                penalization = 0
+                penalization = tf.constant([0.0])
 
             if self.config.prioritized_memory_replay:
                 error = tf.reduce_mean(element_wise_loss * weights)
@@ -128,7 +130,6 @@ class DQNAgentPoly(DQNAgent):
                 error = tf.reduce_mean(element_wise_loss)
 
             error = error + penalization
-
 
         if self.config.prioritized_memory_replay:
             self.memory.update_priorities(idx, np.abs(td_error.numpy()) + self.config.prior_eps)
@@ -139,7 +140,8 @@ class DQNAgentPoly(DQNAgent):
         self.optimizer.apply_gradients(zip(dqn_grads, dqn_variable))
         # Logging
         self.global_step += 1
-        self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': self.main_net.weights[0], 'Prediction': main_value,
+        self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': tf.convert_to_tensor(self.main_net.weights[0]),
+                               'Prediction': main_value,
                                'Target': target_value, 'TD error': td_error, 'Elementwise Loss': element_wise_loss,
                                'Loss': tf.reduce_mean(element_wise_loss), 'Penalization': penalization}
         return tf.reduce_mean(element_wise_loss)
@@ -168,5 +170,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgentPoly(environment, '4ActsConstrTest', training=True, config=DefaultConfig())
+    dqn = DQNAgentPoly(environment, 'BS4ActsConstrTest', training=True, config=DefaultConfig())
     dqn.run_training()

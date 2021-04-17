@@ -4,6 +4,7 @@ import math
 from multiprocessing import cpu_count
 from itertools import product
 
+
 def t_equation(lambda_start, lhat, params):
     # equation for duration to reach a holding region
     try:
@@ -76,6 +77,8 @@ def single_collection(start_state, ww, ll, policy_map, params, action_bins):
     w_vec = ww[0, :]
     l_vec = ll[:, 0]
 
+    l_len = len(l_vec)
+
     current_w = start_state[1].copy()
     current_l = start_state[0].copy()
     current_time = 0
@@ -86,10 +89,19 @@ def single_collection(start_state, ww, ll, policy_map, params, action_bins):
 
     while current_w > 1.0:
 
-        w_ind = np.digitize(current_w, w_vec, right=True)
+        # w_ind = np.digitize(current_w, w_vec, right=True)
+        w_ind = np.searchsorted(w_vec, current_w, side='left')
         l_slice = policy_map[:, w_ind]
-        current_action_type = l_slice[np.digitize(current_l, l_vec, right=True)]
-        current_action = action_bins[current_action_type]
+        ind = np.searchsorted(l_vec, current_l, side='left')
+        #ind = np.digitize(current_l, l_vec, right=True)
+
+        # this prevents going out of the policy_map
+        if ind >= l_len:
+            current_action_type = 0
+            current_action = 0.0
+        else:
+            current_action_type = l_slice[ind]
+            current_action = action_bins[current_action_type]
 
         if current_action != 0.0:
             current_l = current_l + current_action * params.delta2
@@ -97,6 +109,7 @@ def single_collection(start_state, ww, ll, policy_map, params, action_bins):
         else:
 
             lhat_slice = l_vec[(l_vec <= current_l) & (l_slice > 0)]
+
             if lhat_slice.shape[0] > 0:
                 lhat = lhat_slice[-1]
             else:
@@ -138,24 +151,24 @@ def create_map(agent, w_points=80, l_points=80, lam_lim=7, larger_offset=False):
         l = np.linspace(agent.env.observation_space.low[0], lam_lim, l_points)
         w = np.linspace(agent.env.observation_space.low[1], agent.env.observation_space.high[1], w_points)
         dl = np.diff(l)[0]
-    #     w_normalized = np.linspace(0, 1, w_points)
-    #     l_normalized = np.linspace(0, agent.env.observation((lam_lim,100))[0], l_points)
-    #     wwn, lln = np.meshgrid(w_normalized, l_normalized)
+        #     w_normalized = np.linspace(0, 1, w_points)
+        #     l_normalized = np.linspace(0, agent.env.observation((lam_lim,100))[0], l_points)
+        #     wwn, lln = np.meshgrid(w_normalized, l_normalized)
         ww, ll = np.meshgrid(w, l)
         space_iterator = product(l, w)
         space_product = agent.env.observation(np.array([[i, j] for i, j in space_iterator]))
         predictions = agent.main_net.predict_on_batch(space_product)
         z = np.amax(predictions, axis=1).reshape(l_points, w_points)
         p = np.argmax(predictions, axis=1).reshape(l_points, w_points)
-        p[int(np.floor((lam_lim - agent.env.env.action_bins[-1]*2.0) / dl)):, :] = 0.0
+        p[int(np.floor((lam_lim - agent.env.env.action_bins[-1] * 2.0) / dl)):, :] = 0.0
     else:
 
         l = np.linspace(agent.env.observation_space.low[0], lam_lim, l_points)
         w = np.linspace(agent.env.observation_space.low[1], agent.env.observation_space.high[1], w_points)
 
-    #     w_normalized = np.linspace(0, 1, w_points)
-    #     l_normalized = np.linspace(0, agent.env.observation((lam_lim,100))[0], l_points)
-    #     wwn, lln = np.meshgrid(w_normalized, l_normalized)
+        #     w_normalized = np.linspace(0, 1, w_points)
+        #     l_normalized = np.linspace(0, agent.env.observation((lam_lim,100))[0], l_points)
+        #     wwn, lln = np.meshgrid(w_normalized, l_normalized)
         ww, ll = np.meshgrid(w, l)
         space_iterator = product(l, w)
         space_product = agent.env.observation(np.array([[i, j] for i, j in space_iterator]))
@@ -165,3 +178,19 @@ def create_map(agent, w_points=80, l_points=80, lam_lim=7, larger_offset=False):
     return ww, ll, p, z
 
 
+if __name__ == '__main__':
+    from dcc.aav import AAV, Parameters
+
+    params = Parameters()
+    aav = AAV(params)
+    sample_acc = np.array([5., 200])
+
+    l = np.linspace(0, 7, 500)
+    w = np.linspace(0, 200, 500)
+    ww, ll = np.meshgrid(w, l)
+
+    autonomous_p = np.zeros_like(ww, dtype='int64')
+    degenerate_p = autonomous_p.copy()
+    # degenerate_p[:, 300:] = 1
+    degenerate_p[:400, 50:] = 1
+    print(np.mean(value_account(sample_acc, ww, ll, degenerate_p, params, np.array([0., 3.]), n_iterations=5000)))

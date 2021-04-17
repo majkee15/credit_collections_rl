@@ -160,9 +160,9 @@ class Parameters:
         self.kappa = 0.7
         self.delta10 = 0.02
         self.delta11 = 0.5
-        self.delta2 = 1
+        self.delta2 = 1.
         self.rho = 0.06
-        self.c = 10
+        self.c = 10.0
         self.r_ = 0.1
         self.chat = self.c / self.delta2
         self._rmean = self.rmean

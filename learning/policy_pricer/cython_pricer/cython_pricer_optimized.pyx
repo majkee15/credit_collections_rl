@@ -1,7 +1,3 @@
-## ONLY FOR GCC COMPILER
-# distutils: extra_compile_args = -fopenmp
-# distutils: extra_link_args = -fopenmp
-
 cimport numpy as cnp
 import  numpy as np
 from libc.stdlib cimport rand, srand, RAND_MAX
@@ -94,7 +90,7 @@ cdef inline double drift(double s, double lambda_start, double[::1] params) nogi
 @boundscheck(False)
 @wraparound(False)
 @cdivision(True)
-cdef (double, double) next_arrival(double t_to_sustain, double l, double [::1] params):
+cdef (double, double) next_arrival(double t_to_sustain, double l, double [::1] params) nogil:
     """
     
     Args:
@@ -171,10 +167,11 @@ cpdef double single_collection(double [::1] start_state, double [:, ::1] ww, ll,
         else:
 
             lhat_slice = l_vec[(l_vec <= current_l) & (l_slice > 0)]
-            if lhat_slice.shape[0] > 0:
+            if lhat_slice.shape[0] > 0.0:
                 lhat = lhat_slice[-1]
             else:
-                lhat = 0
+                lhat = 0.0
+
 
             time_to_action = round_decimals_up(t_equation(current_l, lhat, params), 5)
 
@@ -192,7 +189,7 @@ cpdef double single_collection(double [::1] start_state, double [:, ::1] ww, ll,
 @boundscheck(False)
 @wraparound(False)
 @cdivision(True)
-cpdef double single_collection_fast(double [::1] start_state, double [:, ::1] ww, double[:, ::1] ll, int[:, ::1] policy_map, double [::1] params, double [::1] action_bins):
+cdef double single_collection_fast(double [::1] start_state, double [:, ::1] ww, double[:, ::1] ll, cnp.int64_t[:, ::1] policy_map, double [::1] params, double [::1] action_bins) nogil:
     """
     
     Args:
@@ -208,28 +205,33 @@ cpdef double single_collection_fast(double [::1] start_state, double [:, ::1] ww
     """
     cdef:
         double [::1] w_vec
-        int [:] l_slice
+        cnp.int64_t [:] l_slice
         double [:] l_vec, lhat_slice
         double current_time = 0.0, reward = 0.0, cost = 0.0
         double current_w, current_l, current_action, arr_time, relative_repayment, time_to_action, lhat
-        int w_ind, index_lhatslice = 0, current_action_type
-        Py_ssize_t lshape
+        cnp.int64_t w_ind, index_lhatslice = 0, current_action_type, lshape, l_ind
 
 
 
     w_vec = ww[0, :]
     l_vec = ll[:, 0]
-    lshape = ll.shape[0]
+    lshape = len(l_vec)
 
     current_w = start_state[1]
     current_l = start_state[0]
 
     while current_w > 1.0:
 
-        w_ind = np.digitize(current_w, w_vec, right=True)
+        w_ind = mySearchSorted(w_vec, current_w)
         l_slice = policy_map[:, w_ind]
-        current_action_type = l_slice[np.digitize(current_l, l_vec, right=True)]
-        current_action = action_bins[current_action_type]
+        l_ind= mySearchSorted(l_vec, current_l)
+
+        if l_ind >= lshape:
+            current_action_type = 0
+            current_action = 0.0
+        else:
+            current_action_type = l_slice[l_ind]
+            current_action = action_bins[current_action_type]
 
         if current_action != 0.0:
             current_l = current_l + current_action * params[4]
@@ -268,7 +270,7 @@ cpdef double single_collection_fast(double [::1] start_state, double [:, ::1] ww
 @boundscheck(False)
 @wraparound(False)
 @cdivision(True)
-cdef double round_decimals_up(double number, int decimals):
+cdef double round_decimals_up(double number, int decimals) nogil:
     """
     Returns a value rounded up to a specific number of decimal places.
     """
@@ -297,29 +299,85 @@ cpdef double [::1] value_account(double [::1] account, double [:, ::1] ww, ll, p
     return vals
 
 
+@boundscheck(False)
+@wraparound(False)
+@cdivision(True)
+cpdef double [::1] value_account_fast(double [::1] account, double [:, ::1] ww, double[:, ::1] ll, cnp.int64_t[:, ::1] policy_map, double [::1] params, double [::1] action_bins, int n_iterations=1000):
+    cdef:
+        double [::1] vals = np.zeros(n_iterations, dtype=np.float64)
+        int i
+    for i in range(n_iterations):
+        vals[i] = single_collection_fast(account, ww, ll, policy_map, params, action_bins)
+    return np.asarray(vals)
 
-cpdef int my_digitize(double val, double [::1] arr, bint right):
+
+@boundscheck(False)
+@wraparound(False)
+@cdivision(True)
+cdef int mySearchSorted(double[:] array, double target) nogil:
     """
-    Return the indice of the bins to which the input value belongs.
-    ASSUMPTION: "bins must be monotonically increasing or decreasing"
+    Binary search
     Args:
-        val: double
-        arr: np.ndarray
-        right: bool
+        array: 
+        target: 
 
     Returns:
-        int
+
     """
+    cdef:
+        int left = 0, right = len(array), mid, n = len(array)
 
-    # this is backwards because the arguments below are swapped
-    side = 'left' if right else 'right'
-    pass
-    # if mono == -1:
-    #     # reverse the bins, and invert the results
-    #     return len(bins) - _nx.searchsorted(bins[::-1], x, side=side)
-    # else:
-    #     return _nx.searchsorted(bins, x, side=side)
+    while left <= right:
 
+        mid = (left + right) // 2
+
+        if mid == n:
+            return n
+
+        if array[mid] == target:
+            return mid
+        if array[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return left
+
+
+@boundscheck(False)
+@wraparound(False)
+@cdivision(True)
+cpdef int mySearchSorted_callable(double[:] array, double target) nogil:
+    """
+    Binary search
+    Args:
+        array: 
+        target: 
+
+    Returns:
+
+    """
+    cdef:
+        int left = 0, right = len(array), mid, n = len(array)
+
+    while left <= right:
+
+        mid = (left + right) // 2
+
+        if mid == n:
+            return n
+
+        if array[mid] == target:
+            return mid
+        if array[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return left
+
+
+@boundscheck(False)
+@wraparound(False)
+@cdivision(True)
 def convert_params_obj(params):
     retarr = np.array([params.lambdainf, params.kappa, params.delta10, params.delta11, params.delta2, params.c, params.rho], dtype=np.float64)
     return retarr

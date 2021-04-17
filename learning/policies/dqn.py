@@ -39,13 +39,13 @@ class DefaultConfig(TrainConfigBase):
     epsilon_final = 0.01
     epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
     target_update_every_step = 50
-    log_every_episode = 10
+    log_every_episode = 1
 
     # Net setting
-    layers = (128, 128, 128)
-    batch_normalization = True
+    layers = (10, 10, 10)
+    batch_normalization = False
     # Memory setting
-    batch_size = 512
+    batch_size = 1024
     memory_size = 1000000
 
     # PER setting
@@ -65,7 +65,7 @@ class DefaultConfig(TrainConfigBase):
     regularizer = None
 
     constrained = True
-    penal_coeff = 2.0
+    penal_coeff = 0.1
 
     # repayment distribution:
 
@@ -134,6 +134,7 @@ class DQNAgent(BaseModelMixin, Policy):
         rewards = batch['r']
         next_states = batch['s_next']
         dones = batch['done']
+
         if self.config.prioritized_memory_replay:
             idx = batch['indices']
             weights = batch['weights']
@@ -142,8 +143,8 @@ class DQNAgent(BaseModelMixin, Policy):
         network_input_to_watch = tf.Variable(tf.convert_to_tensor(states, dtype='float32'))
 
         with tf.GradientTape(persistent=True) as tape:
-            tape.watch(dqn_variable)
             tape.watch(network_input_to_watch)
+            tape.watch(dqn_variable)
             # simple dqn
             # target_q = self.target_net.predict_on_batch(next_states)
             # next_action = np.argmax(target_q.numpy(), axis=1)
@@ -157,15 +158,18 @@ class DQNAgent(BaseModelMixin, Policy):
 
             main_q = self.main_net(network_input_to_watch)
             main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
+            main_q_to_penalize = tf.identity(main_q)
 
             td_error = target_value - main_value
             element_wise_loss = tf.square(td_error) * 0.5
 
             if self.config.constrained:
                 coeff = self.config.penal_coeff
-                penalization = coeff * tf.reduce_sum(tf.maximum(-tape.gradient(main_value, network_input_to_watch), 0))
+                ## THIS DOES NOT WORK
+                penalization = coeff * tf.reduce_sum(
+                    tf.maximum(-tape.gradient(main_q_to_penalize, network_input_to_watch), 0))
             else:
-                penalization = 0.0
+                penalization = tf.constant([0.0])
 
             if self.config.prioritized_memory_replay:
                 error = tf.reduce_mean(element_wise_loss * weights)
@@ -412,7 +416,7 @@ class DQNAgent(BaseModelMixin, Policy):
         heatmap, xedges, yedges = np.histogram2d(x, y, bins=(30, 20), range=rangespace)
         extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
         fig, ax = plt.subplots()
-        mappable = ax.imshow(heatmap.T, extent=extent, origin='lower', interpolation='nearest', aspect='auto')
+        mappable = ax.imshow(np.where(heatmap.T != 0, np.log(heatmap.T), 0), extent=extent, origin='lower', interpolation='nearest', aspect='auto')
         ax.set_title('Visit heatmap')
         fig.colorbar(mappable)
 
@@ -440,5 +444,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, 'test_constr', training=True, config=DefaultConfig(), initialize=False)
+    dqn = DQNAgent(environment, 'test_constr_log_every', training=True, config=DefaultConfig(), initialize=False)
     dqn.run_training()

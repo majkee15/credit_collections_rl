@@ -4,10 +4,10 @@ from learning.utils.misc import Config
 from learning.utils.annealing_schedule import AnnealingSchedule
 
 
-TOTAL_NE = 50000
-LOG_EVERY = 20
+TOTAL_NE = 10000
+LOG_EVERY = 50
 PLOT_EVERY = 100
-CHECKPOINT_EVERY = 500
+CHECKPOINT_EVERY = 10
 # DQN CONFIGS
 
 
@@ -133,6 +133,7 @@ class SplineBaseConfig(Config):
 
 class SplineConstrainedConfig(SplineBaseConfig):
     constrained = True
+    penal_coeff = 1.0
 
 
 if __name__ == '__main__':

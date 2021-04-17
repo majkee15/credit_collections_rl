@@ -142,7 +142,7 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         self.n_w_knots = n_w_knots
         if normalized:
             high = [1, 1]
-            low = [0, 0]
+            low = self.observation_space.low / self.observation_space.high
         else:
             high = self.observation_space.high
             low = self.observation_space.low
@@ -183,12 +183,12 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         # TODO: here I think it should be w_features[:,0]
         #    it seems other way around, balance should be first
         final[:, 0] = l_features[:, 0]
-        final[:, 1] = w_features[:, 1]
+        final[:, 1] = w_features[:, 0]
 
         for r, row in enumerate(w_features):
             final[r, 2:] = [i * j for i, j in product(row[1:], l_features[r, 1:])]
         if np.isnan(final).any():
-            print("NAN")
+            print("Transform 2D produces NAN.")
         return final
 
     def transform_1d_l_der(self, eval_point):
