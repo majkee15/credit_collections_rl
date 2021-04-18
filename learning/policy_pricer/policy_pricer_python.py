@@ -49,7 +49,7 @@ def next_arrival(t_to_sustain, l, params):
 
 
 def drift(s, lambda_start, params):
-    # deterministic draft
+    # deterministic drift
     return params.lambdainf + (lambda_start - params.lambdainf) * np.exp(-params.kappa * s)
 
 

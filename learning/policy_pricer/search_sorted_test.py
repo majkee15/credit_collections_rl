@@ -28,6 +28,7 @@ def mySearchSorted(array, target):
 if __name__ == '__main__':
     import numpy as np
     ar = np.arange(0, 500., 7)
+    print(f"len: {len(ar)}")
     target = 500
 
     print(mySearchSorted(ar, target))
