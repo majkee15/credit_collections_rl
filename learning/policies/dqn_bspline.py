@@ -66,6 +66,8 @@ class DefaultConfig(TrainConfigBase):
     poly_order = 3
     constrained = False
     penal_coeff = 0.1
+    n_l_knots = 6
+    n_w_knots = 6
 
     # repayment distribution:
 
@@ -76,7 +78,8 @@ class DQNAgentPoly(DQNAgent):
 
         DQNAgent.__init__(self, env, name, config, training)
 
-        self.env = SplineObservationWrapper(self.env, n_l_knots=6, n_w_knots=6, normalized=config.normalize_states)
+        self.env = SplineObservationWrapper(self.env, n_l_knots=config.n_l_knots, n_w_knots=config.n_w_knots,
+                                            normalized=config.normalize_states)
 
     def train(self, *args, **kwargs):
         batch = self.memory.sample(self.config.batch_size)
@@ -115,7 +118,7 @@ class DQNAgentPoly(DQNAgent):
                 # penalization = np.sum(np.maximum(-np.matmul(first_l, self.main_net.weights[0].numpy()), 0 ) +\
                 #                np.maximum(-np.matmul(first_w, self.main_net.weights[0].numpy()), 0))
 
-                power = tf.math.floor(kwargs['epoch'] / 50)
+                # power = tf.math.floor(kwargs['epoch'] / 50)
                 # coeff = tf.math.minimum(10e4, 2 * tf.math.pow(power, 2))
                 coeff = self.config.penal_coeff
                 penalization = coeff * 0.5 * (

@@ -130,6 +130,9 @@ class SplineBaseConfig(Config):
     poly_order = 3
     constrained = False
 
+    n_l_knots = 10
+    n_w_knots = 20
+
 
 class SplineConstrainedConfig(SplineBaseConfig):
     constrained = True

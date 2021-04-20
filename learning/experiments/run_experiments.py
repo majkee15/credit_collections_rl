@@ -59,8 +59,8 @@ if __name__ == '__main__':
     client = Client(n_workers=6, threads_per_worker=2)
 
     # names = ['DQN', 'SPLINE', 'MONOSPLINE', 'DQN200p']
-    # names = ['BSplineConstr', 'BSpline']
-    names = ['DQN', 'DQNL1']
-    experiment_types = ['dqn'] * 2
-    configs = [DQNBaseConfig(), DQN200paramsRegularizedL1high()]
+    names = ['BSplineConstr_2010granularconstr']
+    # names = ['DQN', 'DQNL1']
+    experiment_types = ['bspline']
+    configs = [SplineConstrainedConfig()]
     compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=3), scheduler='distributed')
