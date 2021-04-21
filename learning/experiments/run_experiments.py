@@ -51,7 +51,7 @@ def runexp(experiment):
 
 def run_multiple_delayed(names, experiment_types, configs, n_repeats=1):
     res = []
-    for r in range(5, n_repeats):
+    for r in range(0, n_repeats):
         for i, n in enumerate(names):
             exp = setup_experiment(configs[i], names[i] + '-' + str(r), experiment_types[i])
             res.append(delayed(runexp(exp)))
