@@ -24,7 +24,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 class DefaultConfigPenal(DefaultConfig):
     constrained = True
-    penal_coeff = 0.
+    penal_coeff = 0.5
 
 
 class DQNAgentPenalized(DQNAgent):

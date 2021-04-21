@@ -6,6 +6,7 @@ from dask.distributed import Client
 from learning.collections_env import CollectionsEnv, BetaRepayment, UniformRepayment
 from learning.utils.wrappers import DiscretizedActionWrapper
 from learning.policies.dqn import DQNAgent
+from learning.policies.dqn_penalized import DQNAgentPenalized
 from learning.policies.dqn_bspline import DQNAgentPoly
 from learning.experiments.configs import *
 from dcc import Parameters
@@ -36,6 +37,8 @@ def setup_experiment(conf, name, extype='dqn'):
         dqn = DQNAgent(environment, name, training=True, config=conf, initialize=False)
     elif extype == 'bspline':
         dqn = DQNAgentPoly(environment, name, training=True, config=conf)
+    elif extype == 'dqnpenal':
+        dqn = DQNAgentPenalized(environment, name, config=conf, training=True)
     else:
         raise ValueError('Unsupported experiment type.')
 
@@ -48,7 +51,7 @@ def runexp(experiment):
 
 def run_multiple_delayed(names, experiment_types, configs, n_repeats=1):
     res = []
-    for r in range(n_repeats):
+    for r in range(5, n_repeats):
         for i, n in enumerate(names):
             exp = setup_experiment(configs[i], names[i] + '-' + str(r), experiment_types[i])
             res.append(delayed(runexp(exp)))
@@ -56,11 +59,11 @@ def run_multiple_delayed(names, experiment_types, configs, n_repeats=1):
 
 
 if __name__ == '__main__':
-    client = Client(n_workers=6, threads_per_worker=2)
+    client = Client(n_workers=40, threads_per_worker=2)
 
     # names = ['DQN', 'SPLINE', 'MONOSPLINE', 'DQN200p']
-    names = ['BSplineConstr_2010granularconstr']
+    names = ['PenalizedDQN', 'DQN', 'DQNL1', 'DQNL2']
     # names = ['DQN', 'DQNL1']
-    experiment_types = ['bspline']
-    configs = [SplineConstrainedConfig()]
-    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=3), scheduler='distributed')
+    experiment_types = ['dqnpenal', 'dqn', 'dqn', 'dqn']
+    configs = [DQNPenalized(), DQNBaseConfig(), DQNL1high(), DQNL2low()]
+    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=10), scheduler='distributed')

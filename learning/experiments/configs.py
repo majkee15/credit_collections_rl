@@ -30,7 +30,7 @@ class DQNBaseConfig(Config):
     log_every_episode = LOG_EVERY
 
     # Net setting
-    layers = (128, 128, 128)
+    layers = (64, 64, 64)
     batch_normalization = False
     # Memory setting
     batch_size = 512
@@ -57,34 +57,30 @@ class DQN200params(DQNBaseConfig):
     layers = (10, 10, 10)
 
 
-class DQNConstrainedlow(DQNBaseConfig):
-    constrained = True
-    penal_coeff = 0.01
-
-
-class DQNConstrainedhigh(DQNBaseConfig):
-    constrained = True
-    penal_coeff = 0.1
-
-
-class CDQN200paramsRegularizedL1low(DQNBaseConfig):
+class DQNL1low(DQNBaseConfig):
     regularizer = 'l1'
     regularizer_parameter = 0.01
 
 
-class DQN200paramsRegularizedL2low(DQNBaseConfig):
+class DQNL2low(DQNBaseConfig):
     regularizer = 'l2'
     regularizer_parameter = 0.01
 
 
-class DQN200paramsRegularizedL1high(DQNBaseConfig):
+class DQNL1high(DQNBaseConfig):
     regularizer = 'l1'
     regularizer_parameter = 0.1
 
 
-class DQN200paramsRegularizedL2high(DQNBaseConfig):
+class DQNL2high(DQNBaseConfig):
     regularizer = 'l2'
     regularizer_parameter = 0.1
+
+
+class DQNPenalized(DQNBaseConfig):
+    constrained = True
+    penal_coeff = 0.5
+
 
 # SPLINE CONFIGS
 
@@ -147,6 +143,6 @@ if __name__ == '__main__':
 
     print(DQN200params.regularizer)
 
-    test_conf = DQN200paramsRegularizedL2high()
+    test_conf = DQNL2high()
     test_conf2.save('Prcinka')
 
