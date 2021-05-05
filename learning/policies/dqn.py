@@ -18,7 +18,12 @@ from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplay
 from learning.policies.base import Policy, BaseModelMixin, TrainConfigBase
 from learning.utils.misc import plot_learning_curve, plot_to_image
 from learning.utils.construct_nn import construct_nn
-from learning.utils.annealing_schedule import AnnealingSchedule
+from learning.utils.annealing_schedule import LinearSchedule
+
+from learning.policy_pricer.policy_pricer_python import create_map
+from policy_pricer_restr.cython_pricer import cython_pricer_optimized
+
+from learning.utils.portfolio_accounts import load_acc_portfolio, generate_portfolio
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
@@ -32,14 +37,14 @@ class DefaultConfig(TrainConfigBase):
     learning_rate = 0.001
     end_learning_rate = 0.00001
     # decaying learning rate
-    learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, warmup_episodes)
+    learning_rate_schedule = LinearSchedule(learning_rate, end_learning_rate, warmup_episodes)
     # gamma (discount factor) is set as exp(-rho * dt) in the body of the learning program
     gamma = np.NaN
     epsilon = 1
     epsilon_final = 0.01
-    epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
+    epsilon_schedule = LinearSchedule(epsilon, epsilon_final, warmup_episodes)
     target_update_every_step = 50
-    log_every_episode = 1
+    log_every_episode = 100
 
     # Net setting
     layers = (10, 10, 10)
@@ -53,7 +58,7 @@ class DefaultConfig(TrainConfigBase):
     replay_alpha = 0.2
     replay_beta = 0.4
     replay_beta_final = 1.0
-    beta_schedule = AnnealingSchedule(replay_beta, replay_beta_final, warmup_episodes, inverse=True)
+    beta_schedule = LinearSchedule(replay_beta, replay_beta_final, warmup_episodes, inverse=True)
     prior_eps = 1e-6
 
     # progression plot
@@ -69,7 +74,7 @@ class DefaultConfig(TrainConfigBase):
 
 class DQNAgent(BaseModelMixin, Policy):
 
-    def __init__(self, env, name, config=None, training=True, initialize=False):
+    def __init__(self, env, name, config=None, training=True, portfolio=None, initialize=False):
 
         if config.normalize_states:
             self.env = StateNormalization(env)
@@ -110,6 +115,7 @@ class DQNAgent(BaseModelMixin, Policy):
         self._space_product = None
 
         self._tb_log_holder = {}
+        self._portfolio = portfolio
 
     def get_action(self, state, epsilon=0.0):
         q_value = self.main_net.predict_on_batch(state[None, :])
@@ -173,7 +179,7 @@ class DQNAgent(BaseModelMixin, Policy):
         self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': tf.convert_to_tensor(self.main_net.weights[0]),
                                'Prediction': main_value,
                                'Target': target_value, 'TD error': td_error, 'Elementwise Loss': element_wise_loss,
-                               'Loss': tf.reduce_mean(element_wise_loss)}# , 'Penalization': 0.0}
+                               'Loss': tf.reduce_mean(element_wise_loss)}  # , 'Penalization': 0.0}
         return tf.reduce_mean(element_wise_loss)
 
         # def log_tensorboard(self, dqn_grads, main_value, target_value, td_error, element_wise_loss):
@@ -254,6 +260,9 @@ class DQNAgent(BaseModelMixin, Policy):
                     with tf.name_scope('Performance'):
                         tf.summary.scalar('episode reward', score, step=i)
                         tf.summary.scalar('running avg reward(100)', avg_rewards, step=i)
+                        if self._portfolio is not None:
+                            price = self.price_portfolio()
+                            tf.summary.scalar('Portfolio Performance:', price, step=i)
 
                     if self.config.prioritized_memory_replay:
                         with tf.name_scope('Schedules'):
@@ -275,6 +284,17 @@ class DQNAgent(BaseModelMixin, Policy):
 
         plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
         self.save()
+
+    def price_portfolio(self):
+        ww, ll, p, z = create_map(self, w_points=200, l_points=100, lam_lim=8.0,
+                                  larger_offset=True)
+        prices = np.zeros(self._portfolio.shape[0])
+        for i, acc in enumerate(self._portfolio):
+            prices[i] = np.mean(np.asarray(cython_pricer_optimized.value_account(acc, ww, ll, p,
+                                                                         cython_pricer_optimized.convert_params_obj(
+                                                                             self.env.params),
+                                                                         self.env.env.action_bins, n_iterations=1000)))
+        return np.mean(prices)
 
     def checkpoint(self, epoch):
         checkpoint_path = os.path.join(self.model_dir, 'checkpoints', str(epoch))
@@ -334,19 +354,6 @@ class DQNAgent(BaseModelMixin, Policy):
         predictions = self.main_net.predict_on_batch(self._space_product)
         z = np.amax(predictions, axis=1).reshape(self._l_points, self._w_points)
         p = np.argmax(predictions, axis=1).reshape(self._l_points, self._w_points)
-
-        # This was ineffictient
-        # z = result[:, 0].reshape(self._l_points, self._w_points)
-        # p = result[:, 1].reshape(self._l_points, self._w_points)
-
-        # z = np.zeros_like(self._ww)
-        # p = np.zeros_like(self._ww)
-        # for i, xp in enumerate(self._w_grid_plot):
-        #     for j, yp in enumerate(self._l_grid_plot):
-        #         fixed_obs = self.env.observation(np.array([yp, xp]))
-        #         z[j, i] = np.amax(self.main_net.predict_on_batch(fixed_obs[None, :]))
-        #         p[j, i] = environment.action(np.argmax(self.main_net.predict_on_batch(fixed_obs[None, :])))
-
         fig, ax = plt.subplots(nrows=1, ncols=2)
         cmap = m.cm.get_cmap('YlOrBr', self.act_size)
         boundaries = np.linspace(0, self.act_size, self.act_size + 1)
@@ -354,18 +361,6 @@ class DQNAgent(BaseModelMixin, Policy):
         im = ax[0].pcolormesh(self._ww, self._ll, p, cmap=cmap, norm=norm, shading='auto')
         fig.colorbar(im)
 
-        # old plotting that worked
-        # cdict = {
-        #     'red': ((0.0, 0.25, .25), (0.02, .59, .59), (1., 1., 1.)),
-        #     'green': ((0.0, 0.0, 0.0), (0.02, .45, .45), (1., .97, .97)),
-        #     'blue': ((0.0, 1.0, 1.0), (0.02, .75, .75), (1., 0.45, 0.45))
-        # }
-        #
-        # cm = m.colors.LinearSegmentedColormap('my_colormap', cdict, 1024)
-        #
-        # im = ax[0].pcolor(self._ww, self._ll, p, cmap=cm)
-        # fig.colorbar(im)
-        # #
         CS = ax[1].contour(self._ww, self._ll, z)
         ax[1].clabel(CS, inline=1, fontsize=10)
         ax[1].set_title('Value function')
@@ -399,7 +394,8 @@ class DQNAgent(BaseModelMixin, Policy):
         heatmap, xedges, yedges = np.histogram2d(x, y, bins=(30, 20), range=rangespace)
         extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
         fig, ax = plt.subplots()
-        mappable = ax.imshow(np.where(heatmap.T != 0, np.log(heatmap.T), 0), extent=extent, origin='lower', interpolation='nearest', aspect='auto')
+        mappable = ax.imshow(np.where(heatmap.T != 0, np.log(heatmap.T), 0), extent=extent, origin='lower',
+                             interpolation='nearest', aspect='auto')
         ax.set_title('Visit heatmap')
         fig.colorbar(mappable)
 
@@ -427,5 +423,8 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgent(environment, 'test_constr_log_every', training=True, config=DefaultConfig(), initialize=False)
+    portfolio_acc = generate_portfolio(50)
+
+    dqn = DQNAgent(environment, 'test_constr_log_every_pricer', training=True, config=DefaultConfig(), initialize=False,
+                   portfolio=portfolio_acc)
     dqn.run_training()

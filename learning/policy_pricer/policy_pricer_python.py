@@ -148,6 +148,7 @@ def value_account(account, ww, ll, p, params, action_bins, n_iterations=1000):
 
 
 def create_map(agent, w_points=80, l_points=80, lam_lim=7, larger_offset=False):
+
     if larger_offset:
         l = np.linspace(agent.env.observation_space.low[0], lam_lim, l_points)
         w = np.linspace(agent.env.observation_space.low[1], agent.env.observation_space.high[1], w_points)

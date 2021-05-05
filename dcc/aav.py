@@ -61,10 +61,12 @@ class AAV(Base):
         Returns: double
             autonomous acc value
         """
-
-        I = np.exp(-self.parameters.rho * self.t - l * self.alpha - self.parameters.kappa * self.beta)
-        q = integrate.trapz(I, self.t)
-        av = -(1 - self.parameters.rho * q) * w
+        if np.isscalar(l) and np.isscalar(w):
+            I = np.exp(-self.parameters.rho * self.t - l * self.alpha - self.parameters.kappa * self.beta)
+            q = integrate.trapz(I, self.t)
+            av = -(1 - self.parameters.rho * q) * w
+        else:
+            raise ValueError('Wrong input dimensions for u(lambda, w).')
         return av
 
     def compute_w_(self):

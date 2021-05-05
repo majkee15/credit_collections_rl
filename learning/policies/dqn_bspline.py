@@ -15,7 +15,7 @@ from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplay
 from learning.policies.base import Policy, BaseModelMixin, TrainConfigBase
 from learning.utils.misc import plot_learning_curve, plot_to_image
 from learning.utils.construct_poly import construct_spline_approx
-from learning.utils.annealing_schedule import AnnealingSchedule
+from learning.utils.annealing_schedule import LinearSchedule
 
 from sklearn.preprocessing import PolynomialFeatures
 
@@ -34,12 +34,12 @@ class DefaultConfig(TrainConfigBase):
     learning_rate = 0.01
     end_learning_rate = 0.0001
     # decaying learning rate
-    learning_rate_schedule = AnnealingSchedule(learning_rate, end_learning_rate, n_episodes)
+    learning_rate_schedule = LinearSchedule(learning_rate, end_learning_rate, n_episodes)
     # gamma (discount factor) is set as exp(-rho * dt) in the body of the learning program
     gamma = np.NaN
     epsilon = 1
     epsilon_final = 0.01
-    epsilon_schedule = AnnealingSchedule(epsilon, epsilon_final, warmup_episodes)
+    epsilon_schedule = LinearSchedule(epsilon, epsilon_final, warmup_episodes)
     log_every_episode = 10
 
     # Memory setting
@@ -51,7 +51,7 @@ class DefaultConfig(TrainConfigBase):
     replay_alpha = 0.2
     replay_beta = 0.4
     replay_beta_final = 1.0
-    beta_schedule = AnnealingSchedule(replay_beta, replay_beta_final, warmup_episodes, inverse=True)
+    beta_schedule = LinearSchedule(replay_beta, replay_beta_final, warmup_episodes, inverse=True)
     prior_eps = 1e-6
 
     # progression plot

@@ -124,7 +124,7 @@ class OAV(Base):
 
     def q(self, l, lhat):
         """
-        Q function from the text.
+        Q function from the text --- !!!NOT Q-function in reinforcement learning!!!
         Args:
             l: double
             lhat: double

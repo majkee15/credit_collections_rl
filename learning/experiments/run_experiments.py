@@ -11,6 +11,9 @@ from learning.policies.dqn_bspline import DQNAgentPoly
 from learning.experiments.configs import *
 from dcc import Parameters
 
+
+from learning.utils.portfolio_accounts import load_acc_portfolio, generate_portfolio
+
 # deactivate CUDA -- the nature of the code makes it comparable to CPU run appli
 # with this disabled we can perform multiprocessing
 
@@ -18,6 +21,9 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 @delayed
 def setup_experiment(conf, name, extype='dqn'):
+    n_acc = 50
+    portfolio = generate_portfolio(n_acc)
+
     params = Parameters()
     params.rho = 0.15
 
@@ -59,11 +65,11 @@ def run_multiple_delayed(names, experiment_types, configs, n_repeats=1):
 
 
 if __name__ == '__main__':
-    client = Client(n_workers=40, threads_per_worker=2)
+    client = Client(n_workers=6, threads_per_worker=2)
 
     # names = ['DQN', 'SPLINE', 'MONOSPLINE', 'DQN200p']
-    names = ['PenalizedDQN', 'DQN', 'DQNL1', 'DQNL2']
+    names = ['PDQN', 'DQNV', 'DQNL1comp', 'DQNL2comp']
     # names = ['DQN', 'DQNL1']
     experiment_types = ['dqnpenal', 'dqn', 'dqn', 'dqn']
     configs = [DQNPenalized(), DQNBaseConfig(), DQNL1high(), DQNL2low()]
-    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=10), scheduler='distributed')
+    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=4), scheduler='distributed')

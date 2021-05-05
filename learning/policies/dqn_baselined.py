@@ -17,26 +17,27 @@ from learning.utils.misc import plot_learning_curve, plot_to_image
 from learning.utils.construct_poly import construct_poly_approx
 from learning.utils.annealing_schedule import LinearSchedule
 
-from learning.policies.dqn import DefaultConfig, DQNAgent
+from dcc import AAV
 
-from learning.utils.portfolio_accounts import load_acc_portfolio, generate_portfolio
+from learning.policies.dqn import DefaultConfig, DQNAgent
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
-class DefaultConfigPenal(DefaultConfig):
-    n_episodes = 10000
+class DefaultConfigBaselined(DefaultConfig):
+    n_episodes = 20000
     warmup_episodes = n_episodes * 0.8
     checkpoint_every = 1000
     log_every_episode = 10
-    constrained = True
+    constrained = False
     penal_coeff = 0.5
 
 
-class DQNAgentPenalized(DQNAgent):
+class DQNAgentBaselined(DQNAgent):
 
-    def __init__(self, env, name, config=None, training=True, portfolio=None):
-        super().__init__(env=env, name=name, config=config, training=training, portfolio=portfolio)
+    def __init__(self, env, name, config=None, training=True):
+        super().__init__(env=env, name=name, config=config, training=training)
+        self.aav = AAV(self.env.params)
 
     def train(self, *args, **kwargs):
         batch = self.memory.sample(self.config.batch_size)
@@ -66,14 +67,13 @@ class DQNAgentPenalized(DQNAgent):
                 target_q = self.target_net(next_states)
 
                 target_value = tf.reduce_sum(tf.one_hot(next_action, self.act_size) * target_q, axis=1)
-                target_value = (1 - dones) * self.config.gamma * target_value + rewards
-
+                target_value = (1 - dones) * self.config.gamma * target_value + rewards + [self.aav.u(*self.env.convert_back(s)) for s in states]
                 main_q = self.main_net(network_input_to_watch)
                 main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
                 # main_q_to_penalize = tf.identity(main_q)
 
-            penalization = self.config.penal_coeff * tf.reduce_sum(
-                tf.maximum(-tape_inner.gradient(main_value, network_input_to_watch), 0.0))
+            # penalization = self.config.penal_coeff * tf.reduce_sum(
+            #     tf.maximum(-tape_inner.gradient(main_value, network_input_to_watch), 0.0))
 
             td_error = target_value - main_value
             element_wise_loss = tf.square(td_error) * 0.5
@@ -84,7 +84,7 @@ class DQNAgentPenalized(DQNAgent):
             else:
                 error = tf.reduce_mean(element_wise_loss)
 
-            error = error + penalization
+            error = error#  + penalization
 
         dqn_grads = tape.gradient(error, dqn_variable)
 
@@ -98,14 +98,12 @@ class DQNAgentPenalized(DQNAgent):
         self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': tf.convert_to_tensor(self.main_net.weights[0]),
                                'Prediction': main_value,
                                'Target': target_value, 'TD error': td_error, 'Elementwise Loss': element_wise_loss,
-                               'Loss': tf.reduce_mean(element_wise_loss), 'Penalization': penalization}
+                               'Loss': tf.reduce_mean(element_wise_loss)}#, 'Penalization': penalization}
         return tf.reduce_sum(element_wise_loss)
 
 
 if __name__ == '__main__':
     from dcc import Parameters
-
-    portfolio_acc = generate_portfolio(50)
 
     MAX_ACCOUNT_BALANCE = 200.0
 
@@ -123,6 +121,5 @@ if __name__ == '__main__':
                            )
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
-    dqn = DQNAgentPenalized(environment, name='DQNConstrainedTest', training=True, config=DefaultConfigPenal(),
-                            portfolio=portfolio_acc)
+    dqn = DQNAgentBaselined(environment, name='BaselinedDQN', training=True, config=DefaultConfigBaselined())
     dqn.run_training()
