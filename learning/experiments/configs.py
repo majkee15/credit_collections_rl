@@ -53,6 +53,8 @@ class DQNBaseConfig(Config):
     regularizer = None
     constrained = False
 
+    compute_portfolio_every = 100
+
 class DQN200params(DQNBaseConfig):
     layers = (10, 10, 10)
 

@@ -74,9 +74,9 @@ class DefaultConfig(TrainConfigBase):
 
 class DQNAgentPoly(DQNAgent):
 
-    def __init__(self, env, name, config=None, training=True):
+    def __init__(self, env, name, config=None, training=True, experiment_name=None, portfolio=None):
 
-        DQNAgent.__init__(self, env, name, config, training)
+        DQNAgent.__init__(self, env, name, config, training, experiment_name=experiment_name, portfolio=portfolio)
 
         self.env = SplineObservationWrapper(self.env, n_l_knots=config.n_l_knots, n_w_knots=config.n_w_knots,
                                             normalized=config.normalize_states)

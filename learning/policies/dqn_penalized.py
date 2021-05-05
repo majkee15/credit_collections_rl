@@ -35,8 +35,8 @@ class DefaultConfigPenal(DefaultConfig):
 
 class DQNAgentPenalized(DQNAgent):
 
-    def __init__(self, env, name, config=None, training=True, portfolio=None):
-        super().__init__(env=env, name=name, config=config, training=training, portfolio=portfolio)
+    def __init__(self, env, name, config=None, training=True, portfolio=None, experiment_name=None):
+        super().__init__(env=env, name=name, config=config, training=training, portfolio=portfolio, experiment_name=experiment_name)
 
     def train(self, *args, **kwargs):
         batch = self.memory.sample(self.config.batch_size)

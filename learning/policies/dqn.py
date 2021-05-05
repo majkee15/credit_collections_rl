@@ -45,6 +45,7 @@ class DefaultConfig(TrainConfigBase):
     epsilon_schedule = LinearSchedule(epsilon, epsilon_final, warmup_episodes)
     target_update_every_step = 50
     log_every_episode = 100
+    compute_portfolio_every = 100
 
     # Net setting
     layers = (10, 10, 10)
@@ -74,7 +75,7 @@ class DefaultConfig(TrainConfigBase):
 
 class DQNAgent(BaseModelMixin, Policy):
 
-    def __init__(self, env, name, config=None, training=True, portfolio=None, initialize=False):
+    def __init__(self, env, name, config=None, training=True, portfolio=None, initialize=False, experiment_name=None):
 
         if config.normalize_states:
             self.env = StateNormalization(env)
@@ -82,7 +83,7 @@ class DQNAgent(BaseModelMixin, Policy):
             self.env = env
 
         Policy.__init__(self, self.env, name, training=training)
-        BaseModelMixin.__init__(self, name)
+        BaseModelMixin.__init__(self, name, experiment_name=experiment_name)
 
         self.config = config
         self.config.gamma = np.exp(-env.params.rho * env.dt)
@@ -260,15 +261,19 @@ class DQNAgent(BaseModelMixin, Policy):
                     with tf.name_scope('Performance'):
                         tf.summary.scalar('episode reward', score, step=i)
                         tf.summary.scalar('running avg reward(100)', avg_rewards, step=i)
-                        if self._portfolio is not None:
-                            price = self.price_portfolio()
-                            tf.summary.scalar('Portfolio Performance:', price, step=i)
 
                     if self.config.prioritized_memory_replay:
                         with tf.name_scope('Schedules'):
                             tf.summary.scalar('Beta', self.config.beta_schedule.current_p, step=i)
                             tf.summary.scalar('Epsilon', self.config.epsilon_schedule.current_p, step=i)
                             tf.summary.scalar('Learning rate', self.optimizer._decayed_lr(tf.float32).numpy(), step=i)
+
+            if self._portfolio is not None:
+                if i % self.config.compute_portfolio_every == 0:
+                    with self.writer.as_default():
+                        with tf.name_scope('Performance'):
+                            price = self.price_portfolio()
+                            tf.summary.scalar('Portfolio Performance:', price, step=i)
 
                 # Plot training stats
                 self.log_tensorboard(step=i, **self._tb_log_holder)
@@ -425,6 +430,8 @@ if __name__ == '__main__':
 
     portfolio_acc = generate_portfolio(50)
 
+    experiment_name = None
+
     dqn = DQNAgent(environment, 'test_constr_log_every_pricer', training=True, config=DefaultConfig(), initialize=False,
-                   portfolio=portfolio_acc)
+                   portfolio=portfolio_acc, experiment_name=experiment_name)
     dqn.run_training()

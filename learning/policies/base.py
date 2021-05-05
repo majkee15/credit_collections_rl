@@ -106,14 +106,18 @@ class Policy(ABC):
 
 class BaseModelMixin(ABC):
 
-    def __init__(self, model_name):
+    def __init__(self, model_name, experiment_name=None):
         self._saver = None
         self._writer = None
+        self._experiment_name = experiment_name
         self.model_name = model_name
         self.current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
     def _get_dir(self, dir_name):
-        path = os.path.join(RESOURCE_ROOT, dir_name, self.model_name, self.current_time)
+        if self._experiment_name is not None:
+            path = os.path.join(RESOURCE_ROOT, dir_name, self._experiment_name, self.model_name, self.current_time)
+        else:
+            path = os.path.join(RESOURCE_ROOT, dir_name, self.model_name, self.current_time)
         os.makedirs(path, exist_ok=True)
         return path
 
@@ -133,7 +137,6 @@ class BaseModelMixin(ABC):
     def tb_dir(self):
         # tensorboard
         return self._get_dir('tb_logs')
-
 
     @property
     def writer(self):

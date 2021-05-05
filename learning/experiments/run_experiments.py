@@ -11,7 +11,6 @@ from learning.policies.dqn_bspline import DQNAgentPoly
 from learning.experiments.configs import *
 from dcc import Parameters
 
-
 from learning.utils.portfolio_accounts import load_acc_portfolio, generate_portfolio
 
 # deactivate CUDA -- the nature of the code makes it comparable to CPU run appli
@@ -19,10 +18,14 @@ from learning.utils.portfolio_accounts import load_acc_portfolio, generate_portf
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
+
 @delayed
-def setup_experiment(conf, name, extype='dqn'):
-    n_acc = 50
-    portfolio = generate_portfolio(n_acc)
+def setup_experiment(conf, name, extype='dqn', use_portfolio=False, experiment_name=None):
+    if use_portfolio:
+        n_acc = 50
+        portfolio = generate_portfolio(n_acc)
+    else:
+        portfolio = None
 
     params = Parameters()
     params.rho = 0.15
@@ -40,11 +43,14 @@ def setup_experiment(conf, name, extype='dqn'):
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
     if extype == 'dqn':
-        dqn = DQNAgent(environment, name, training=True, config=conf, initialize=False)
+        dqn = DQNAgent(environment, name, training=True, config=conf, initialize=False, portfolio=portfolio,
+                       experiment_name=experiment_name)
     elif extype == 'bspline':
-        dqn = DQNAgentPoly(environment, name, training=True, config=conf)
+        dqn = DQNAgentPoly(environment, name, training=True, config=conf, portfolio=portfolio,
+                           experiment_name=experiment_name)
     elif extype == 'dqnpenal':
-        dqn = DQNAgentPenalized(environment, name, config=conf, training=True)
+        dqn = DQNAgentPenalized(environment, name, config=conf, training=True, portfolio=portfolio,
+                                experiment_name=experiment_name)
     else:
         raise ValueError('Unsupported experiment type.')
 
@@ -55,21 +61,27 @@ def runexp(experiment):
     return experiment.run_training()
 
 
-def run_multiple_delayed(names, experiment_types, configs, n_repeats=1):
+def run_multiple_delayed(names, experiment_types, configs, n_repeats=1, experiment_name=None, description=None,
+                         use_portfolio=False):
     res = []
     for r in range(0, n_repeats):
         for i, n in enumerate(names):
-            exp = setup_experiment(configs[i], names[i] + '-' + str(r), experiment_types[i])
+            exp = setup_experiment(configs[i], names[i] + '-' + str(r), experiment_types[i],
+                                   experiment_name=experiment_name,
+                                   use_portfolio=use_portfolio)
             res.append(delayed(runexp(exp)))
     return res
 
 
 if __name__ == '__main__':
     client = Client(n_workers=6, threads_per_worker=2)
-
+    experiment_description = ""
+    experiment_name = 'testing_new_implementation'
     # names = ['DQN', 'SPLINE', 'MONOSPLINE', 'DQN200p']
     names = ['PDQN', 'DQNV', 'DQNL1comp', 'DQNL2comp']
     # names = ['DQN', 'DQNL1']
     experiment_types = ['dqnpenal', 'dqn', 'dqn', 'dqn']
     configs = [DQNPenalized(), DQNBaseConfig(), DQNL1high(), DQNL2low()]
-    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=4), scheduler='distributed')
+    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=4, use_portfolio=False,
+                                 experiment_name=experiment_name), scheduler='distributed')
+
