@@ -13,6 +13,26 @@ class LoadExperiment:
         self.repo = os.path.join(misc.RESOURCE_ROOT)
         self.experiment = experiment
 
+    def cleanup(self):
+        """
+        Clean all experiments that did not run till the finish.
+        Returns:
+        """
+        names_in_experiment = self.list_names_in_experiment(return_paths=True)
+        logs_to_delete = []
+        for name in names_in_experiment:
+            logs = sorted(os.listdir(name))
+            logs_paths = [os.path.join(name, log) for log in logs]
+            for log_path in logs_paths:
+                file_checker = 'main_net.h5'
+                if os.path.isfile(os.path.join(log_path, file_checker)):
+                    pass
+                else:
+                    logs_to_delete.append(log_path)
+
+        return logs_to_delete
+
+
     def list_names_in_experiment(self, return_paths=True):
         assert self.experiment is not None, 'No experiment name specified'
         path = os.path.join(self.repo, 'models', self.experiment)
@@ -123,7 +143,9 @@ if __name__ == '__main__':
     print(ldr.list_names_in_experiment())
     cps = ldr.list_experiment_checkpoints(log_number=0)
     print(cps)
-    ag = ldr.load_agent_from_path(cps[1])
+    print(ldr.cleanup())
+
+    # ag = ldr.load_agent_from_path(cps[1])
 
     # print(ldr.list_logs('DQN-0'))
     # print(ldr.list_checkpoints('DQN-0', 0))
