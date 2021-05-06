@@ -9,6 +9,7 @@ from learning.policies.dqn import DQNAgent
 from learning.policies.dqn_penalized import DQNAgentPenalized
 from learning.policies.dqn_bspline import DQNAgentPoly
 from learning.experiments.configs import *
+from learning.experiments.configs_memory_variation import *
 from dcc import Parameters
 
 from learning.utils.portfolio_accounts import load_acc_portfolio, generate_portfolio
@@ -74,14 +75,12 @@ def run_multiple_delayed(names, experiment_types, configs, n_repeats=1, experime
 
 
 if __name__ == '__main__':
-    client = Client(n_workers=6, threads_per_worker=2)
+    client = Client(n_workers=50, threads_per_worker=2)
     experiment_description = ""
     experiment_name = 'testing_new_implementation'
-    # names = ['DQN', 'SPLINE', 'MONOSPLINE', 'DQN200p']
-    names = ['PDQN', 'DQNV', 'DQNL1comp', 'DQNL2comp']
-    # names = ['DQN', 'DQNL1']
-    experiment_types = ['dqnpenal', 'dqn', 'dqn', 'dqn']
-    configs = [DQNPenalized(), DQNBaseConfig(), DQNL1high(), DQNL2low()]
-    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=4, use_portfolio=False,
+    names = ['PDQN', 'DQNV', 'BSpline']
+    experiment_types = ['dqnpenal', 'dqn', 'bspline']
+    configs = [PDQNFastLrn(), DQNFastLrn(), SplineConstrainedConfig()]
+    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=10, use_portfolio=False,
                                  experiment_name=experiment_name), scheduler='distributed')
 

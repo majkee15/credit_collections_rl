@@ -12,7 +12,6 @@ CHECKPOINT_EVERY = 10
 
 
 class DQNBaseConfig(Config):
-
     n_episodes = TOTAL_NE
     warmup_episodes = int(n_episodes * 0.8)
     checkpoint_every = CHECKPOINT_EVERY
@@ -59,29 +58,11 @@ class DQN200params(DQNBaseConfig):
     layers = (10, 10, 10)
 
 
-class DQNL1low(DQNBaseConfig):
-    regularizer = 'l1'
-    regularizer_parameter = 0.01
-
-
-class DQNL2low(DQNBaseConfig):
-    regularizer = 'l2'
-    regularizer_parameter = 0.01
-
-
-class DQNL1high(DQNBaseConfig):
-    regularizer = 'l1'
-    regularizer_parameter = 0.1
-
-
-class DQNL2high(DQNBaseConfig):
-    regularizer = 'l2'
-    regularizer_parameter = 0.1
-
-
 class DQNPenalized(DQNBaseConfig):
     constrained = True
     penal_coeff = 0.1
+
+
 
 
 # SPLINE CONFIGS
@@ -137,14 +118,16 @@ class SplineConstrainedConfig(SplineBaseConfig):
     penal_coeff = 1.0
 
 
+class DQNMemoryVariable(DQNBaseConfig):
+    def __init__(self, batch_size=512, memory_size=100000):
+        super().__init__()
+        # self.batch_size = 512
+        # self.memory_size = memory
+
+
 if __name__ == '__main__':
-    test_conf1 = DQN200params()
-    test_conf2 = DQNBaseConfig()
-    print(DQN200params.layers)
-    print(DQNBaseConfig.layers)
-
-    print(DQN200params.regularizer)
-
-    test_conf = DQNL2high()
-    test_conf2.save('Prcinka')
+    test_conf1 = DQNBaseConfig(memory_size=100, batch_size=50)
+    print(test_conf1.memory_size)
+    print(test_conf1.batch_size)
+    print(test_conf1.layers)
 
