@@ -17,6 +17,8 @@ class LoadExperiment:
         """
         Clean all experiments that did not run till the finish.
         Returns:
+        TODO: this should work also for tb_logs
+
         """
         names_in_experiment = self.list_names_in_experiment(return_paths=True)
         logs_to_delete = []
@@ -139,7 +141,7 @@ class LoadExperiment:
 
 
 if __name__ == '__main__':
-    ldr = LoadExperiment('honiklada')
+    ldr = LoadExperiment('testing_new_implementation')
     print(ldr.list_names_in_experiment())
     cps = ldr.list_experiment_checkpoints(log_number=0)
     print(cps)
