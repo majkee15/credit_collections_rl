@@ -166,8 +166,14 @@ class Parameters:
         self.rho = 0.06
         self.c = 10.0
         self.r_ = 0.1
-        self.chat = self.c / self.delta2
+        self._chat = self.c / self.delta2
         self._rmean = self.rmean
+
+
+    @property
+    def chat(self):
+        return self.c / self.delta2
+    
 
     def rdist(self, r):
         """
