@@ -15,10 +15,10 @@ def find_pyx(path='.'):
 
 
 extensions = [
-    Extension("cython_pricer.cython_pricer_naive", [r"cython_pricer_naive.pyx"], include_dirs=[numpy.get_include()],
+    Extension("cython_pricer.cython_pricer_naive", [r"cython_pricer/cython_pricer_naive.pyx"], include_dirs=[numpy.get_include()],
               extra_compile_args=['/openmp'],
               extra_link_args=['/openmp']),
-    Extension("cython_pricer.cython_pricer_optimized", [r"cython_pricer_optimized.pyx"],
+    Extension("cython_pricer.cython_pricer_optimized", [r"cython_pricer/cython_pricer_optimized.pyx"],
               include_dirs=[numpy.get_include()], extra_compile_args=['/openmp'],
               extra_link_args=['/openmp'])
 ]
@@ -26,6 +26,6 @@ extensions = [
 # os.environ["CXX"] = "g++-9"
 setup(
     name='cython_pricer',
-    ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}),
+    ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}),#, build_dir=r"cython_pricer/build"),
     script_args=["build_ext", "--inplace"],
 )

@@ -1,1 +1,0 @@
-from policy_pricer_restr.cython_pricer import cython_pricer_optimized

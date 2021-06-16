@@ -86,10 +86,10 @@ class StateNormalization(gym.ObservationWrapper):
         self.high = self.observation_space.high
 
     def observation(self, observation):
-        return (observation - self.low) / self.high
+        return (observation - self.low) / (self.high - self.low)
 
     def convert_back(self, normalized_observation):
-        return (normalized_observation * self.high) + self.low
+        return (normalized_observation * (self.high - self.low) ) + self.low
 
     def save(self, filename):
         with open(filename, 'wb') as f:
@@ -99,6 +99,7 @@ class StateNormalization(gym.ObservationWrapper):
     def load(cls, filename):
         with open(filename, 'rb') as f:
             return pickle.load(f)
+
 
 
 class PolynomialObservationWrapper(gym.ObservationWrapper):

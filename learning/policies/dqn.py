@@ -1,17 +1,14 @@
 import os
 import numpy as np
 import tensorflow as tf
-import datetime
 import pickle
-from datetime import datetime
 from itertools import product
 from multiprocessing import cpu_count
-import joblib
 
 import matplotlib.pyplot as plt
 import matplotlib as m
 
-from learning.collections_env import CollectionsEnv, BetaRepayment, UniformRepayment
+from learning.collections_env import CollectionsEnv, UniformRepayment
 from learning.utils.wrappers import DiscretizedActionWrapper, StateNormalization
 
 from learning.policies.memory import Transition, ReplayMemory, PrioritizedReplayMemory
@@ -23,7 +20,7 @@ from learning.utils.annealing_schedule import LinearSchedule
 from learning.policy_pricer.policy_pricer_python import create_map
 from policy_pricer_restr.cython_pricer import cython_pricer_optimized
 
-from learning.utils.portfolio_accounts import load_acc_portfolio, generate_portfolio
+from learning.utils.portfolio_accounts import generate_portfolio
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 

@@ -34,7 +34,6 @@ class LoadExperiment:
 
         return logs_to_delete
 
-
     def list_names_in_experiment(self, return_paths=True):
         assert self.experiment is not None, 'No experiment name specified'
         path = os.path.join(self.repo, 'models', self.experiment)

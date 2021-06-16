@@ -4,7 +4,7 @@ from learning.utils.misc import Config
 from learning.utils.annealing_schedule import LinearSchedule
 
 
-TOTAL_NE = 10000
+TOTAL_NE = 20000
 LOG_EVERY = 10
 PLOT_EVERY = 100
 CHECKPOINT_EVERY = 10

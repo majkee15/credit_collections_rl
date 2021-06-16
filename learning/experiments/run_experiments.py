@@ -31,7 +31,7 @@ def setup_experiment(conf, name, extype='dqn', use_portfolio=False, experiment_n
     params = Parameters()
     params.rho = 0.15
 
-    actions_bins = np.array([0., 0.2, 1.0])
+    actions_bins = np.array([0., 0.2, 0.5, 0.7, 1.0, 1.5])
     n_actions = len(actions_bins)
 
     # rep_dist = BetaRepayment(params, 0.9, 0.5, 10, MAX_ACCOUNT_BALANCE)
@@ -75,12 +75,12 @@ def run_multiple_delayed(names, experiment_types, configs, n_repeats=1, experime
 
 
 if __name__ == '__main__':
-    client = Client(n_workers=50, threads_per_worker=2)
+    client = Client(n_workers=6, threads_per_worker=2)
     experiment_description = ""
     experiment_name = 'testing_new_implementation'
     names = ['PDQN', 'DQNV', 'BSpline']
     experiment_types = ['dqnpenal', 'dqn', 'bspline']
     configs = [PDQNFastLrn(), DQNFastLrn(), SplineConstrainedConfig()]
-    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=10, use_portfolio=False,
+    compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=2, use_portfolio=False,
                                  experiment_name=experiment_name), scheduler='distributed')
 

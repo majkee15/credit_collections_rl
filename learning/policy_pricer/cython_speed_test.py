@@ -1,6 +1,4 @@
 import numpy as np
-from learning.policy_pricer import pricer_naive
-from learning.policy_pricer import cython_pricer_optimized
 
 if __name__ == '__main__':
     # setup a policy map
