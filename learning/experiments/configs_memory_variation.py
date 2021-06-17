@@ -32,11 +32,11 @@ class DQNFastLrn(Config):
     layers = (128, 128, 128)
     batch_normalization = False
     # Memory setting
-    batch_size = 128
+    batch_size = 512
     memory_size = 1000000
 
     # PER setting
-    prioritized_memory_replay = True
+    prioritized_memory_replay = False
     replay_alpha = 0.2
     replay_beta = 0.4
     replay_beta_final = 1.0
@@ -57,7 +57,9 @@ class DQNFastLrn(Config):
 
 class PDQNFastLrn(DQNFastLrn):
     constrained = True
-    penal_coeff = 0.1
+    # penal_coeff = 0.05
+    penal_cofff_schedule = LinearSchedule(0.0, 0.1, 8000, 2000)
+    penalize_after = 2000
 
 
 

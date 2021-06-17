@@ -64,7 +64,8 @@ class DefaultConfig(TrainConfigBase):
     # Approximator setting
     # Poly features dim
     poly_order = 3
-    constrained = False
+    constrained = True
+    penalize_after = 2000
     penal_coeff = 0.1
     n_l_knots = 6
     n_w_knots = 6
@@ -113,7 +114,7 @@ class DQNAgentPoly(DQNAgent):
             td_error = target_value - main_value
             element_wise_loss = tf.square(td_error) * 0.5
 
-            if self.config.constrained:
+            if self.config.constrained and self.global_step > self.config.penalize_after:
                 first_l, first_w = self.env.penalization(states[:, 0], states[:, 1])
                 # penalization = np.sum(np.maximum(-np.matmul(first_l, self.main_net.weights[0].numpy()), 0 ) +\
                 #                np.maximum(-np.matmul(first_w, self.main_net.weights[0].numpy()), 0))

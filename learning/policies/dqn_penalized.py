@@ -31,6 +31,7 @@ class DefaultConfigPenal(DefaultConfig):
     log_every_episode = 10
     constrained = True
     penal_coeff = 0.5
+    penalize_after = 2000
 
 
 class DQNAgentPenalized(DQNAgent):
@@ -71,9 +72,11 @@ class DQNAgentPenalized(DQNAgent):
                 main_q = self.main_net(network_input_to_watch)
                 main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
                 # main_q_to_penalize = tf.identity(main_q)
-
-            penalization = self.config.penal_coeff * tf.reduce_sum(
-                tf.maximum(-tape_inner.gradient(main_value, network_input_to_watch), 0.0))
+            if self.episode > self.config.penalize_after:
+                penalization = self.config.penal_coeff * tf.reduce_sum(
+                    tf.maximum(-tape_inner.gradient(main_value, network_input_to_watch), 0.0))
+            else:
+                penalization = tf.constant(0.0)
 
             td_error = target_value - main_value
             element_wise_loss = tf.square(td_error) * 0.5
@@ -104,7 +107,10 @@ class DQNAgentPenalized(DQNAgent):
 
 if __name__ == '__main__':
     from dcc import Parameters
-
+    seed = 3
+    # np.random.seed(seed)
+    # tf.random.set_seed(seed)
+    #
     portfolio_acc = generate_portfolio(50)
 
     MAX_ACCOUNT_BALANCE = 200.0
@@ -124,5 +130,5 @@ if __name__ == '__main__':
     environment = DiscretizedActionWrapper(c_env, actions_bins)
 
     dqn = DQNAgentPenalized(environment, name='DQNConstrainedTest', training=True, config=DefaultConfigPenal(),
-                            portfolio=portfolio_acc)
+                            portfolio=None)
     dqn.run_training()

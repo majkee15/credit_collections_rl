@@ -22,9 +22,12 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 @delayed
 def setup_experiment(conf, name, extype='dqn', use_portfolio=False, experiment_name=None, seed=1):
+    np.random.seed(seed)
+    tf.random.set_seed(seed)
+
     if use_portfolio:
         n_acc = 50
-        portfolio = generate_portfolio(n_acc, seed=seed)
+        portfolio = generate_portfolio(n_acc, seed=3)
     else:
         portfolio = None
 
@@ -63,13 +66,14 @@ def runexp(experiment):
 
 
 def run_multiple_delayed(names, experiment_types, configs, n_repeats=1, experiment_name=None, description=None,
-                         use_portfolio=False):
+                         use_portfolio=False, seed=1):
     res = []
     for r in range(0, n_repeats):
+        seed = np.random.randint(1000000)
         for i, n in enumerate(names):
             exp = setup_experiment(configs[i], names[i] + '-' + str(r), experiment_types[i],
                                    experiment_name=experiment_name,
-                                   use_portfolio=use_portfolio)
+                                   use_portfolio=use_portfolio, seed=seed)
             res.append(delayed(runexp(exp)))
     return res
 
@@ -77,10 +81,10 @@ def run_multiple_delayed(names, experiment_types, configs, n_repeats=1, experime
 if __name__ == '__main__':
     client = Client(n_workers=30, threads_per_worker=2)
     experiment_description = ""
-    experiment_name = 'testing_new_implementation'
+    experiment_name = 'pair_test_low_lr'
     names = ['PDQN', 'DQNV']
     experiment_types = ['dqnpenal', 'dqn']
-    configs = [PDQNFastLrn(), DQNFastLrn(), SplineConstrainedConfig()]
+    configs = [PDQNFastLrn(), DQNFastLrn()]
     compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=10, use_portfolio=False,
                                  experiment_name=experiment_name), scheduler='distributed')
 

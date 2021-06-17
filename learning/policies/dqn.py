@@ -98,6 +98,7 @@ class DQNAgent(BaseModelMixin, Policy):
         self.main_net = None
         self._initialize = initialize
         self.global_step = 0
+        self.episode = 0
 
         # Inter-learning plotting parameters
         self._w_points = 60
@@ -177,7 +178,7 @@ class DQNAgent(BaseModelMixin, Policy):
         self._tb_log_holder = {'Gradients': dqn_grads[0], 'Weights': tf.convert_to_tensor(self.main_net.weights[0]),
                                'Prediction': main_value,
                                'Target': target_value, 'TD error': td_error, 'Elementwise Loss': element_wise_loss,
-                               'Loss': tf.reduce_mean(element_wise_loss)}  # , 'Penalization': 0.0}
+                               'Loss': tf.reduce_mean(element_wise_loss)}# , 'Penalization': tf.constant([0.0])}
         return tf.reduce_mean(element_wise_loss)
 
         # def log_tensorboard(self, dqn_grads, main_value, target_value, td_error, element_wise_loss):
@@ -272,8 +273,8 @@ class DQNAgent(BaseModelMixin, Policy):
                             price = self.price_portfolio()
                             tf.summary.scalar('Portfolio Performance:', price, step=i)
 
-                # Plot training stats
-                self.log_tensorboard(step=i, **self._tb_log_holder)
+            # Plot training stats
+            self.log_tensorboard(step=i, **self._tb_log_holder)
 
             # Checkpointing
             if i % self.config.checkpoint_every == 0:
@@ -283,6 +284,8 @@ class DQNAgent(BaseModelMixin, Policy):
                 self.logger.info(f"episode:{i}/{self.config.n_episodes} Plotting policy")
                 self.plot_policy(i)
                 self.plot_visit_map(i)
+
+            self.episode += 1
 
         plot_learning_curve(self.name + '.png', {'rewards': total_rewards})
         self.save()

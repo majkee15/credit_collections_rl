@@ -17,9 +17,11 @@ class AnnealingSchedule(ABC):
 
 class LinearSchedule(AnnealingSchedule):
     # linear annealing of a parameter
-    def __init__(self, starting_par: float, ending_par: float, n_steps: int, inverse=False):
+    def __init__(self, starting_par: float, ending_par: float, n_steps: int, inverse=False, delay: int = 0):
         super().__init__(starting_par, ending_par, n_steps, inverse=inverse)
         self.p_drop = (self.starting_p - self.ending_p) / self.n_steps
+        self.delay = delay
+        self.anneal_step = 0
 
     def anneal(self):
         if not self.inverse:
@@ -27,10 +29,13 @@ class LinearSchedule(AnnealingSchedule):
                 self.current_p = max(self.ending_p, self.current_p - self.p_drop)
         else:
 
-            if self.current_p < self.ending_p:
-                self.current_p = self.current_p - self.p_drop
+            if self.current_p < self.ending_p and self.anneal_step > self.delay:
+                self.current_p = min(self.current_p - self.p_drop, self.ending_p)
+        self.anneal_step += 1
 
         return self.current_p
+
+
 
 
 class ExponentialSchedule(AnnealingSchedule):

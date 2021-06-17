@@ -140,7 +140,7 @@ class LoadExperiment:
 
 
 if __name__ == '__main__':
-    ldr = LoadExperiment('testing_new_implementation')
+    ldr = LoadExperiment('pair_test')
     print(ldr.list_names_in_experiment())
     cps = ldr.list_experiment_checkpoints(log_number=0)
     print(cps)
