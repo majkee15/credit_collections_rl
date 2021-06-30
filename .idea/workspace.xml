@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="97ade2d8-84bd-4fb8-a782-f26cf6c05453" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/learning/experiments/run_pair.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/credit_collections_RL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/credit_collections_RL.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="97ade2d8-84bd-4fb8-a782-f26cf6c05453" name="Default Changelist" comment="various fixes&#10;annealing for the penal coefficient">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/50Ksim" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/experiments/configs_memory_variation.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/experiments/configs_memory_variation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/experiments/run_experiments.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/experiments/run_experiments.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/experiments/run_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/experiments/run_pair.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/policies/dqn.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/policies/dqn_bspline.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn_bspline.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/policies/dqn_penalized.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn_penalized.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/utils/annealing_schedule.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/annealing_schedule.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/utils/load_experiment.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/load_experiment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/utils/portfolio_accounts.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/portfolio_accounts.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +42,7 @@
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunManager" selected="Python.load_experiment">
-    <configuration name="dqn_bspline" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
+    <configuration name="dqn" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -67,7 +55,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/policies/dqn_bspline.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/policies/dqn.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -76,7 +64,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="dqn_penalized" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
+    <configuration name="dqn_penalized" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -165,19 +153,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.dqn_bspline" />
-      <item itemvalue="Python.dqn_penalized" />
       <item itemvalue="Python.run_experiments" />
       <item itemvalue="Python.run_pair" />
       <item itemvalue="Python.load_experiment" />
+      <item itemvalue="Python.dqn" />
+      <item itemvalue="Python.dqn_penalized" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.load_experiment" />
         <item itemvalue="Python.run_pair" />
-        <item itemvalue="Python.run_experiments" />
-        <item itemvalue="Python.dqn_bspline" />
         <item itemvalue="Python.dqn_penalized" />
+        <item itemvalue="Python.dqn" />
+        <item itemvalue="Python.run_experiments" />
       </list>
     </recent_temporary>
   </component>
@@ -189,8 +177,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623847883757</updated>
-      <workItem from="1623847884976" duration="14288000" />
+      <workItem from="1623847884976" duration="28977000" />
     </task>
+    <task id="LOCAL-00001" summary="various fixes&#10;annealing for the penal coefficient">
+      <created>1623923038520</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1623923038520</updated>
+    </task>
+    <task id="LOCAL-00002" summary="various fixes&#10;annealing for the penal coefficient">
+      <created>1623923282653</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1623923282653</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -207,22 +210,27 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="various fixes&#10;annealing for the penal coefficient" />
+    <option name="LAST_COMMIT_MESSAGE" value="various fixes&#10;annealing for the penal coefficient" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/learning/policies/dqn_bspline.py</url>
-          <line>150</line>
-          <option name="timeStamp" value="2" />
+          <url>file://$PROJECT_DIR$/learning/utils/load_experiment.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_penalized.coverage" NAME="dqn_penalized Coverage Results" MODIFIED="1623852662703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_penalized.coverage" NAME="dqn_penalized Coverage Results" MODIFIED="1623923843659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_bspline.coverage" NAME="dqn_bspline Coverage Results" MODIFIED="1623854484195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$load_experiment.coverage" NAME="load_experiment Coverage Results" MODIFIED="1623920439821" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$run_pair.coverage" NAME="run_pair Coverage Results" MODIFIED="1623864105026" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$load_experiment.coverage" NAME="load_experiment Coverage Results" MODIFIED="1624631980231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$run_pair.coverage" NAME="run_pair Coverage Results" MODIFIED="1623925735090" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1623923274715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$run_experiments.coverage" NAME="run_experiments Coverage Results" MODIFIED="1623855200930" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
   </component>
 </project>

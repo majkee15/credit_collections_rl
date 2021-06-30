@@ -32,7 +32,8 @@ class DefaultConfigPenal(DefaultConfig):
     constrained = True
     penal_coeff = 0.5
     penalize_after = 2000
-    penal_cofff_schedule = LinearSchedule(0.0, 0.5, 8000, 1000)
+    penal_coeff_schedule = LinearSchedule(0.0, 0.5, 8000, inverse=True, delay=1000)
+
 
 class DQNAgentPenalized(DQNAgent):
 
@@ -72,11 +73,12 @@ class DQNAgentPenalized(DQNAgent):
                 main_q = self.main_net(network_input_to_watch)
                 main_value = tf.reduce_sum(tf.one_hot(actions, self.act_size) * main_q, axis=1)
                 # main_q_to_penalize = tf.identity(main_q)
-            if self.episode > self.config.penalize_after:
-                penalization = self.config.penal_coeff * tf.reduce_sum(
+            #if self.episode > self.config.penalize_after:
+            penal_coeff = self.config.penal_coeff_schedule.current_p
+            penalization = penal_coeff * tf.reduce_sum(
                     tf.maximum(-tape_inner.gradient(main_value, network_input_to_watch), 0.0))
-            else:
-                penalization = tf.constant(0.0)
+            # else:
+            #     penalization = tf.constant(0.0)
 
             td_error = target_value - main_value
             element_wise_loss = tf.square(td_error) * 0.5

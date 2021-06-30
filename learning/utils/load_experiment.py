@@ -12,6 +12,7 @@ class LoadExperiment:
         """
         self.repo = os.path.join(misc.RESOURCE_ROOT)
         self.experiment = experiment
+        self.repo_experiment = os.path.join(misc.RESOURCE_ROOT, 'models', experiment)
 
     def cleanup(self):
         """
@@ -47,7 +48,7 @@ class LoadExperiment:
             return_res = dirs
         return return_res
 
-    def list_experiment_checkpoints(self, log_number):
+    def list_experiment_checkpoints(self, name, log_number=0):
         """
 
         Args:
@@ -59,8 +60,12 @@ class LoadExperiment:
 
         """
         names_in_experiment = self.list_names_in_experiment(return_paths=True)
+        if name is None:
+            names = names_in_experiment
+        else:
+            names = [os.path.join(self.repo_experiment, name)]
         all_checkpoints = []
-        for name in names_in_experiment:
+        for name in names:
             logs = sorted(os.listdir(name))
             path_to_checkpoints = os.path.join(name, logs[log_number], 'checkpoints')
             assert os.path.exists(path_to_checkpoints)
@@ -142,7 +147,7 @@ class LoadExperiment:
 if __name__ == '__main__':
     ldr = LoadExperiment('pair_test')
     print(ldr.list_names_in_experiment())
-    cps = ldr.list_experiment_checkpoints(log_number=0)
+    cps = ldr.list_experiment_checkpoints('PDQN-1', log_number=0)
     print(cps)
     print(ldr.cleanup())
 

@@ -245,6 +245,10 @@ class DQNAgent(BaseModelMixin, Policy):
 
             self.config.epsilon_schedule.anneal()
             self.config.beta_schedule.anneal()
+
+            if hasattr(self.config, 'penal_coeff_schedule'):
+                self.config.penal_coeff_schedule.anneal()
+
             self.global_lr.assign(self.config.learning_rate_schedule.anneal())
 
             if i % self.config.log_every_episode == 0:
@@ -265,6 +269,8 @@ class DQNAgent(BaseModelMixin, Policy):
                             tf.summary.scalar('Beta', self.config.beta_schedule.current_p, step=i)
                             tf.summary.scalar('Epsilon', self.config.epsilon_schedule.current_p, step=i)
                             tf.summary.scalar('Learning rate', self.optimizer._decayed_lr(tf.float32).numpy(), step=i)
+                            if hasattr(self.config, 'penal_coeff_schedule'):
+                                tf.summary.scalar('Penalization coefficient', self.config.penal_coeff_schedule.current_p, step=i)
 
             if self._portfolio is not None:
                 if i % self.config.compute_portfolio_every == 0:

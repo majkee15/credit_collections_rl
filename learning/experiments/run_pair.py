@@ -81,9 +81,11 @@ def run_multiple_delayed(names, experiment_types, configs, n_repeats=1, experime
 if __name__ == '__main__':
     client = Client(n_workers=30, threads_per_worker=2)
     experiment_description = ""
-    experiment_name = 'pair_test_low_lr'
-    names = ['PDQN', 'DQNV']
-    experiment_types = ['dqnpenal', 'dqn']
+   # experiment_name = 'pair_test_anneal_lr'
+    experiment_name = 'pair_test_anneal_lr_spline'
+    names = ['SplineConstr', 'SplineNonConstr']
+    #experiment_types = ['dqnpenal', 'dqn']
+    experiment_types = ['bspline', 'bspline']
     configs = [PDQNFastLrn(), DQNFastLrn()]
     compute(run_multiple_delayed(names, experiment_types, configs, n_repeats=10, use_portfolio=False,
                                  experiment_name=experiment_name), scheduler='distributed')
