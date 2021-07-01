@@ -26,7 +26,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 class DefaultConfig(TrainConfigBase):
     # Training config specifies the hyperparameters of agent and learning
-    n_episodes = 10000
+    n_episodes = 1000
     warmup_episodes = n_episodes * 0.8
     checkpoint_every = 10
     target_update_every_step = 100
@@ -59,16 +59,18 @@ class DefaultConfig(TrainConfigBase):
     plot_every_episode = target_update_every_step
 
     # env setting
-    normalize_states = False
+    normalize_states = True
 
     # Approximator setting
     # Poly features dim
     poly_order = 3
-    constrained = True
+    constrained = False
     penalize_after = 2000
     penal_coeff = 0.1
     n_l_knots = 6
     n_w_knots = 6
+
+    penal_coeff_schedule = LinearSchedule(0.0, 0.1, 500, inverse=True, delay=0)
 
     # repayment distribution:
 
@@ -114,19 +116,19 @@ class DQNAgentPoly(DQNAgent):
             td_error = target_value - main_value
             element_wise_loss = tf.square(td_error) * 0.5
 
-            if self.config.constrained and self.global_step > self.config.penalize_after:
+            if self.config.constrained:
                 first_l, first_w = self.env.penalization(states[:, 0], states[:, 1])
                 # penalization = np.sum(np.maximum(-np.matmul(first_l, self.main_net.weights[0].numpy()), 0 ) +\
                 #                np.maximum(-np.matmul(first_w, self.main_net.weights[0].numpy()), 0))
 
                 # power = tf.math.floor(kwargs['epoch'] / 50)
                 # coeff = tf.math.minimum(10e4, 2 * tf.math.pow(power, 2))
-                coeff = self.config.penal_coeff
+                coeff = self.config.penal_coeff_schedule.current_p
                 penalization = coeff * 0.5 * (
                         tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_l, dqn_variable), 0))) +
                         tf.reduce_sum(tf.square(tf.math.maximum(-tf.matmul(first_w, dqn_variable), 0))))
             else:
-                penalization = tf.constant([0.0])
+                penalization = tf.constant(0.0)
 
             if self.config.prioritized_memory_replay:
                 error = tf.reduce_mean(element_wise_loss * weights)

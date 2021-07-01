@@ -32,7 +32,7 @@ class DefaultConfigPenal(DefaultConfig):
     constrained = True
     penal_coeff = 0.5
     penalize_after = 2000
-    penal_coeff_schedule = LinearSchedule(0.0, 0.5, 8000, inverse=True, delay=1000)
+    penal_coeff_schedule = LinearSchedule(0.0, 0.5, 8000, inverse=True, delay=200)
 
 
 class DQNAgentPenalized(DQNAgent):

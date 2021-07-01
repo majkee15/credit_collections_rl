@@ -89,7 +89,7 @@ class StateNormalization(gym.ObservationWrapper):
         return (observation - self.low) / (self.high - self.low)
 
     def convert_back(self, normalized_observation):
-        return (normalized_observation * (self.high - self.low) ) + self.low
+        return (normalized_observation * (self.high - self.low)) + self.low
 
     def save(self, filename):
         with open(filename, 'wb') as f:

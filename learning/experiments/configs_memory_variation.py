@@ -16,8 +16,8 @@ class DQNFastLrn(Config):
     warmup_episodes = int(n_episodes * 0.8)
     checkpoint_every = CHECKPOINT_EVERY
 
-    learning_rate = 0.001
-    end_learning_rate = 0.00001
+    learning_rate = 0.01
+    end_learning_rate = 0.0001
     # decaying learning rate
     learning_rate_schedule = LinearSchedule(learning_rate, end_learning_rate, int(n_episodes * 0.2))
     # gamma (discount factor) is set as exp(-rho * dt) in the body of the learning program
@@ -58,7 +58,8 @@ class DQNFastLrn(Config):
 class PDQNFastLrn(DQNFastLrn):
     constrained = True
     # penal_coeff = 0.05
-    penal_coeff_schedule = LinearSchedule(0.0, 0.5, 10000, inverse=True, delay=4000)
+    penal_coeff_schedule =  LinearSchedule(0.0, 0.1, 10000, inverse=True, delay=0)
+
     # penalize_after = 2000
 
 class SplineBaseConfig(Config):
@@ -79,7 +80,6 @@ class SplineBaseConfig(Config):
     log_every_episode = LOG_EVERY
 
     # Net setting
-    layers = (128, 128, 128)
     batch_normalization = False
     # Memory setting
     batch_size = 512
@@ -112,7 +112,8 @@ class SplineBaseConfig(Config):
     n_l_knots = 6
     n_w_knots = 12
 
-class SplineConstrConfig(DQNFastLrn):
+class SplineConstrConfig(SplineBaseConfig):
     constrained = True
+    penal_coeff_schedule = LinearSchedule(0.0, 0.1, 10000, inverse=True, delay=0)
 
 
