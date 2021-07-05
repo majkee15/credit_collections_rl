@@ -19,14 +19,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97ade2d8-84bd-4fb8-a782-f26cf6c05453" name="Default Changelist" comment="various fixes&#10;annealing for the penal coefficient">
-      <change afterPath="$PROJECT_DIR$/analysis_snipetz/baseline_DQN.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/policy_pricer_restr/test/test_imports.ipynb" afterDir="false" />
+    <list default="true" id="97ade2d8-84bd-4fb8-a782-f26cf6c05453" name="Default Changelist" comment="before normalization">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/experiments/configs_memory_variation.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/experiments/configs_memory_variation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/experiments/run_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/experiments/run_pair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis_snipetz/bspline-base.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_snipetz/bspline-base.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis_snipetz/spline_regression_with_constraints.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_snipetz/spline_regression_with_constraints.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/policies/dqn_bspline.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn_bspline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/policies/dqn_penalized.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn_penalized.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/utils/construct_poly.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/construct_poly.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/utils/wrappers.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/wrappers.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -132,28 +130,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="load_experiment" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="credit_collections_rl" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/utils" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/utils/load_experiment.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="run_pair" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -176,20 +152,42 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="wrappers" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="credit_collections_rl" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/utils" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/utils/wrappers.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.run_pair" />
-      <item itemvalue="Python.load_experiment" />
       <item itemvalue="Python.dqn" />
       <item itemvalue="Python.dqn_penalized" />
       <item itemvalue="Python.dqn_bspline" />
+      <item itemvalue="Python.wrappers" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.dqn_bspline" />
+        <item itemvalue="Python.wrappers" />
         <item itemvalue="Python.run_pair" />
         <item itemvalue="Python.dqn_penalized" />
         <item itemvalue="Python.dqn" />
-        <item itemvalue="Python.load_experiment" />
       </list>
     </recent_temporary>
   </component>
@@ -202,6 +200,7 @@
       <option name="presentableId" value="Default" />
       <updated>1623847883757</updated>
       <workItem from="1623847884976" duration="28977000" />
+      <workItem from="1625402748002" duration="8219000" />
     </task>
     <task id="LOCAL-00001" summary="various fixes&#10;annealing for the penal coefficient">
       <created>1623923038520</created>
@@ -217,7 +216,14 @@
       <option name="project" value="LOCAL" />
       <updated>1623923282653</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="before normalization">
+      <created>1625115388369</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1625115388369</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,49 +243,50 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="various fixes&#10;annealing for the penal coefficient" />
-    <option name="LAST_COMMIT_MESSAGE" value="various fixes&#10;annealing for the penal coefficient" />
+    <MESSAGE value="before normalization" />
+    <option name="LAST_COMMIT_MESSAGE" value="before normalization" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1625066915584">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1625066915584" />
-    <state x="866" y="194" key="#xdebugger.evaluate" timestamp="1625068006789">
+    <state x="827" y="404" width="893" height="582" key="#xdebugger.evaluate" timestamp="1625430220866">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="866" y="194" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1625068006789" />
-    <state width="1877" height="232" key="GridCell.Tab.0.bottom" timestamp="1625115184917">
+    <state x="827" y="404" width="893" height="582" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1625430220866" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1625472131557">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="232" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625115184917" />
-    <state width="1877" height="232" key="GridCell.Tab.0.center" timestamp="1625115184917">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625472131557" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1625472131557">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="232" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625115184917" />
-    <state width="1877" height="232" key="GridCell.Tab.0.left" timestamp="1625115184917">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625472131557" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1625472131557">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="232" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625115184917" />
-    <state width="1877" height="232" key="GridCell.Tab.0.right" timestamp="1625115184917">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625472131557" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1625472131557">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="232" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625115184917" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1625087292735">
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625472131557" />
+    <state width="1877" height="167" key="GridCell.Tab.1.bottom" timestamp="1625430302254">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625087292735" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1625087292735">
+    <state width="1877" height="167" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625430302254" />
+    <state width="1877" height="167" key="GridCell.Tab.1.center" timestamp="1625430302254">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625087292735" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1625087292735">
+    <state width="1877" height="167" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625430302254" />
+    <state width="1877" height="167" key="GridCell.Tab.1.left" timestamp="1625430302254">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625087292735" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1625087292735">
+    <state width="1877" height="167" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625430302254" />
+    <state width="1877" height="167" key="GridCell.Tab.1.right" timestamp="1625430302254">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625087292735" />
+    <state width="1877" height="167" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625430302254" />
     <state x="789" y="223" key="RollbackChangesDialog" timestamp="1625066091815">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -294,9 +301,14 @@
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/learning/policies/dqn_bspline.py</url>
-          <line>151</line>
-          <option name="timeStamp" value="4" />
+          <url>file://$PROJECT_DIR$/learning/policies/dqn.py</url>
+          <line>386</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/learning/policies/dqn.py</url>
+          <line>232</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -305,8 +317,9 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_penalized.coverage" NAME="dqn_penalized Coverage Results" MODIFIED="1625067402774" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$load_experiment.coverage" NAME="load_experiment Coverage Results" MODIFIED="1624631980231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1625066926472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$wrappers.coverage" NAME="wrappers Coverage Results" MODIFIED="1625118816153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$run_experiments.coverage" NAME="run_experiments Coverage Results" MODIFIED="1623855200930" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_bspline.coverage" NAME="dqn_bspline Coverage Results" MODIFIED="1625114646697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_bspline.coverage" NAME="dqn_bspline Coverage Results" MODIFIED="1625430302242" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$run_pair.coverage" NAME="run_pair Coverage Results" MODIFIED="1625092096738" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
   </component>
 </project>

@@ -141,9 +141,11 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         super().__init__(environment)
         self.n_l_knots = n_l_knots
         self.n_w_knots = n_w_knots
+        self.normalized = normalized
         if normalized:
-            high = [1, 1]
-            low = self.observation_space.low / self.observation_space.high
+            high = [1.0, 1.0]
+            low = [self.env.params.lambdainf / self.env.MAX_LAMBDA, self.env.MIN_ACCOUNT_BALANCE / self.env.w0]
+
         else:
             high = self.observation_space.high
             low = self.observation_space.low
@@ -162,7 +164,7 @@ class SplineObservationWrapper(gym.ObservationWrapper):
             y_py[:, i + 1] = BSpline.construct_fast(self.w_np_knots,
                                                     (np.arange(len(self.w_knots) + 2) == i).astype(float),
                                                     3,
-                                                    extrapolate=False)(eval_point)
+                                                    extrapolate=True)(eval_point)
         return y_py
 
     def transform_1d_l(self, eval_point):
@@ -174,7 +176,7 @@ class SplineObservationWrapper(gym.ObservationWrapper):
             y_py[:, i + 1] = BSpline.construct_fast(self.l_np_knots,
                                                     (np.arange(len(self.l_knots) + 2) == i).astype(float),
                                                     3,
-                                                    extrapolate=False)(eval_point)
+                                                    extrapolate=True)(eval_point)
         return y_py
 
     def transform_2d(self, xy_inp):
@@ -193,7 +195,9 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         return final
 
     def transform_1d_l_der(self, eval_point):
+
         y_first = np.zeros((eval_point.shape[0], self.n_l_knots + 2))
+
         for i in range(self.n_l_knots + 2):
             y_first[:, i] = BSpline.construct_fast(self.l_np_knots,
                                                    (np.arange(len(self.l_knots) + 2) == i).astype(float),
@@ -229,6 +233,8 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         return first_w, first_l
 
     def observation(self, observation):
+        if self.normalized:
+            observation = self.env.observation(observation)
         if observation.ndim == 1:
             return self.transform_2d(observation[None, :]).flatten()
         else:
@@ -238,9 +244,12 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         # untransformed observations are at position 1 and 2 -- position 0 is intercept
         if transformed_observation.ndim == 1:
             # was [:, 0:2]
-            return transformed_observation[0:2]
+            res = transformed_observation[0:2]
         else:
-            return transformed_observation[:, 0:2]
+            res = transformed_observation[:, 0:2]
+        if self.normalized:
+            res = self.env.convert_back(res)
+        return res
 
     def save(self, filename):
         with open(filename, 'wb') as f:

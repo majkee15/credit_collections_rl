@@ -42,4 +42,3 @@ def construct_spline_approx(env, total_features):
     model = tf.keras.Model(inputs=inputs, outputs=first_layer, name="combined")
     model.compile(loss=tf.keras.losses.mean_squared_error, optimizer='adam')
     return model
-

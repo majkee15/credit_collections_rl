@@ -59,7 +59,7 @@ class DefaultConfig(TrainConfigBase):
     plot_every_episode = target_update_every_step
 
     # env setting
-    normalize_states = True
+    normalize_states = False
 
     # Approximator setting
     # Poly features dim
