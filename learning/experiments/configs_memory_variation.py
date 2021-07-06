@@ -67,10 +67,10 @@ class SplineBaseConfig(Config):
     warmup_episodes = int(n_episodes * 0.8)
     checkpoint_every = CHECKPOINT_EVERY
 
-    learning_rate = 0.001
-    end_learning_rate = 0.00001
+    learning_rate = 0.01
+    end_learning_rate = 0.0001
     # decaying learning rate
-    learning_rate_schedule = LinearSchedule(learning_rate, end_learning_rate, int(n_episodes * 0.2))
+    learning_rate_schedule = LinearSchedule(learning_rate, end_learning_rate, 10000)
     # gamma (discount factor) is set as exp(-rho * dt) in the body of the learning program
     gamma = np.NaN
     epsilon = 1
@@ -107,13 +107,12 @@ class SplineBaseConfig(Config):
     # Approximator setting
     # Poly features dim
     poly_order = 3
-    constrained = False
 
-    n_l_knots = 6
-    n_w_knots = 12
+    n_l_knots = 4
+    n_w_knots = 5
 
 class SplineConstrConfig(SplineBaseConfig):
     constrained = True
-    penal_coeff_schedule = LinearSchedule(0.0, 0.1, 10000, inverse=True, delay=0)
+    penal_coeff_schedule = LinearSchedule(0.0, 0.1, 5000, inverse=True, delay=0)
 
 

@@ -233,8 +233,8 @@ class SplineObservationWrapper(gym.ObservationWrapper):
         return first_w, first_l
 
     def observation(self, observation):
-        if self.normalized:
-            observation = self.env.observation(observation)
+        # if self.normalized:
+        #     observation = self.env.observation(observation)
         if observation.ndim == 1:
             return self.transform_2d(observation[None, :]).flatten()
         else:

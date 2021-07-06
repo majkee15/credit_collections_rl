@@ -47,7 +47,7 @@ class DefaultConfig(TrainConfigBase):
     memory_size = 1000000
 
     # PER setting
-    prioritized_memory_replay = True
+    prioritized_memory_replay = False
     replay_alpha = 0.2
     replay_beta = 0.4
     replay_beta_final = 1.0
@@ -59,17 +59,17 @@ class DefaultConfig(TrainConfigBase):
     plot_every_episode = target_update_every_step
 
     # env setting
-    normalize_states = False
+    normalize_states = True
 
     # Approximator setting
     # Poly features dim
     poly_order = 3
-    constrained = False
+    constrained = True
     penal_coeff = 0.1
     n_l_knots = 4
     n_w_knots = 5
 
-    penal_coeff_schedule = LinearSchedule(0.0, 1., 2000, inverse=True, delay=0)
+    penal_coeff_schedule = LinearSchedule(0.0, 0.5, 2000, inverse=True, delay=0)
 
     # repayment distribution:
 
@@ -155,7 +155,11 @@ class DQNAgentPoly(DQNAgent):
         self.target_net = construct_spline_approx(self.env, self.env.total_features)
         self.main_net = tf.keras.models.clone_model(self.target_net)
         self.main_net.set_weights(self.target_net.get_weights())
-        self._space_product = self.env.observation(np.array([[i, j] for i, j in self._space_iterator]))
+        if self.config.normalize_states:
+            self._space_product = self.env.observation(
+                self.env.env.observation(np.array([[i, j] for i, j in self._space_iterator])))
+        else:
+            self._space_product = self.env.observation(np.array([[i, j] for i, j in self._space_iterator]))
 
 
 if __name__ == '__main__':
