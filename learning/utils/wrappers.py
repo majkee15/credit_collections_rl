@@ -247,8 +247,10 @@ class SplineObservationWrapper(gym.ObservationWrapper):
             res = transformed_observation[0:2]
         else:
             res = transformed_observation[:, 0:2]
+
         if self.normalized:
             res = self.env.convert_back(res)
+
         return res
 
     def save(self, filename):

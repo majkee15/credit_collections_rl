@@ -26,7 +26,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 class DefaultConfig(TrainConfigBase):
     # Training config specifies the hyperparameters of agent and learning
-    n_episodes = 1000
+    n_episodes = 10000
     warmup_episodes = n_episodes * 0.8
     checkpoint_every = 10
     target_update_every_step = 100
@@ -65,12 +65,11 @@ class DefaultConfig(TrainConfigBase):
     # Poly features dim
     poly_order = 3
     constrained = False
-    penalize_after = 2000
     penal_coeff = 0.1
-    n_l_knots = 6
-    n_w_knots = 6
+    n_l_knots = 4
+    n_w_knots = 5
 
-    penal_coeff_schedule = LinearSchedule(0.0, 0.1, 500, inverse=True, delay=0)
+    penal_coeff_schedule = LinearSchedule(0.0, 1., 2000, inverse=True, delay=0)
 
     # repayment distribution:
 
@@ -165,7 +164,7 @@ if __name__ == '__main__':
     params = Parameters()
     params.rho = 0.15
 
-    actions_bins = np.array([0, 0.2, 0.5, 1.0])
+    actions_bins = np.array([0., 0.2, 0.5, 0.7, 1.0, 1.5])
     n_actions = len(actions_bins)
 
     rep_dist = UniformRepayment(params)
