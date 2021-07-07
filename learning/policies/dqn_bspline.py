@@ -31,8 +31,8 @@ class DefaultConfig(TrainConfigBase):
     checkpoint_every = 10
     target_update_every_step = 100
 
-    learning_rate = 0.01
-    end_learning_rate = 0.0001
+    learning_rate = 0.0001
+    end_learning_rate = 0.00001
     # decaying learning rate
     learning_rate_schedule = LinearSchedule(learning_rate, end_learning_rate, n_episodes)
     # gamma (discount factor) is set as exp(-rho * dt) in the body of the learning program
@@ -69,7 +69,7 @@ class DefaultConfig(TrainConfigBase):
     n_l_knots = 4
     n_w_knots = 5
 
-    penal_coeff_schedule = LinearSchedule(0.0, 0.5, 2000, inverse=True, delay=0)
+    penal_coeff_schedule = LinearSchedule(0.0, 0.1, 2000, inverse=True, delay=0)
 
     # repayment distribution:
 

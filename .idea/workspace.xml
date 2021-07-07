@@ -19,12 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97ade2d8-84bd-4fb8-a782-f26cf6c05453" name="Default Changelist" comment="working splines without normalization">
+    <list default="true" id="97ade2d8-84bd-4fb8-a782-f26cf6c05453" name="Default Changelist" comment="almost working normalization for splines">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/experiments/configs_memory_variation.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/experiments/configs_memory_variation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/experiments/run_experiments.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/experiments/run_experiments.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/policies/dqn_bspline.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn_bspline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/utils/wrappers.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/utils/wrappers.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +196,8 @@
       <option name="presentableId" value="Default" />
       <updated>1623847883757</updated>
       <workItem from="1623847884976" duration="28977000" />
-      <workItem from="1625402748002" duration="29458000" />
+      <workItem from="1625402748002" duration="30674000" />
+      <workItem from="1625648247588" duration="5512000" />
     </task>
     <task id="LOCAL-00001" summary="various fixes&#10;annealing for the penal coefficient">
       <created>1623923038520</created>
@@ -236,7 +234,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625563509404</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="almost working normalization for splines">
+      <created>1625574230986</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1625574230986</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,53 +264,58 @@
     <MESSAGE value="before normalization" />
     <MESSAGE value="somewhat working normalization" />
     <MESSAGE value="working splines without normalization" />
-    <option name="LAST_COMMIT_MESSAGE" value="working splines without normalization" />
+    <MESSAGE value="almost working normalization for splines" />
+    <option name="LAST_COMMIT_MESSAGE" value="almost working normalization for splines" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1625066915584">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1625066915584" />
-    <state x="950" y="458" width="893" height="582" key="#xdebugger.evaluate" timestamp="1625570524292">
+    <state x="268" y="156" width="893" height="582" key="#xdebugger.evaluate" timestamp="1625655616352">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="950" y="458" width="893" height="582" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1625570524292" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1625573601197">
+    <state x="268" y="156" width="893" height="582" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1625655616352" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1625659000538">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625573601197" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1625573601197">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625659000538" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1625659000538">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625573601197" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1625573601197">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625659000538" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1625659000538">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625573601197" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1625573601197">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625659000538" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1625659000538">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625573601197" />
-    <state width="1877" height="167" key="GridCell.Tab.1.bottom" timestamp="1625570532247">
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625659000538" />
+    <state width="1877" height="167" key="GridCell.Tab.1.bottom" timestamp="1625656801370">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="167" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625570532247" />
-    <state width="1877" height="167" key="GridCell.Tab.1.center" timestamp="1625570532247">
+    <state width="1877" height="167" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625656801370" />
+    <state width="1877" height="167" key="GridCell.Tab.1.center" timestamp="1625656801370">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="167" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625570532247" />
-    <state width="1877" height="167" key="GridCell.Tab.1.left" timestamp="1625570532247">
+    <state width="1877" height="167" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625656801370" />
+    <state width="1877" height="167" key="GridCell.Tab.1.left" timestamp="1625656801370">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="167" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625570532247" />
-    <state width="1877" height="167" key="GridCell.Tab.1.right" timestamp="1625570532247">
+    <state width="1877" height="167" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625656801370" />
+    <state width="1877" height="167" key="GridCell.Tab.1.right" timestamp="1625656801370">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="167" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625570532247" />
+    <state width="1877" height="167" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625656801370" />
     <state x="789" y="223" key="RollbackChangesDialog" timestamp="1625066091815">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="789" y="223" key="RollbackChangesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1625066091815" />
+    <state width="968" height="528" key="XDebugger.FullValuePopup" timestamp="1625655341903">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="968" height="528" key="XDebugger.FullValuePopup/0.0.1920.1040@0.0.1920.1040" timestamp="1625655341903" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -315,11 +325,6 @@
           <line>68</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/learning/policies/dqn.py</url>
-          <line>364</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -328,8 +333,8 @@
     <SUITE FILE_PATH="coverage/credit_collections_rl$load_experiment.coverage" NAME="load_experiment Coverage Results" MODIFIED="1624631980231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1625488696955" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$wrappers.coverage" NAME="wrappers Coverage Results" MODIFIED="1625118816153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$run_experiments.coverage" NAME="run_experiments Coverage Results" MODIFIED="1625563774430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_bspline.coverage" NAME="dqn_bspline Coverage Results" MODIFIED="1625573601188" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$run_experiments.coverage" NAME="run_experiments Coverage Results" MODIFIED="1625655817595" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_bspline.coverage" NAME="dqn_bspline Coverage Results" MODIFIED="1625657138796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$run_pair.coverage" NAME="run_pair Coverage Results" MODIFIED="1625092096738" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
   </component>
 </project>
