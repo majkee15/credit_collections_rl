@@ -19,9 +19,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97ade2d8-84bd-4fb8-a782-f26cf6c05453" name="Default Changelist" comment="almost working normalization for splines">
+    <list default="true" id="97ade2d8-84bd-4fb8-a782-f26cf6c05453" name="Default Changelist" comment="various fixes&#10;annealing for the penal coefficient">
+      <change afterPath="$PROJECT_DIR$/learning/expriment_eval/eval_scripts.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learning/utils/latex_plot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/policies/dqn_bspline.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/policies/dqn_bspline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/collections_env/collections_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/collections_env/collections_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/experiments/run_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/experiments/run_pair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/tests/testing_continuous_reward.py" beforeDir="false" afterPath="$PROJECT_DIR$/learning/tests/testing_continuous_reward.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,9 +38,6 @@
         <option value="Python Script" />
       </list>
     </option>
-  </component>
-  <component name="Git.Pull.Settings">
-    <option name="BRANCH" value="master" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -59,29 +60,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="Python.dqn_bspline">
-    <configuration name="dqn" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="credit_collections_rl" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/policies" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/policies/dqn.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.testing_continuous_reward">
     <configuration name="dqn_bspline" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -96,6 +75,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/policies/dqn_bspline.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="eval_scripts" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="credit_collections_rl" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/expriment_eval" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/expriment_eval/eval_scripts.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -148,7 +149,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="wrappers" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="testing_continuous_reward" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="credit_collections_rl" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -156,12 +157,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/utils" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/learning/tests" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/utils/wrappers.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/learning/tests/testing_continuous_reward.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -172,18 +173,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.run_pair" />
-      <item itemvalue="Python.dqn" />
       <item itemvalue="Python.dqn_bspline" />
-      <item itemvalue="Python.wrappers" />
       <item itemvalue="Python.run_experiments" />
+      <item itemvalue="Python.eval_scripts" />
+      <item itemvalue="Python.testing_continuous_reward" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.dqn_bspline" />
-        <item itemvalue="Python.run_experiments" />
-        <item itemvalue="Python.dqn" />
-        <item itemvalue="Python.wrappers" />
+        <item itemvalue="Python.testing_continuous_reward" />
         <item itemvalue="Python.run_pair" />
+        <item itemvalue="Python.run_experiments" />
+        <item itemvalue="Python.eval_scripts" />
+        <item itemvalue="Python.dqn_bspline" />
       </list>
     </recent_temporary>
   </component>
@@ -267,56 +268,6 @@
     <MESSAGE value="almost working normalization for splines" />
     <option name="LAST_COMMIT_MESSAGE" value="almost working normalization for splines" />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1625066915584">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1625066915584" />
-    <state x="268" y="156" width="893" height="582" key="#xdebugger.evaluate" timestamp="1625655616352">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="268" y="156" width="893" height="582" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1625655616352" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1625659000538">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625659000538" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1625659000538">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625659000538" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1625659000538">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625659000538" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1625659000538">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625659000538" />
-    <state width="1877" height="167" key="GridCell.Tab.1.bottom" timestamp="1625656801370">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="167" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1625656801370" />
-    <state width="1877" height="167" key="GridCell.Tab.1.center" timestamp="1625656801370">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="167" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1625656801370" />
-    <state width="1877" height="167" key="GridCell.Tab.1.left" timestamp="1625656801370">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="167" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1625656801370" />
-    <state width="1877" height="167" key="GridCell.Tab.1.right" timestamp="1625656801370">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="167" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1625656801370" />
-    <state x="789" y="223" key="RollbackChangesDialog" timestamp="1625066091815">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="789" y="223" key="RollbackChangesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1625066091815" />
-    <state width="968" height="528" key="XDebugger.FullValuePopup" timestamp="1625655341903">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="968" height="528" key="XDebugger.FullValuePopup/0.0.1920.1040@0.0.1920.1040" timestamp="1625655341903" />
-  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -329,12 +280,14 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_penalized.coverage" NAME="dqn_penalized Coverage Results" MODIFIED="1625067402774" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_penalized.coverage" NAME="dqn_penalized Coverage Results" MODIFIED="1623923843659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_bspline.coverage" NAME="dqn_bspline Coverage Results" MODIFIED="1625571544021" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$testing_continuous_reward.coverage" NAME="testing_continuous_reward Coverage Results" MODIFIED="1626074900013" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/tests" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$load_experiment.coverage" NAME="load_experiment Coverage Results" MODIFIED="1624631980231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1625488696955" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
     <SUITE FILE_PATH="coverage/credit_collections_rl$wrappers.coverage" NAME="wrappers Coverage Results" MODIFIED="1625118816153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/utils" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$run_experiments.coverage" NAME="run_experiments Coverage Results" MODIFIED="1625655817595" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn_bspline.coverage" NAME="dqn_bspline Coverage Results" MODIFIED="1625657138796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
-    <SUITE FILE_PATH="coverage/credit_collections_rl$run_pair.coverage" NAME="run_pair Coverage Results" MODIFIED="1625092096738" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$run_pair.coverage" NAME="run_pair Coverage Results" MODIFIED="1625829200840" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$eval_scripts.coverage" NAME="eval_scripts Coverage Results" MODIFIED="1625739938074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/expriment_eval" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$dqn.coverage" NAME="dqn Coverage Results" MODIFIED="1623923274715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/policies" />
+    <SUITE FILE_PATH="coverage/credit_collections_rl$run_experiments.coverage" NAME="run_experiments Coverage Results" MODIFIED="1625755824305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/learning/experiments" />
   </component>
 </project>

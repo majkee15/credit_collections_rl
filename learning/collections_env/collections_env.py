@@ -87,7 +87,7 @@ class CollectionsEnv(gym.Env):
 
         elif tostate is None and self.randomize_start:
             draw_lambda = np.random.uniform(self.params.lambda0, self.MAX_LAMBDA)
-            draw_w = np.random.uniform(MIN_ACCOUNT_BALANCE, MAX_ACCOUNT_BALANCE)
+            draw_w = np.random.uniform(MIN_ACCOUNT_BALANCE, self.w0)
             self.current_state = np.array([draw_lambda, draw_w])
 
         else:
