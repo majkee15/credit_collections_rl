@@ -16,8 +16,18 @@ class CollectionsEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, w0=MAX_ACCOUNT_BALANCE, params=Parameters(), repayment_dist=None, reward_shaping='discrete',
-                 randomize_start=False, starting_state=None, max_lambda=None):
+                 randomize_start=False, starting_state=None, max_lambda=None, xi=1.0):
+        """
+        :param w0:
+        :param params:
+        :param repayment_dist:
+        :param reward_shaping:
+        :param randomize_start:
+        :param starting_state:
+        :param max_lambda:
+        :param xi: shaping parameter
 
+        """
         super(CollectionsEnv, self).__init__()
 
         # Environment specific
@@ -57,6 +67,15 @@ class CollectionsEnv(gym.Env):
 
         # Continuous reward
         self.reward_shaping = reward_shaping
+
+        if reward_shaping == 'continuous':
+            self.xi = 1.0
+        elif reward_shaping == 'discrete':
+            self.xi = 0.0
+        elif reward_shaping == 'mixed':
+            self.xi = xi
+        else:
+            raise NotImplementedError("Not implemented shaping method.")
 
         # randomize starts
         self.randomize_start = randomize_start
@@ -144,6 +163,12 @@ class CollectionsEnv(gym.Env):
             # sparse reward formulation
             reward = (r * self.current_state[1] - action * self.params.c)
             self.current_state[1] = self.current_state[1] * (1 - r)
+
+        elif self.reward_shaping == 'mixed':
+            reward = self.xi * self.current_state[1] * self.repayment_dist.mean(self.current_state[1]) * \
+                     self.current_state[0] * self.dt + (1 - self.xi) * r * self.current_state[
+                         1] - action * self.params.c
+
         else:
             raise NotImplementedError('Not implemented rewards.')
 
@@ -169,6 +194,7 @@ class CollectionsEnv(gym.Env):
 
     def reward(self, r, action, dc):
         (r * self.current_state[1] - action * self.params.c) * dc
+        raise NotImplementedError("Not implemented method `reward`.")
 
     def save(self, filename):
         with open(filename, 'wb') as f:
